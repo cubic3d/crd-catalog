@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kubernetes CRD Schemas</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<style>
+  :root {
+    --bg: #09090b;
+    --bg-surface: rgba(24, 24, 27, 0.6);
+    --bg-hover: rgba(24, 24, 27, 0.8);
+    --surface-background: linear-gradient(var(--bg-surface), var(--bg-surface)), var(--bg);
+    --surface-hover-background: linear-gradient(var(--bg-hover), var(--bg-hover)), var(--bg);
+    --surface-accent-background: linear-gradient(var(--accent-dim), var(--accent-dim)), var(--bg);
+    --fg: #fafafa;
+    --fg-muted: #b0b3bc;
+    --accent: #6bc1fe;
+    --accent-dim: rgba(107, 193, 254, 0.15);
+    --border: rgba(255, 255, 255, 0.1);
+    --border-active: #6bc1fe;
+    --stat-fg: #fafafa;
+    --required-bg: rgba(251, 191, 36, 0.25);
+    --required-fg: #f59e0b;
+  }
+  .light {
+    --bg: #f5f7fa;
+    --bg-surface: #ffffff;
+    --bg-hover: #edf0f4;
+    --fg: #18181b;
+    --fg-muted: #374151;
+    --accent: #2563b0;
+    --accent-dim: rgba(37, 99, 176, 0.08);
+    --border: #d8dde4;
+    --border-active: #2563b0;
+    --stat-fg: #18181b;
+    --required-bg: rgba(217, 119, 6, 0.15);
+    --required-fg: #92400e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--fg);
+    max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem;
+    position: relative; z-index: 1;
+    transition: background 0.2s, color 0.2s;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: -2;
+    pointer-events: none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 31px 47px, rgba(255,255,255,1), transparent),
+      radial-gradient(1px 1px at 212px 23px, rgba(255,255,255,0.7), transparent),
+      radial-gradient(1.5px 1.5px at 68px 289px, rgba(255,255,255,0.84), transparent),
+      radial-gradient(1px 1px at 313px 151px, rgba(255,255,255,0.56), transparent),
+      radial-gradient(1px 1px at 157px 371px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(2px 2px at 19px 83px, rgba(255,255,255,0.96), transparent),
+      radial-gradient(1px 1px at 301px 41px, rgba(255,255,255,0.6), transparent),
+      radial-gradient(1.5px 1.5px at 127px 409px, rgba(255,255,255,0.8), transparent),
+      radial-gradient(1px 1px at 443px 237px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 67px 491px, rgba(255,255,255,0.72), transparent),
+      radial-gradient(1px 1px at 11px 37px, rgba(255,255,255,0.72), transparent),
+      radial-gradient(1.5px 1.5px at 191px 213px, rgba(255,255,255,0.9), transparent),
+      radial-gradient(1px 1px at 53px 7px, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1px 1px at 271px 103px, rgba(255,255,255,0.64), transparent);
+    background-size:
+      397px 397px, 397px 397px, 397px 397px, 397px 397px, 397px 397px,
+      509px 509px, 509px 509px, 509px 509px, 509px 509px, 509px 509px,
+      311px 311px, 311px 311px, 311px 311px, 311px 311px;
+    mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.35) 45%, transparent 80%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgba(0,0,0,0.35) 45%, transparent 80%);
+  }
+  .light body::before { display: none; }
+  .skip-nav {
+    position: absolute; left: -999px; top: auto; width: 1px; height: 1px;
+    overflow: hidden; z-index: 100;
+  }
+  .skip-nav:focus, .skip-nav:active {
+    left: auto; width: auto; height: auto; padding: 0.5rem 1rem;
+    background: var(--accent); color: #09090b;
+    border-radius: 6px; font-weight: 600; text-decoration: none;
+    margin: 0.5rem; outline: 2px solid var(--accent);
+  }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; padding: 0;
+    margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0);
+    white-space: nowrap; border: 0;
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+    }
+  }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    color: var(--fg-muted); cursor: pointer; padding: 0.35rem 0.6rem; font-size: 0.9rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .copied-toast {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #09090b; padding: 0.4rem 1rem;
+    border-radius: 6px; font-size: 0.875rem; font-weight: 600;
+    opacity: 0; transition: opacity 0.2s;
+    pointer-events: none; z-index: 10;
+  }
+  .copied-toast.show { opacity: 1; }
+  .back-to-top {
+    position: fixed; bottom: 1.5rem; right: 1.5rem;
+    background: var(--bg-surface); color: var(--fg-muted);
+    border: 1px solid var(--border); border-radius: 50%;
+    width: 2.5rem; height: 2.5rem; font-size: 1.1rem;
+    cursor: pointer; display: none; align-items: center; justify-content: center;
+    transition: color 0.2s, border-color 0.2s;
+    z-index: 10;
+  }
+  .back-to-top:hover { color: var(--accent); border-color: var(--accent); }
+  .back-to-top.visible { display: flex; }
+  footer {
+    margin-top: 3rem; padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    text-align: center; font-size: 0.875rem; color: var(--fg-muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  header { margin-bottom: 2rem; }
+  .title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.25rem; }
+  .title-group { display: flex; align-items: center; gap: 0.6rem; }
+  .title-icon { width: 28px; height: 28px; flex-shrink: 0; }
+  h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  .subtitle { color: var(--fg-muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .stats {
+    display: flex; gap: 1.5rem; margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .stat { font-size: 0.9rem; color: var(--fg-muted); }
+  .stat strong { color: var(--stat-fg); font-size: 1.1rem; font-weight: 700; margin-right: 0.3rem; }
+
+  .search-box {
+    width: 100%; padding: 0.65rem 1rem; font-size: 0.95rem;
+    background: var(--surface-background); color: var(--fg);
+    border: 1px solid var(--border); border-radius: 6px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box::placeholder { color: var(--fg-muted); }
+  .search-box:focus { border-color: var(--accent); }
+  .search-input-wrap {
+    display: grid;
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface-background);
+    font: inherit; font-size: 0.95rem; line-height: 1.2;
+    font-family: inherit; font-weight: inherit; letter-spacing: inherit;
+    text-transform: inherit; text-indent: inherit; font-kerning: inherit;
+    transition: border-color 0.2s;
+  }
+  .search-input-wrap:focus-within { border-color: var(--accent); }
+  .search-input-wrap .search-box {
+    grid-area: 1 / 1;
+    position: relative; z-index: 1;
+    background: transparent; border-color: transparent;
+    padding-right: 2.75rem;
+    margin: 0; appearance: none; -webkit-appearance: none;
+    font: inherit; line-height: inherit;
+    font-family: inherit; font-size: inherit; font-weight: inherit; letter-spacing: inherit;
+    text-transform: inherit; text-indent: inherit; font-kerning: inherit;
+    width: 100%;
+  }
+  .search-input-wrap .search-box:focus { border-color: transparent; }
+  .search-input-wrap .search-box::-webkit-search-decoration,
+  .search-input-wrap .search-box::-webkit-search-cancel-button,
+  .search-input-wrap .search-box::-webkit-search-results-button,
+  .search-input-wrap .search-box::-webkit-search-results-decoration { display: none; }
+  .search-clear {
+    position: absolute; right: 0.55rem; top: 50%; transform: translateY(-50%);
+    z-index: 2; width: 1.5rem; height: 1.5rem; padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid transparent; border-radius: 999px;
+    background: transparent; color: var(--accent); cursor: pointer;
+    opacity: 0.85; font: inherit; font-size: 0; line-height: 1;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .search-clear::before,
+  .search-clear::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 0.7rem; height: 2px; border-radius: 999px;
+    background: currentColor; transform-origin: center;
+  }
+  .search-clear::before { transform: translate(-50%, -50%) rotate(45deg); }
+  .search-clear::after { transform: translate(-50%, -50%) rotate(-45deg); }
+  .search-clear:hover,
+  .search-clear:focus-visible {
+    background: var(--accent-dim); opacity: 1;
+  }
+  .search-clear[hidden] { display: none; }
+  .search-status {
+    color: var(--fg-muted); font-size: 0.875rem;
+    min-height: 1.25rem; overflow-wrap: anywhere;
+  }
+  .search-status.has-results { color: var(--accent); }
+  .no-results {
+    text-align: center; color: var(--fg-muted); padding: 3rem 1rem;
+    font-size: 0.95rem; display: none;
+  }
+  .search-input-wrap { margin-bottom: 1.5rem; }
+  .toolbar {
+    display: flex; justify-content: flex-end; margin-bottom: 0.75rem;
+  }
+  .toolbar button {
+    background: none; border: none; color: var(--fg-muted); cursor: pointer;
+    font-size: 0.875rem; padding: 0.2rem 0;
+    transition: color 0.15s;
+  }
+  .toolbar button:hover { color: var(--accent); }
+  .usage-section { margin-bottom: 1.5rem; }
+  .usage-section details { border: 1px solid var(--border); border-radius: 6px; }
+  .usage-section summary {
+    padding: 0.65rem 1rem; cursor: pointer; font-weight: 600;
+    font-size: 0.9rem; color: var(--fg-muted);
+    background: var(--surface-background); border-radius: 6px;
+    list-style: none;
+  }
+  .usage-section summary::-webkit-details-marker { display: none; }
+  .usage-section summary::before { content: "▸ "; color: var(--fg); transition: transform 0.2s; }
+  .usage-section details[open] summary::before { content: "▾ "; color: var(--accent); }
+  .usage-section summary:hover { color: var(--fg); }
+  .usage-content {
+    padding: 1rem; font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+  }
+  .usage-content p { margin-bottom: 0.5rem; color: var(--fg-muted); }
+  .usage-content code {
+    display: block; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 4px; padding: 0.75rem 1rem; font-size: 0.875rem;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    overflow-x: auto; white-space: pre; color: var(--fg);
+  }
+  .group {
+    border: 1px solid var(--border); border-radius: 6px;
+    margin-bottom: 0.5rem; transition: border-color 0.2s;
+  }
+  .group[open] { border-color: var(--border-active); border-left-width: 2px; }
+  .group summary {
+    padding: 0.7rem 1rem; cursor: pointer; font-weight: 600;
+    font-size: 0.9rem; background: var(--surface-background); border-radius: 6px;
+    list-style: none; display: flex; align-items: center; gap: 0.5rem;
+    transition: background 0.15s;
+  }
+  .group summary::-webkit-details-marker { display: none; }
+  .group summary::before { content: "▸"; color: var(--fg); font-size: 0.875rem; transition: transform 0.15s; }
+  .group[open] summary::before { content: "▾"; color: var(--accent); }
+  .group summary:hover { background: var(--surface-hover-background); }
+  .group summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+  .usage-section summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 6px; }
+  .group-name { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .badge {
+    background: var(--accent-dim); color: var(--accent);
+    font-size: 0.75rem; font-weight: 700; padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+  }
+  .schemas { padding: 0.4rem 1rem 0.75rem; }
+  @media (min-width: 640px) {
+    .schemas { columns: 2; column-gap: 1.5rem; }
+  }
+  .schema-row {
+    display: flex; align-items: center; gap: 0.35rem;
+    break-inside: avoid;
+  }
+  .schemas a {
+    flex: 0 1 auto; min-width: 0; min-height: 1.5rem; display: inline-flex; align-items: center;
+    padding: 0.2rem 0; color: var(--accent);
+    text-decoration: none; font-size: 0.875rem;
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+    overflow-wrap: anywhere;
+  }
+  .schemas a:hover { text-decoration: underline; }
+  .schema-copy {
+    flex: 0 0 auto; border: 0; background: transparent;
+    color: var(--fg-muted); cursor: pointer; font-size: 0.75rem;
+    font-family: inherit; padding: 0.1rem 0.35rem; border-radius: 4px;
+    opacity: 0; transition: background 0.15s, color 0.15s, opacity 0.15s;
+  }
+  .schema-row:hover .schema-copy,
+  .schema-row:focus-within .schema-copy { opacity: 1; }
+  .schema-copy:hover,
+  .schema-copy:focus-visible { background: var(--accent-dim); color: var(--accent); }
+</style>
+<script>if(localStorage.getItem('theme')==='light')document.documentElement.className='light';</script>
+</head>
+<body data-base-path="">
+<a class="skip-nav" href="#search">Skip to search</a>
+<main id="main"><header>
+  <div class="title-row">
+    <div class="title-group">
+      <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+        <line x1="16" y1="3" x2="28.38" y2="7.96" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="28.38" y1="7.96" x2="27.02" y2="21.53" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="27.02" y1="21.53" x2="19.04" y2="28.51" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="19.04" y1="28.51" x2="12.96" y2="28.51" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="12.96" y1="28.51" x2="4.98" y2="21.53" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="4.98" y1="21.53" x2="3.62" y2="7.96" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="3.62" y1="7.96" x2="16" y2="3" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="16" cy="3" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="28.38" cy="7.96" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="27.02" cy="21.53" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="19.04" cy="28.51" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="12.96" cy="28.51" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="4.98" cy="21.53" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="3.62" cy="7.96" r="4" fill="var(--accent)" opacity="0.2"/>
+        <circle cx="16" cy="3" r="2.5" fill="var(--fg)"/>
+        <circle cx="28.38" cy="7.96" r="2.5" fill="var(--fg)"/>
+        <circle cx="27.02" cy="21.53" r="2.5" fill="var(--fg)"/>
+        <circle cx="19.04" cy="28.51" r="2.5" fill="var(--fg)"/>
+        <circle cx="12.96" cy="28.51" r="2.5" fill="var(--fg)"/>
+        <circle cx="4.98" cy="21.53" r="2.5" fill="var(--fg)"/>
+        <circle cx="3.62" cy="7.96" r="2.5" fill="var(--fg)"/>
+      </svg>
+      <h1>Kubernetes CRD Schemas</h1>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" aria-label="Light mode" aria-pressed="false">☀/☾</button>
+  </div>
+  <p class="subtitle">JSON schemas extracted from live CustomResourceDefinitions</p>
+  <div class="stats">
+    <div class="stat"><strong id="stat-groups">31</strong> API groups</div>
+    <div class="stat"><strong id="stat-schemas">183</strong> schemas</div>
+    <div class="stat">Updated <strong>2026-05-22 13:45 UTC</strong></div>
+  </div>
+</header>
+<div class="usage-section">
+<details>
+<summary>Usage — yaml-language-server</summary>
+<div class="usage-content">
+<p>Add a modeline to any YAML file. Works in VS Code, Neovim, Helix, and any editor with yaml-language-server:</p>
+<code>
+# yaml-language-server: $schema=https://YOUR_DOMAIN/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example
+</code>
+<p style="margin-top:0.75rem;">Or configure schemas globally in VS Code settings:</p>
+<code>
+// .vscode/settings.json
+"yaml.schemas": {
+  "https://YOUR_DOMAIN/cert-manager.io/certificate_v1.json": ["**/certificates/*.yaml"]
+}
+</code>
+</div>
+</details>
+</div>
+<div class="search-input-wrap">
+  <input type="search" class="search-box" placeholder="Search groups and schemas...  ( / to focus, Esc to clear )" id="search" autocomplete="off" spellcheck="false" aria-label="Search groups and schemas" aria-controls="groups" aria-describedby="search-status">
+  <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
+</div>
+<div class="visually-hidden" id="search-status" role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="toolbar"><button id="toggle-all">Expand all</button></div>
+<div id="groups">
+
+<details class="group" data-group="acme.cert-manager.io">
+<summary><span class="group-name">acme.cert-manager.io</span> <span class="badge">2</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="challenge_v1.json"><a href="/acme.cert-manager.io/challenge_v1.html" data-url="/acme.cert-manager.io/challenge_v1.json">challenge_v1.json</a><button type="button" class="schema-copy" data-url="/acme.cert-manager.io/challenge_v1.json" aria-label="Copy schema URL for challenge_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="order_v1.json"><a href="/acme.cert-manager.io/order_v1.html" data-url="/acme.cert-manager.io/order_v1.json">order_v1.json</a><button type="button" class="schema-copy" data-url="/acme.cert-manager.io/order_v1.json" aria-label="Copy schema URL for order_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="cert-manager.io">
+<summary><span class="group-name">cert-manager.io</span> <span class="badge">4</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="certificate_v1.json"><a href="/cert-manager.io/certificate_v1.html" data-url="/cert-manager.io/certificate_v1.json">certificate_v1.json</a><button type="button" class="schema-copy" data-url="/cert-manager.io/certificate_v1.json" aria-label="Copy schema URL for certificate_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="certificaterequest_v1.json"><a href="/cert-manager.io/certificaterequest_v1.html" data-url="/cert-manager.io/certificaterequest_v1.json">certificaterequest_v1.json</a><button type="button" class="schema-copy" data-url="/cert-manager.io/certificaterequest_v1.json" aria-label="Copy schema URL for certificaterequest_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clusterissuer_v1.json"><a href="/cert-manager.io/clusterissuer_v1.html" data-url="/cert-manager.io/clusterissuer_v1.json">clusterissuer_v1.json</a><button type="button" class="schema-copy" data-url="/cert-manager.io/clusterissuer_v1.json" aria-label="Copy schema URL for clusterissuer_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="issuer_v1.json"><a href="/cert-manager.io/issuer_v1.html" data-url="/cert-manager.io/issuer_v1.json">issuer_v1.json</a><button type="button" class="schema-copy" data-url="/cert-manager.io/issuer_v1.json" aria-label="Copy schema URL for issuer_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="cilium.io">
+<summary><span class="group-name">cilium.io</span> <span class="badge">15</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="ciliumcidrgroup_v2.json"><a href="/cilium.io/ciliumcidrgroup_v2.html" data-url="/cilium.io/ciliumcidrgroup_v2.json">ciliumcidrgroup_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumcidrgroup_v2.json" aria-label="Copy schema URL for ciliumcidrgroup_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumcidrgroup_v2alpha1.json"><a href="/cilium.io/ciliumcidrgroup_v2alpha1.html" data-url="/cilium.io/ciliumcidrgroup_v2alpha1.json">ciliumcidrgroup_v2alpha1.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumcidrgroup_v2alpha1.json" aria-label="Copy schema URL for ciliumcidrgroup_v2alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumclusterwidenetworkpolicy_v2.json"><a href="/cilium.io/ciliumclusterwidenetworkpolicy_v2.html" data-url="/cilium.io/ciliumclusterwidenetworkpolicy_v2.json">ciliumclusterwidenetworkpolicy_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumclusterwidenetworkpolicy_v2.json" aria-label="Copy schema URL for ciliumclusterwidenetworkpolicy_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumendpoint_v2.json"><a href="/cilium.io/ciliumendpoint_v2.html" data-url="/cilium.io/ciliumendpoint_v2.json">ciliumendpoint_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumendpoint_v2.json" aria-label="Copy schema URL for ciliumendpoint_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumexternalworkload_v2.json"><a href="/cilium.io/ciliumexternalworkload_v2.html" data-url="/cilium.io/ciliumexternalworkload_v2.json">ciliumexternalworkload_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumexternalworkload_v2.json" aria-label="Copy schema URL for ciliumexternalworkload_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumidentity_v2.json"><a href="/cilium.io/ciliumidentity_v2.html" data-url="/cilium.io/ciliumidentity_v2.json">ciliumidentity_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumidentity_v2.json" aria-label="Copy schema URL for ciliumidentity_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliuml2announcementpolicy_v2alpha1.json"><a href="/cilium.io/ciliuml2announcementpolicy_v2alpha1.html" data-url="/cilium.io/ciliuml2announcementpolicy_v2alpha1.json">ciliuml2announcementpolicy_v2alpha1.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliuml2announcementpolicy_v2alpha1.json" aria-label="Copy schema URL for ciliuml2announcementpolicy_v2alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumloadbalancerippool_v2.json"><a href="/cilium.io/ciliumloadbalancerippool_v2.html" data-url="/cilium.io/ciliumloadbalancerippool_v2.json">ciliumloadbalancerippool_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumloadbalancerippool_v2.json" aria-label="Copy schema URL for ciliumloadbalancerippool_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumloadbalancerippool_v2alpha1.json"><a href="/cilium.io/ciliumloadbalancerippool_v2alpha1.html" data-url="/cilium.io/ciliumloadbalancerippool_v2alpha1.json">ciliumloadbalancerippool_v2alpha1.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumloadbalancerippool_v2alpha1.json" aria-label="Copy schema URL for ciliumloadbalancerippool_v2alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumlocalredirectpolicy_v2.json"><a href="/cilium.io/ciliumlocalredirectpolicy_v2.html" data-url="/cilium.io/ciliumlocalredirectpolicy_v2.json">ciliumlocalredirectpolicy_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumlocalredirectpolicy_v2.json" aria-label="Copy schema URL for ciliumlocalredirectpolicy_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumnetworkpolicy_v2.json"><a href="/cilium.io/ciliumnetworkpolicy_v2.html" data-url="/cilium.io/ciliumnetworkpolicy_v2.json">ciliumnetworkpolicy_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumnetworkpolicy_v2.json" aria-label="Copy schema URL for ciliumnetworkpolicy_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumnode_v2.json"><a href="/cilium.io/ciliumnode_v2.html" data-url="/cilium.io/ciliumnode_v2.json">ciliumnode_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumnode_v2.json" aria-label="Copy schema URL for ciliumnode_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumnodeconfig_v2.json"><a href="/cilium.io/ciliumnodeconfig_v2.html" data-url="/cilium.io/ciliumnodeconfig_v2.json">ciliumnodeconfig_v2.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumnodeconfig_v2.json" aria-label="Copy schema URL for ciliumnodeconfig_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumnodeconfig_v2alpha1.json"><a href="/cilium.io/ciliumnodeconfig_v2alpha1.html" data-url="/cilium.io/ciliumnodeconfig_v2alpha1.json">ciliumnodeconfig_v2alpha1.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumnodeconfig_v2alpha1.json" aria-label="Copy schema URL for ciliumnodeconfig_v2alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ciliumpodippool_v2alpha1.json"><a href="/cilium.io/ciliumpodippool_v2alpha1.html" data-url="/cilium.io/ciliumpodippool_v2alpha1.json">ciliumpodippool_v2alpha1.json</a><button type="button" class="schema-copy" data-url="/cilium.io/ciliumpodippool_v2alpha1.json" aria-label="Copy schema URL for ciliumpodippool_v2alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="deviceplugin.intel.com">
+<summary><span class="group-name">deviceplugin.intel.com</span> <span class="badge">8</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="dlbdeviceplugin_v1.json"><a href="/deviceplugin.intel.com/dlbdeviceplugin_v1.html" data-url="/deviceplugin.intel.com/dlbdeviceplugin_v1.json">dlbdeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/dlbdeviceplugin_v1.json" aria-label="Copy schema URL for dlbdeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="dsadeviceplugin_v1.json"><a href="/deviceplugin.intel.com/dsadeviceplugin_v1.html" data-url="/deviceplugin.intel.com/dsadeviceplugin_v1.json">dsadeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/dsadeviceplugin_v1.json" aria-label="Copy schema URL for dsadeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="fpgadeviceplugin_v1.json"><a href="/deviceplugin.intel.com/fpgadeviceplugin_v1.html" data-url="/deviceplugin.intel.com/fpgadeviceplugin_v1.json">fpgadeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/fpgadeviceplugin_v1.json" aria-label="Copy schema URL for fpgadeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gpudeviceplugin_v1.json"><a href="/deviceplugin.intel.com/gpudeviceplugin_v1.html" data-url="/deviceplugin.intel.com/gpudeviceplugin_v1.json">gpudeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/gpudeviceplugin_v1.json" aria-label="Copy schema URL for gpudeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="iaadeviceplugin_v1.json"><a href="/deviceplugin.intel.com/iaadeviceplugin_v1.html" data-url="/deviceplugin.intel.com/iaadeviceplugin_v1.json">iaadeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/iaadeviceplugin_v1.json" aria-label="Copy schema URL for iaadeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="npudeviceplugin_v1.json"><a href="/deviceplugin.intel.com/npudeviceplugin_v1.html" data-url="/deviceplugin.intel.com/npudeviceplugin_v1.json">npudeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/npudeviceplugin_v1.json" aria-label="Copy schema URL for npudeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="qatdeviceplugin_v1.json"><a href="/deviceplugin.intel.com/qatdeviceplugin_v1.html" data-url="/deviceplugin.intel.com/qatdeviceplugin_v1.json">qatdeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/qatdeviceplugin_v1.json" aria-label="Copy schema URL for qatdeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="sgxdeviceplugin_v1.json"><a href="/deviceplugin.intel.com/sgxdeviceplugin_v1.html" data-url="/deviceplugin.intel.com/sgxdeviceplugin_v1.json">sgxdeviceplugin_v1.json</a><button type="button" class="schema-copy" data-url="/deviceplugin.intel.com/sgxdeviceplugin_v1.json" aria-label="Copy schema URL for sgxdeviceplugin_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="dragonflydb.io">
+<summary><span class="group-name">dragonflydb.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="dragonfly_v1alpha1.json"><a href="/dragonflydb.io/dragonfly_v1alpha1.html" data-url="/dragonflydb.io/dragonfly_v1alpha1.json">dragonfly_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/dragonflydb.io/dragonfly_v1alpha1.json" aria-label="Copy schema URL for dragonfly_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="external-secrets.io">
+<summary><span class="group-name">external-secrets.io</span> <span class="badge">10</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="clusterexternalsecret_v1.json"><a href="/external-secrets.io/clusterexternalsecret_v1.html" data-url="/external-secrets.io/clusterexternalsecret_v1.json">clusterexternalsecret_v1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/clusterexternalsecret_v1.json" aria-label="Copy schema URL for clusterexternalsecret_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clusterexternalsecret_v1beta1.json"><a href="/external-secrets.io/clusterexternalsecret_v1beta1.html" data-url="/external-secrets.io/clusterexternalsecret_v1beta1.json">clusterexternalsecret_v1beta1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/clusterexternalsecret_v1beta1.json" aria-label="Copy schema URL for clusterexternalsecret_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clusterpushsecret_v1alpha1.json"><a href="/external-secrets.io/clusterpushsecret_v1alpha1.html" data-url="/external-secrets.io/clusterpushsecret_v1alpha1.json">clusterpushsecret_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/clusterpushsecret_v1alpha1.json" aria-label="Copy schema URL for clusterpushsecret_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clustersecretstore_v1.json"><a href="/external-secrets.io/clustersecretstore_v1.html" data-url="/external-secrets.io/clustersecretstore_v1.json">clustersecretstore_v1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/clustersecretstore_v1.json" aria-label="Copy schema URL for clustersecretstore_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clustersecretstore_v1beta1.json"><a href="/external-secrets.io/clustersecretstore_v1beta1.html" data-url="/external-secrets.io/clustersecretstore_v1beta1.json">clustersecretstore_v1beta1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/clustersecretstore_v1beta1.json" aria-label="Copy schema URL for clustersecretstore_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="externalsecret_v1.json"><a href="/external-secrets.io/externalsecret_v1.html" data-url="/external-secrets.io/externalsecret_v1.json">externalsecret_v1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/externalsecret_v1.json" aria-label="Copy schema URL for externalsecret_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="externalsecret_v1beta1.json"><a href="/external-secrets.io/externalsecret_v1beta1.html" data-url="/external-secrets.io/externalsecret_v1beta1.json">externalsecret_v1beta1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/externalsecret_v1beta1.json" aria-label="Copy schema URL for externalsecret_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="pushsecret_v1alpha1.json"><a href="/external-secrets.io/pushsecret_v1alpha1.html" data-url="/external-secrets.io/pushsecret_v1alpha1.json">pushsecret_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/pushsecret_v1alpha1.json" aria-label="Copy schema URL for pushsecret_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="secretstore_v1.json"><a href="/external-secrets.io/secretstore_v1.html" data-url="/external-secrets.io/secretstore_v1.json">secretstore_v1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/secretstore_v1.json" aria-label="Copy schema URL for secretstore_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="secretstore_v1beta1.json"><a href="/external-secrets.io/secretstore_v1beta1.html" data-url="/external-secrets.io/secretstore_v1beta1.json">secretstore_v1beta1.json</a><button type="button" class="schema-copy" data-url="/external-secrets.io/secretstore_v1beta1.json" aria-label="Copy schema URL for secretstore_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="externaldns.k8s.io">
+<summary><span class="group-name">externaldns.k8s.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="dnsendpoint_v1alpha1.json"><a href="/externaldns.k8s.io/dnsendpoint_v1alpha1.html" data-url="/externaldns.k8s.io/dnsendpoint_v1alpha1.json">dnsendpoint_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/externaldns.k8s.io/dnsendpoint_v1alpha1.json" aria-label="Copy schema URL for dnsendpoint_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="fluxcd.controlplane.io">
+<summary><span class="group-name">fluxcd.controlplane.io</span> <span class="badge">4</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="fluxinstance_v1.json"><a href="/fluxcd.controlplane.io/fluxinstance_v1.html" data-url="/fluxcd.controlplane.io/fluxinstance_v1.json">fluxinstance_v1.json</a><button type="button" class="schema-copy" data-url="/fluxcd.controlplane.io/fluxinstance_v1.json" aria-label="Copy schema URL for fluxinstance_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="fluxreport_v1.json"><a href="/fluxcd.controlplane.io/fluxreport_v1.html" data-url="/fluxcd.controlplane.io/fluxreport_v1.json">fluxreport_v1.json</a><button type="button" class="schema-copy" data-url="/fluxcd.controlplane.io/fluxreport_v1.json" aria-label="Copy schema URL for fluxreport_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="resourceset_v1.json"><a href="/fluxcd.controlplane.io/resourceset_v1.html" data-url="/fluxcd.controlplane.io/resourceset_v1.json">resourceset_v1.json</a><button type="button" class="schema-copy" data-url="/fluxcd.controlplane.io/resourceset_v1.json" aria-label="Copy schema URL for resourceset_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="resourcesetinputprovider_v1.json"><a href="/fluxcd.controlplane.io/resourcesetinputprovider_v1.html" data-url="/fluxcd.controlplane.io/resourcesetinputprovider_v1.json">resourcesetinputprovider_v1.json</a><button type="button" class="schema-copy" data-url="/fluxcd.controlplane.io/resourcesetinputprovider_v1.json" aria-label="Copy schema URL for resourcesetinputprovider_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="fpga.intel.com">
+<summary><span class="group-name">fpga.intel.com</span> <span class="badge">2</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="acceleratorfunction_v2.json"><a href="/fpga.intel.com/acceleratorfunction_v2.html" data-url="/fpga.intel.com/acceleratorfunction_v2.json">acceleratorfunction_v2.json</a><button type="button" class="schema-copy" data-url="/fpga.intel.com/acceleratorfunction_v2.json" aria-label="Copy schema URL for acceleratorfunction_v2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="fpgaregion_v2.json"><a href="/fpga.intel.com/fpgaregion_v2.html" data-url="/fpga.intel.com/fpgaregion_v2.json">fpgaregion_v2.json</a><button type="button" class="schema-copy" data-url="/fpga.intel.com/fpgaregion_v2.json" aria-label="Copy schema URL for fpgaregion_v2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="gateway.envoyproxy.io">
+<summary><span class="group-name">gateway.envoyproxy.io</span> <span class="badge">8</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="backend_v1alpha1.json"><a href="/gateway.envoyproxy.io/backend_v1alpha1.html" data-url="/gateway.envoyproxy.io/backend_v1alpha1.json">backend_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/backend_v1alpha1.json" aria-label="Copy schema URL for backend_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backendtrafficpolicy_v1alpha1.json"><a href="/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.html" data-url="/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json">backendtrafficpolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json" aria-label="Copy schema URL for backendtrafficpolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clienttrafficpolicy_v1alpha1.json"><a href="/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.html" data-url="/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json">clienttrafficpolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json" aria-label="Copy schema URL for clienttrafficpolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="envoyextensionpolicy_v1alpha1.json"><a href="/gateway.envoyproxy.io/envoyextensionpolicy_v1alpha1.html" data-url="/gateway.envoyproxy.io/envoyextensionpolicy_v1alpha1.json">envoyextensionpolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/envoyextensionpolicy_v1alpha1.json" aria-label="Copy schema URL for envoyextensionpolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="envoypatchpolicy_v1alpha1.json"><a href="/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.html" data-url="/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json">envoypatchpolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json" aria-label="Copy schema URL for envoypatchpolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="envoyproxy_v1alpha1.json"><a href="/gateway.envoyproxy.io/envoyproxy_v1alpha1.html" data-url="/gateway.envoyproxy.io/envoyproxy_v1alpha1.json">envoyproxy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/envoyproxy_v1alpha1.json" aria-label="Copy schema URL for envoyproxy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="httproutefilter_v1alpha1.json"><a href="/gateway.envoyproxy.io/httproutefilter_v1alpha1.html" data-url="/gateway.envoyproxy.io/httproutefilter_v1alpha1.json">httproutefilter_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/httproutefilter_v1alpha1.json" aria-label="Copy schema URL for httproutefilter_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="securitypolicy_v1alpha1.json"><a href="/gateway.envoyproxy.io/securitypolicy_v1alpha1.html" data-url="/gateway.envoyproxy.io/securitypolicy_v1alpha1.json">securitypolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.envoyproxy.io/securitypolicy_v1alpha1.json" aria-label="Copy schema URL for securitypolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="gateway.networking.k8s.io">
+<summary><span class="group-name">gateway.networking.k8s.io</span> <span class="badge">17</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="backendtlspolicy_v1.json"><a href="/gateway.networking.k8s.io/backendtlspolicy_v1.html" data-url="/gateway.networking.k8s.io/backendtlspolicy_v1.json">backendtlspolicy_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/backendtlspolicy_v1.json" aria-label="Copy schema URL for backendtlspolicy_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backendtlspolicy_v1alpha3.json"><a href="/gateway.networking.k8s.io/backendtlspolicy_v1alpha3.html" data-url="/gateway.networking.k8s.io/backendtlspolicy_v1alpha3.json">backendtlspolicy_v1alpha3.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/backendtlspolicy_v1alpha3.json" aria-label="Copy schema URL for backendtlspolicy_v1alpha3.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gateway_v1.json"><a href="/gateway.networking.k8s.io/gateway_v1.html" data-url="/gateway.networking.k8s.io/gateway_v1.json">gateway_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/gateway_v1.json" aria-label="Copy schema URL for gateway_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gateway_v1beta1.json"><a href="/gateway.networking.k8s.io/gateway_v1beta1.html" data-url="/gateway.networking.k8s.io/gateway_v1beta1.json">gateway_v1beta1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/gateway_v1beta1.json" aria-label="Copy schema URL for gateway_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gatewayclass_v1.json"><a href="/gateway.networking.k8s.io/gatewayclass_v1.html" data-url="/gateway.networking.k8s.io/gatewayclass_v1.json">gatewayclass_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/gatewayclass_v1.json" aria-label="Copy schema URL for gatewayclass_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gatewayclass_v1beta1.json"><a href="/gateway.networking.k8s.io/gatewayclass_v1beta1.html" data-url="/gateway.networking.k8s.io/gatewayclass_v1beta1.json">gatewayclass_v1beta1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/gatewayclass_v1beta1.json" aria-label="Copy schema URL for gatewayclass_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="grpcroute_v1.json"><a href="/gateway.networking.k8s.io/grpcroute_v1.html" data-url="/gateway.networking.k8s.io/grpcroute_v1.json">grpcroute_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/grpcroute_v1.json" aria-label="Copy schema URL for grpcroute_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="httproute_v1.json"><a href="/gateway.networking.k8s.io/httproute_v1.html" data-url="/gateway.networking.k8s.io/httproute_v1.json">httproute_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/httproute_v1.json" aria-label="Copy schema URL for httproute_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="httproute_v1beta1.json"><a href="/gateway.networking.k8s.io/httproute_v1beta1.html" data-url="/gateway.networking.k8s.io/httproute_v1beta1.json">httproute_v1beta1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/httproute_v1beta1.json" aria-label="Copy schema URL for httproute_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="listenerset_v1.json"><a href="/gateway.networking.k8s.io/listenerset_v1.html" data-url="/gateway.networking.k8s.io/listenerset_v1.json">listenerset_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/listenerset_v1.json" aria-label="Copy schema URL for listenerset_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="referencegrant_v1.json"><a href="/gateway.networking.k8s.io/referencegrant_v1.html" data-url="/gateway.networking.k8s.io/referencegrant_v1.json">referencegrant_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/referencegrant_v1.json" aria-label="Copy schema URL for referencegrant_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="referencegrant_v1beta1.json"><a href="/gateway.networking.k8s.io/referencegrant_v1beta1.html" data-url="/gateway.networking.k8s.io/referencegrant_v1beta1.json">referencegrant_v1beta1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/referencegrant_v1beta1.json" aria-label="Copy schema URL for referencegrant_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="tcproute_v1alpha2.json"><a href="/gateway.networking.k8s.io/tcproute_v1alpha2.html" data-url="/gateway.networking.k8s.io/tcproute_v1alpha2.json">tcproute_v1alpha2.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/tcproute_v1alpha2.json" aria-label="Copy schema URL for tcproute_v1alpha2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="tlsroute_v1.json"><a href="/gateway.networking.k8s.io/tlsroute_v1.html" data-url="/gateway.networking.k8s.io/tlsroute_v1.json">tlsroute_v1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/tlsroute_v1.json" aria-label="Copy schema URL for tlsroute_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="tlsroute_v1alpha2.json"><a href="/gateway.networking.k8s.io/tlsroute_v1alpha2.html" data-url="/gateway.networking.k8s.io/tlsroute_v1alpha2.json">tlsroute_v1alpha2.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/tlsroute_v1alpha2.json" aria-label="Copy schema URL for tlsroute_v1alpha2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="tlsroute_v1alpha3.json"><a href="/gateway.networking.k8s.io/tlsroute_v1alpha3.html" data-url="/gateway.networking.k8s.io/tlsroute_v1alpha3.json">tlsroute_v1alpha3.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/tlsroute_v1alpha3.json" aria-label="Copy schema URL for tlsroute_v1alpha3.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="udproute_v1alpha2.json"><a href="/gateway.networking.k8s.io/udproute_v1alpha2.html" data-url="/gateway.networking.k8s.io/udproute_v1alpha2.json">udproute_v1alpha2.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.k8s.io/udproute_v1alpha2.json" aria-label="Copy schema URL for udproute_v1alpha2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="gateway.networking.x-k8s.io">
+<summary><span class="group-name">gateway.networking.x-k8s.io</span> <span class="badge">2</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="xbackendtrafficpolicy_v1alpha1.json"><a href="/gateway.networking.x-k8s.io/xbackendtrafficpolicy_v1alpha1.html" data-url="/gateway.networking.x-k8s.io/xbackendtrafficpolicy_v1alpha1.json">xbackendtrafficpolicy_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.x-k8s.io/xbackendtrafficpolicy_v1alpha1.json" aria-label="Copy schema URL for xbackendtrafficpolicy_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="xmesh_v1alpha1.json"><a href="/gateway.networking.x-k8s.io/xmesh_v1alpha1.html" data-url="/gateway.networking.x-k8s.io/xmesh_v1alpha1.json">xmesh_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/gateway.networking.x-k8s.io/xmesh_v1alpha1.json" aria-label="Copy schema URL for xmesh_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="generators.external-secrets.io">
+<summary><span class="group-name">generators.external-secrets.io</span> <span class="badge">17</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="acraccesstoken_v1alpha1.json"><a href="/generators.external-secrets.io/acraccesstoken_v1alpha1.html" data-url="/generators.external-secrets.io/acraccesstoken_v1alpha1.json">acraccesstoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/acraccesstoken_v1alpha1.json" aria-label="Copy schema URL for acraccesstoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="cloudsmithaccesstoken_v1alpha1.json"><a href="/generators.external-secrets.io/cloudsmithaccesstoken_v1alpha1.html" data-url="/generators.external-secrets.io/cloudsmithaccesstoken_v1alpha1.json">cloudsmithaccesstoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/cloudsmithaccesstoken_v1alpha1.json" aria-label="Copy schema URL for cloudsmithaccesstoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="clustergenerator_v1alpha1.json"><a href="/generators.external-secrets.io/clustergenerator_v1alpha1.html" data-url="/generators.external-secrets.io/clustergenerator_v1alpha1.json">clustergenerator_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/clustergenerator_v1alpha1.json" aria-label="Copy schema URL for clustergenerator_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ecrauthorizationtoken_v1alpha1.json"><a href="/generators.external-secrets.io/ecrauthorizationtoken_v1alpha1.html" data-url="/generators.external-secrets.io/ecrauthorizationtoken_v1alpha1.json">ecrauthorizationtoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/ecrauthorizationtoken_v1alpha1.json" aria-label="Copy schema URL for ecrauthorizationtoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="fake_v1alpha1.json"><a href="/generators.external-secrets.io/fake_v1alpha1.html" data-url="/generators.external-secrets.io/fake_v1alpha1.json">fake_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/fake_v1alpha1.json" aria-label="Copy schema URL for fake_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gcraccesstoken_v1alpha1.json"><a href="/generators.external-secrets.io/gcraccesstoken_v1alpha1.html" data-url="/generators.external-secrets.io/gcraccesstoken_v1alpha1.json">gcraccesstoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/gcraccesstoken_v1alpha1.json" aria-label="Copy schema URL for gcraccesstoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="generatorstate_v1alpha1.json"><a href="/generators.external-secrets.io/generatorstate_v1alpha1.html" data-url="/generators.external-secrets.io/generatorstate_v1alpha1.json">generatorstate_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/generatorstate_v1alpha1.json" aria-label="Copy schema URL for generatorstate_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="githubaccesstoken_v1alpha1.json"><a href="/generators.external-secrets.io/githubaccesstoken_v1alpha1.html" data-url="/generators.external-secrets.io/githubaccesstoken_v1alpha1.json">githubaccesstoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/githubaccesstoken_v1alpha1.json" aria-label="Copy schema URL for githubaccesstoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="grafana_v1alpha1.json"><a href="/generators.external-secrets.io/grafana_v1alpha1.html" data-url="/generators.external-secrets.io/grafana_v1alpha1.json">grafana_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/grafana_v1alpha1.json" aria-label="Copy schema URL for grafana_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="mfa_v1alpha1.json"><a href="/generators.external-secrets.io/mfa_v1alpha1.html" data-url="/generators.external-secrets.io/mfa_v1alpha1.json">mfa_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/mfa_v1alpha1.json" aria-label="Copy schema URL for mfa_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="password_v1alpha1.json"><a href="/generators.external-secrets.io/password_v1alpha1.html" data-url="/generators.external-secrets.io/password_v1alpha1.json">password_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/password_v1alpha1.json" aria-label="Copy schema URL for password_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="quayaccesstoken_v1alpha1.json"><a href="/generators.external-secrets.io/quayaccesstoken_v1alpha1.html" data-url="/generators.external-secrets.io/quayaccesstoken_v1alpha1.json">quayaccesstoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/quayaccesstoken_v1alpha1.json" aria-label="Copy schema URL for quayaccesstoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="sshkey_v1alpha1.json"><a href="/generators.external-secrets.io/sshkey_v1alpha1.html" data-url="/generators.external-secrets.io/sshkey_v1alpha1.json">sshkey_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/sshkey_v1alpha1.json" aria-label="Copy schema URL for sshkey_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="stssessiontoken_v1alpha1.json"><a href="/generators.external-secrets.io/stssessiontoken_v1alpha1.html" data-url="/generators.external-secrets.io/stssessiontoken_v1alpha1.json">stssessiontoken_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/stssessiontoken_v1alpha1.json" aria-label="Copy schema URL for stssessiontoken_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="uuid_v1alpha1.json"><a href="/generators.external-secrets.io/uuid_v1alpha1.html" data-url="/generators.external-secrets.io/uuid_v1alpha1.json">uuid_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/uuid_v1alpha1.json" aria-label="Copy schema URL for uuid_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vaultdynamicsecret_v1alpha1.json"><a href="/generators.external-secrets.io/vaultdynamicsecret_v1alpha1.html" data-url="/generators.external-secrets.io/vaultdynamicsecret_v1alpha1.json">vaultdynamicsecret_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/vaultdynamicsecret_v1alpha1.json" aria-label="Copy schema URL for vaultdynamicsecret_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="webhook_v1alpha1.json"><a href="/generators.external-secrets.io/webhook_v1alpha1.html" data-url="/generators.external-secrets.io/webhook_v1alpha1.json">webhook_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/generators.external-secrets.io/webhook_v1alpha1.json" aria-label="Copy schema URL for webhook_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="groupsnapshot.storage.k8s.io">
+<summary><span class="group-name">groupsnapshot.storage.k8s.io</span> <span class="badge">6</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="volumegroupsnapshot_v1beta1.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta1.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta1.json">volumegroupsnapshot_v1beta1.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta1.json" aria-label="Copy schema URL for volumegroupsnapshot_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumegroupsnapshot_v1beta2.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta2.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta2.json">volumegroupsnapshot_v1beta2.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta2.json" aria-label="Copy schema URL for volumegroupsnapshot_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumegroupsnapshotclass_v1beta1.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta1.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta1.json">volumegroupsnapshotclass_v1beta1.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta1.json" aria-label="Copy schema URL for volumegroupsnapshotclass_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumegroupsnapshotclass_v1beta2.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta2.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta2.json">volumegroupsnapshotclass_v1beta2.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta2.json" aria-label="Copy schema URL for volumegroupsnapshotclass_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumegroupsnapshotcontent_v1beta1.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta1.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta1.json">volumegroupsnapshotcontent_v1beta1.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta1.json" aria-label="Copy schema URL for volumegroupsnapshotcontent_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumegroupsnapshotcontent_v1beta2.json"><a href="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta2.html" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta2.json">volumegroupsnapshotcontent_v1beta2.json</a><button type="button" class="schema-copy" data-url="/groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta2.json" aria-label="Copy schema URL for volumegroupsnapshotcontent_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="helm.toolkit.fluxcd.io">
+<summary><span class="group-name">helm.toolkit.fluxcd.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="helmrelease_v2.json"><a href="/helm.toolkit.fluxcd.io/helmrelease_v2.html" data-url="/helm.toolkit.fluxcd.io/helmrelease_v2.json">helmrelease_v2.json</a><button type="button" class="schema-copy" data-url="/helm.toolkit.fluxcd.io/helmrelease_v2.json" aria-label="Copy schema URL for helmrelease_v2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="image.toolkit.fluxcd.io">
+<summary><span class="group-name">image.toolkit.fluxcd.io</span> <span class="badge">6</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="imagepolicy_v1beta1.json"><a href="/image.toolkit.fluxcd.io/imagepolicy_v1beta1.html" data-url="/image.toolkit.fluxcd.io/imagepolicy_v1beta1.json">imagepolicy_v1beta1.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imagepolicy_v1beta1.json" aria-label="Copy schema URL for imagepolicy_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="imagepolicy_v1beta2.json"><a href="/image.toolkit.fluxcd.io/imagepolicy_v1beta2.html" data-url="/image.toolkit.fluxcd.io/imagepolicy_v1beta2.json">imagepolicy_v1beta2.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imagepolicy_v1beta2.json" aria-label="Copy schema URL for imagepolicy_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="imagerepository_v1beta1.json"><a href="/image.toolkit.fluxcd.io/imagerepository_v1beta1.html" data-url="/image.toolkit.fluxcd.io/imagerepository_v1beta1.json">imagerepository_v1beta1.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imagerepository_v1beta1.json" aria-label="Copy schema URL for imagerepository_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="imagerepository_v1beta2.json"><a href="/image.toolkit.fluxcd.io/imagerepository_v1beta2.html" data-url="/image.toolkit.fluxcd.io/imagerepository_v1beta2.json">imagerepository_v1beta2.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imagerepository_v1beta2.json" aria-label="Copy schema URL for imagerepository_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="imageupdateautomation_v1beta1.json"><a href="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta1.html" data-url="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta1.json">imageupdateautomation_v1beta1.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta1.json" aria-label="Copy schema URL for imageupdateautomation_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="imageupdateautomation_v1beta2.json"><a href="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta2.html" data-url="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta2.json">imageupdateautomation_v1beta2.json</a><button type="button" class="schema-copy" data-url="/image.toolkit.fluxcd.io/imageupdateautomation_v1beta2.json" aria-label="Copy schema URL for imageupdateautomation_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="jaegertracing.io">
+<summary><span class="group-name">jaegertracing.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="jaeger_v1.json"><a href="/jaegertracing.io/jaeger_v1.html" data-url="/jaegertracing.io/jaeger_v1.json">jaeger_v1.json</a><button type="button" class="schema-copy" data-url="/jaegertracing.io/jaeger_v1.json" aria-label="Copy schema URL for jaeger_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="k8s.cni.cncf.io">
+<summary><span class="group-name">k8s.cni.cncf.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="networkattachmentdefinition_v1.json"><a href="/k8s.cni.cncf.io/networkattachmentdefinition_v1.html" data-url="/k8s.cni.cncf.io/networkattachmentdefinition_v1.json">networkattachmentdefinition_v1.json</a><button type="button" class="schema-copy" data-url="/k8s.cni.cncf.io/networkattachmentdefinition_v1.json" aria-label="Copy schema URL for networkattachmentdefinition_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="kustomize.toolkit.fluxcd.io">
+<summary><span class="group-name">kustomize.toolkit.fluxcd.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="kustomization_v1.json"><a href="/kustomize.toolkit.fluxcd.io/kustomization_v1.html" data-url="/kustomize.toolkit.fluxcd.io/kustomization_v1.json">kustomization_v1.json</a><button type="button" class="schema-copy" data-url="/kustomize.toolkit.fluxcd.io/kustomization_v1.json" aria-label="Copy schema URL for kustomization_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="longhorn.io">
+<summary><span class="group-name">longhorn.io</span> <span class="badge">22</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="backingimage_v1beta2.json"><a href="/longhorn.io/backingimage_v1beta2.html" data-url="/longhorn.io/backingimage_v1beta2.json">backingimage_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backingimage_v1beta2.json" aria-label="Copy schema URL for backingimage_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backingimagedatasource_v1beta2.json"><a href="/longhorn.io/backingimagedatasource_v1beta2.html" data-url="/longhorn.io/backingimagedatasource_v1beta2.json">backingimagedatasource_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backingimagedatasource_v1beta2.json" aria-label="Copy schema URL for backingimagedatasource_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backingimagemanager_v1beta2.json"><a href="/longhorn.io/backingimagemanager_v1beta2.html" data-url="/longhorn.io/backingimagemanager_v1beta2.json">backingimagemanager_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backingimagemanager_v1beta2.json" aria-label="Copy schema URL for backingimagemanager_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backup_v1beta2.json"><a href="/longhorn.io/backup_v1beta2.html" data-url="/longhorn.io/backup_v1beta2.json">backup_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backup_v1beta2.json" aria-label="Copy schema URL for backup_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backupbackingimage_v1beta2.json"><a href="/longhorn.io/backupbackingimage_v1beta2.html" data-url="/longhorn.io/backupbackingimage_v1beta2.json">backupbackingimage_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backupbackingimage_v1beta2.json" aria-label="Copy schema URL for backupbackingimage_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backuptarget_v1beta2.json"><a href="/longhorn.io/backuptarget_v1beta2.html" data-url="/longhorn.io/backuptarget_v1beta2.json">backuptarget_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backuptarget_v1beta2.json" aria-label="Copy schema URL for backuptarget_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="backupvolume_v1beta2.json"><a href="/longhorn.io/backupvolume_v1beta2.html" data-url="/longhorn.io/backupvolume_v1beta2.json">backupvolume_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/backupvolume_v1beta2.json" aria-label="Copy schema URL for backupvolume_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="engine_v1beta2.json"><a href="/longhorn.io/engine_v1beta2.html" data-url="/longhorn.io/engine_v1beta2.json">engine_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/engine_v1beta2.json" aria-label="Copy schema URL for engine_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="engineimage_v1beta2.json"><a href="/longhorn.io/engineimage_v1beta2.html" data-url="/longhorn.io/engineimage_v1beta2.json">engineimage_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/engineimage_v1beta2.json" aria-label="Copy schema URL for engineimage_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="instancemanager_v1beta2.json"><a href="/longhorn.io/instancemanager_v1beta2.html" data-url="/longhorn.io/instancemanager_v1beta2.json">instancemanager_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/instancemanager_v1beta2.json" aria-label="Copy schema URL for instancemanager_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="node_v1beta2.json"><a href="/longhorn.io/node_v1beta2.html" data-url="/longhorn.io/node_v1beta2.json">node_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/node_v1beta2.json" aria-label="Copy schema URL for node_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="orphan_v1beta2.json"><a href="/longhorn.io/orphan_v1beta2.html" data-url="/longhorn.io/orphan_v1beta2.json">orphan_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/orphan_v1beta2.json" aria-label="Copy schema URL for orphan_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="recurringjob_v1beta2.json"><a href="/longhorn.io/recurringjob_v1beta2.html" data-url="/longhorn.io/recurringjob_v1beta2.json">recurringjob_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/recurringjob_v1beta2.json" aria-label="Copy schema URL for recurringjob_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="replica_v1beta2.json"><a href="/longhorn.io/replica_v1beta2.html" data-url="/longhorn.io/replica_v1beta2.json">replica_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/replica_v1beta2.json" aria-label="Copy schema URL for replica_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="setting_v1beta2.json"><a href="/longhorn.io/setting_v1beta2.html" data-url="/longhorn.io/setting_v1beta2.json">setting_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/setting_v1beta2.json" aria-label="Copy schema URL for setting_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="sharemanager_v1beta2.json"><a href="/longhorn.io/sharemanager_v1beta2.html" data-url="/longhorn.io/sharemanager_v1beta2.json">sharemanager_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/sharemanager_v1beta2.json" aria-label="Copy schema URL for sharemanager_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="snapshot_v1beta2.json"><a href="/longhorn.io/snapshot_v1beta2.html" data-url="/longhorn.io/snapshot_v1beta2.json">snapshot_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/snapshot_v1beta2.json" aria-label="Copy schema URL for snapshot_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="supportbundle_v1beta2.json"><a href="/longhorn.io/supportbundle_v1beta2.html" data-url="/longhorn.io/supportbundle_v1beta2.json">supportbundle_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/supportbundle_v1beta2.json" aria-label="Copy schema URL for supportbundle_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="systembackup_v1beta2.json"><a href="/longhorn.io/systembackup_v1beta2.html" data-url="/longhorn.io/systembackup_v1beta2.json">systembackup_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/systembackup_v1beta2.json" aria-label="Copy schema URL for systembackup_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="systemrestore_v1beta2.json"><a href="/longhorn.io/systemrestore_v1beta2.html" data-url="/longhorn.io/systemrestore_v1beta2.json">systemrestore_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/systemrestore_v1beta2.json" aria-label="Copy schema URL for systemrestore_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volume_v1beta2.json"><a href="/longhorn.io/volume_v1beta2.html" data-url="/longhorn.io/volume_v1beta2.json">volume_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/volume_v1beta2.json" aria-label="Copy schema URL for volume_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumeattachment_v1beta2.json"><a href="/longhorn.io/volumeattachment_v1beta2.html" data-url="/longhorn.io/volumeattachment_v1beta2.json">volumeattachment_v1beta2.json</a><button type="button" class="schema-copy" data-url="/longhorn.io/volumeattachment_v1beta2.json" aria-label="Copy schema URL for volumeattachment_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="nfd.k8s-sigs.io">
+<summary><span class="group-name">nfd.k8s-sigs.io</span> <span class="badge">3</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="nodefeature_v1alpha1.json"><a href="/nfd.k8s-sigs.io/nodefeature_v1alpha1.html" data-url="/nfd.k8s-sigs.io/nodefeature_v1alpha1.json">nodefeature_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/nfd.k8s-sigs.io/nodefeature_v1alpha1.json" aria-label="Copy schema URL for nodefeature_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="nodefeaturegroup_v1alpha1.json"><a href="/nfd.k8s-sigs.io/nodefeaturegroup_v1alpha1.html" data-url="/nfd.k8s-sigs.io/nodefeaturegroup_v1alpha1.json">nodefeaturegroup_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/nfd.k8s-sigs.io/nodefeaturegroup_v1alpha1.json" aria-label="Copy schema URL for nodefeaturegroup_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="nodefeaturerule_v1alpha1.json"><a href="/nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.html" data-url="/nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.json">nodefeaturerule_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.json" aria-label="Copy schema URL for nodefeaturerule_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="notification.toolkit.fluxcd.io">
+<summary><span class="group-name">notification.toolkit.fluxcd.io</span> <span class="badge">6</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="alert_v1beta2.json"><a href="/notification.toolkit.fluxcd.io/alert_v1beta2.html" data-url="/notification.toolkit.fluxcd.io/alert_v1beta2.json">alert_v1beta2.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/alert_v1beta2.json" aria-label="Copy schema URL for alert_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="alert_v1beta3.json"><a href="/notification.toolkit.fluxcd.io/alert_v1beta3.html" data-url="/notification.toolkit.fluxcd.io/alert_v1beta3.json">alert_v1beta3.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/alert_v1beta3.json" aria-label="Copy schema URL for alert_v1beta3.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="provider_v1beta2.json"><a href="/notification.toolkit.fluxcd.io/provider_v1beta2.html" data-url="/notification.toolkit.fluxcd.io/provider_v1beta2.json">provider_v1beta2.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/provider_v1beta2.json" aria-label="Copy schema URL for provider_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="provider_v1beta3.json"><a href="/notification.toolkit.fluxcd.io/provider_v1beta3.html" data-url="/notification.toolkit.fluxcd.io/provider_v1beta3.json">provider_v1beta3.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/provider_v1beta3.json" aria-label="Copy schema URL for provider_v1beta3.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="receiver_v1.json"><a href="/notification.toolkit.fluxcd.io/receiver_v1.html" data-url="/notification.toolkit.fluxcd.io/receiver_v1.json">receiver_v1.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/receiver_v1.json" aria-label="Copy schema URL for receiver_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="receiver_v1beta2.json"><a href="/notification.toolkit.fluxcd.io/receiver_v1beta2.html" data-url="/notification.toolkit.fluxcd.io/receiver_v1beta2.json">receiver_v1beta2.json</a><button type="button" class="schema-copy" data-url="/notification.toolkit.fluxcd.io/receiver_v1beta2.json" aria-label="Copy schema URL for receiver_v1beta2.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="onepassword.com">
+<summary><span class="group-name">onepassword.com</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="onepassworditem_v1.json"><a href="/onepassword.com/onepassworditem_v1.html" data-url="/onepassword.com/onepassworditem_v1.json">onepassworditem_v1.json</a><button type="button" class="schema-copy" data-url="/onepassword.com/onepassworditem_v1.json" aria-label="Copy schema URL for onepassworditem_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="operator.victoriametrics.com">
+<summary><span class="group-name">operator.victoriametrics.com</span> <span class="badge">20</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="vlagent_v1.json"><a href="/operator.victoriametrics.com/vlagent_v1.html" data-url="/operator.victoriametrics.com/vlagent_v1.json">vlagent_v1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vlagent_v1.json" aria-label="Copy schema URL for vlagent_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vlcluster_v1.json"><a href="/operator.victoriametrics.com/vlcluster_v1.html" data-url="/operator.victoriametrics.com/vlcluster_v1.json">vlcluster_v1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vlcluster_v1.json" aria-label="Copy schema URL for vlcluster_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vlogs_v1beta1.json"><a href="/operator.victoriametrics.com/vlogs_v1beta1.html" data-url="/operator.victoriametrics.com/vlogs_v1beta1.json">vlogs_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vlogs_v1beta1.json" aria-label="Copy schema URL for vlogs_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vlsingle_v1.json"><a href="/operator.victoriametrics.com/vlsingle_v1.html" data-url="/operator.victoriametrics.com/vlsingle_v1.json">vlsingle_v1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vlsingle_v1.json" aria-label="Copy schema URL for vlsingle_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmagent_v1beta1.json"><a href="/operator.victoriametrics.com/vmagent_v1beta1.html" data-url="/operator.victoriametrics.com/vmagent_v1beta1.json">vmagent_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmagent_v1beta1.json" aria-label="Copy schema URL for vmagent_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmalert_v1beta1.json"><a href="/operator.victoriametrics.com/vmalert_v1beta1.html" data-url="/operator.victoriametrics.com/vmalert_v1beta1.json">vmalert_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmalert_v1beta1.json" aria-label="Copy schema URL for vmalert_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmalertmanager_v1beta1.json"><a href="/operator.victoriametrics.com/vmalertmanager_v1beta1.html" data-url="/operator.victoriametrics.com/vmalertmanager_v1beta1.json">vmalertmanager_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmalertmanager_v1beta1.json" aria-label="Copy schema URL for vmalertmanager_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmalertmanagerconfig_v1beta1.json"><a href="/operator.victoriametrics.com/vmalertmanagerconfig_v1beta1.html" data-url="/operator.victoriametrics.com/vmalertmanagerconfig_v1beta1.json">vmalertmanagerconfig_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmalertmanagerconfig_v1beta1.json" aria-label="Copy schema URL for vmalertmanagerconfig_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmanomaly_v1.json"><a href="/operator.victoriametrics.com/vmanomaly_v1.html" data-url="/operator.victoriametrics.com/vmanomaly_v1.json">vmanomaly_v1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmanomaly_v1.json" aria-label="Copy schema URL for vmanomaly_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmauth_v1beta1.json"><a href="/operator.victoriametrics.com/vmauth_v1beta1.html" data-url="/operator.victoriametrics.com/vmauth_v1beta1.json">vmauth_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmauth_v1beta1.json" aria-label="Copy schema URL for vmauth_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmcluster_v1beta1.json"><a href="/operator.victoriametrics.com/vmcluster_v1beta1.html" data-url="/operator.victoriametrics.com/vmcluster_v1beta1.json">vmcluster_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmcluster_v1beta1.json" aria-label="Copy schema URL for vmcluster_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmnodescrape_v1beta1.json"><a href="/operator.victoriametrics.com/vmnodescrape_v1beta1.html" data-url="/operator.victoriametrics.com/vmnodescrape_v1beta1.json">vmnodescrape_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmnodescrape_v1beta1.json" aria-label="Copy schema URL for vmnodescrape_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmpodscrape_v1beta1.json"><a href="/operator.victoriametrics.com/vmpodscrape_v1beta1.html" data-url="/operator.victoriametrics.com/vmpodscrape_v1beta1.json">vmpodscrape_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmpodscrape_v1beta1.json" aria-label="Copy schema URL for vmpodscrape_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmprobe_v1beta1.json"><a href="/operator.victoriametrics.com/vmprobe_v1beta1.html" data-url="/operator.victoriametrics.com/vmprobe_v1beta1.json">vmprobe_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmprobe_v1beta1.json" aria-label="Copy schema URL for vmprobe_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmrule_v1beta1.json"><a href="/operator.victoriametrics.com/vmrule_v1beta1.html" data-url="/operator.victoriametrics.com/vmrule_v1beta1.json">vmrule_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmrule_v1beta1.json" aria-label="Copy schema URL for vmrule_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmscrapeconfig_v1beta1.json"><a href="/operator.victoriametrics.com/vmscrapeconfig_v1beta1.html" data-url="/operator.victoriametrics.com/vmscrapeconfig_v1beta1.json">vmscrapeconfig_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmscrapeconfig_v1beta1.json" aria-label="Copy schema URL for vmscrapeconfig_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmservicescrape_v1beta1.json"><a href="/operator.victoriametrics.com/vmservicescrape_v1beta1.html" data-url="/operator.victoriametrics.com/vmservicescrape_v1beta1.json">vmservicescrape_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmservicescrape_v1beta1.json" aria-label="Copy schema URL for vmservicescrape_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmsingle_v1beta1.json"><a href="/operator.victoriametrics.com/vmsingle_v1beta1.html" data-url="/operator.victoriametrics.com/vmsingle_v1beta1.json">vmsingle_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmsingle_v1beta1.json" aria-label="Copy schema URL for vmsingle_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmstaticscrape_v1beta1.json"><a href="/operator.victoriametrics.com/vmstaticscrape_v1beta1.html" data-url="/operator.victoriametrics.com/vmstaticscrape_v1beta1.json">vmstaticscrape_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmstaticscrape_v1beta1.json" aria-label="Copy schema URL for vmstaticscrape_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="vmuser_v1beta1.json"><a href="/operator.victoriametrics.com/vmuser_v1beta1.html" data-url="/operator.victoriametrics.com/vmuser_v1beta1.json">vmuser_v1beta1.json</a><button type="button" class="schema-copy" data-url="/operator.victoriametrics.com/vmuser_v1beta1.json" aria-label="Copy schema URL for vmuser_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="postgres-operator.crunchydata.com">
+<summary><span class="group-name">postgres-operator.crunchydata.com</span> <span class="badge">5</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="crunchybridgecluster_v1beta1.json"><a href="/postgres-operator.crunchydata.com/crunchybridgecluster_v1beta1.html" data-url="/postgres-operator.crunchydata.com/crunchybridgecluster_v1beta1.json">crunchybridgecluster_v1beta1.json</a><button type="button" class="schema-copy" data-url="/postgres-operator.crunchydata.com/crunchybridgecluster_v1beta1.json" aria-label="Copy schema URL for crunchybridgecluster_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="pgadmin_v1beta1.json"><a href="/postgres-operator.crunchydata.com/pgadmin_v1beta1.html" data-url="/postgres-operator.crunchydata.com/pgadmin_v1beta1.json">pgadmin_v1beta1.json</a><button type="button" class="schema-copy" data-url="/postgres-operator.crunchydata.com/pgadmin_v1beta1.json" aria-label="Copy schema URL for pgadmin_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="pgupgrade_v1beta1.json"><a href="/postgres-operator.crunchydata.com/pgupgrade_v1beta1.html" data-url="/postgres-operator.crunchydata.com/pgupgrade_v1beta1.json">pgupgrade_v1beta1.json</a><button type="button" class="schema-copy" data-url="/postgres-operator.crunchydata.com/pgupgrade_v1beta1.json" aria-label="Copy schema URL for pgupgrade_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="postgrescluster_v1.json"><a href="/postgres-operator.crunchydata.com/postgrescluster_v1.html" data-url="/postgres-operator.crunchydata.com/postgrescluster_v1.json">postgrescluster_v1.json</a><button type="button" class="schema-copy" data-url="/postgres-operator.crunchydata.com/postgrescluster_v1.json" aria-label="Copy schema URL for postgrescluster_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="postgrescluster_v1beta1.json"><a href="/postgres-operator.crunchydata.com/postgrescluster_v1beta1.html" data-url="/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json">postgrescluster_v1beta1.json</a><button type="button" class="schema-copy" data-url="/postgres-operator.crunchydata.com/postgrescluster_v1beta1.json" aria-label="Copy schema URL for postgrescluster_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="snapshot.storage.k8s.io">
+<summary><span class="group-name">snapshot.storage.k8s.io</span> <span class="badge">6</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="volumesnapshot_v1.json"><a href="/snapshot.storage.k8s.io/volumesnapshot_v1.html" data-url="/snapshot.storage.k8s.io/volumesnapshot_v1.json">volumesnapshot_v1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshot_v1.json" aria-label="Copy schema URL for volumesnapshot_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumesnapshot_v1beta1.json"><a href="/snapshot.storage.k8s.io/volumesnapshot_v1beta1.html" data-url="/snapshot.storage.k8s.io/volumesnapshot_v1beta1.json">volumesnapshot_v1beta1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshot_v1beta1.json" aria-label="Copy schema URL for volumesnapshot_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumesnapshotclass_v1.json"><a href="/snapshot.storage.k8s.io/volumesnapshotclass_v1.html" data-url="/snapshot.storage.k8s.io/volumesnapshotclass_v1.json">volumesnapshotclass_v1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshotclass_v1.json" aria-label="Copy schema URL for volumesnapshotclass_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumesnapshotclass_v1beta1.json"><a href="/snapshot.storage.k8s.io/volumesnapshotclass_v1beta1.html" data-url="/snapshot.storage.k8s.io/volumesnapshotclass_v1beta1.json">volumesnapshotclass_v1beta1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshotclass_v1beta1.json" aria-label="Copy schema URL for volumesnapshotclass_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumesnapshotcontent_v1.json"><a href="/snapshot.storage.k8s.io/volumesnapshotcontent_v1.html" data-url="/snapshot.storage.k8s.io/volumesnapshotcontent_v1.json">volumesnapshotcontent_v1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshotcontent_v1.json" aria-label="Copy schema URL for volumesnapshotcontent_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="volumesnapshotcontent_v1beta1.json"><a href="/snapshot.storage.k8s.io/volumesnapshotcontent_v1beta1.html" data-url="/snapshot.storage.k8s.io/volumesnapshotcontent_v1beta1.json">volumesnapshotcontent_v1beta1.json</a><button type="button" class="schema-copy" data-url="/snapshot.storage.k8s.io/volumesnapshotcontent_v1beta1.json" aria-label="Copy schema URL for volumesnapshotcontent_v1beta1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="source.toolkit.fluxcd.io">
+<summary><span class="group-name">source.toolkit.fluxcd.io</span> <span class="badge">6</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="bucket_v1.json"><a href="/source.toolkit.fluxcd.io/bucket_v1.html" data-url="/source.toolkit.fluxcd.io/bucket_v1.json">bucket_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/bucket_v1.json" aria-label="Copy schema URL for bucket_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="externalartifact_v1.json"><a href="/source.toolkit.fluxcd.io/externalartifact_v1.html" data-url="/source.toolkit.fluxcd.io/externalartifact_v1.json">externalartifact_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/externalartifact_v1.json" aria-label="Copy schema URL for externalartifact_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="gitrepository_v1.json"><a href="/source.toolkit.fluxcd.io/gitrepository_v1.html" data-url="/source.toolkit.fluxcd.io/gitrepository_v1.json">gitrepository_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/gitrepository_v1.json" aria-label="Copy schema URL for gitrepository_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="helmchart_v1.json"><a href="/source.toolkit.fluxcd.io/helmchart_v1.html" data-url="/source.toolkit.fluxcd.io/helmchart_v1.json">helmchart_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/helmchart_v1.json" aria-label="Copy schema URL for helmchart_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="helmrepository_v1.json"><a href="/source.toolkit.fluxcd.io/helmrepository_v1.html" data-url="/source.toolkit.fluxcd.io/helmrepository_v1.json">helmrepository_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/helmrepository_v1.json" aria-label="Copy schema URL for helmrepository_v1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="ocirepository_v1.json"><a href="/source.toolkit.fluxcd.io/ocirepository_v1.html" data-url="/source.toolkit.fluxcd.io/ocirepository_v1.json">ocirepository_v1.json</a><button type="button" class="schema-copy" data-url="/source.toolkit.fluxcd.io/ocirepository_v1.json" aria-label="Copy schema URL for ocirepository_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="talos.dev">
+<summary><span class="group-name">talos.dev</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="serviceaccount_v1alpha1.json"><a href="/talos.dev/serviceaccount_v1alpha1.html" data-url="/talos.dev/serviceaccount_v1alpha1.json">serviceaccount_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/talos.dev/serviceaccount_v1alpha1.json" aria-label="Copy schema URL for serviceaccount_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="tuppr.home-operations.com">
+<summary><span class="group-name">tuppr.home-operations.com</span> <span class="badge">2</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="kubernetesupgrade_v1alpha1.json"><a href="/tuppr.home-operations.com/kubernetesupgrade_v1alpha1.html" data-url="/tuppr.home-operations.com/kubernetesupgrade_v1alpha1.json">kubernetesupgrade_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/tuppr.home-operations.com/kubernetesupgrade_v1alpha1.json" aria-label="Copy schema URL for kubernetesupgrade_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="talosupgrade_v1alpha1.json"><a href="/tuppr.home-operations.com/talosupgrade_v1alpha1.html" data-url="/tuppr.home-operations.com/talosupgrade_v1alpha1.json">talosupgrade_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/tuppr.home-operations.com/talosupgrade_v1alpha1.json" aria-label="Copy schema URL for talosupgrade_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="upgrade.cattle.io">
+<summary><span class="group-name">upgrade.cattle.io</span> <span class="badge">1</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="plan_v1.json"><a href="/upgrade.cattle.io/plan_v1.html" data-url="/upgrade.cattle.io/plan_v1.json">plan_v1.json</a><button type="button" class="schema-copy" data-url="/upgrade.cattle.io/plan_v1.json" aria-label="Copy schema URL for plan_v1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+<details class="group" data-group="volsync.backube">
+<summary><span class="group-name">volsync.backube</span> <span class="badge">3</span></summary>
+<div class="schemas">
+<div class="schema-row" data-schema="kopiamaintenance_v1alpha1.json"><a href="/volsync.backube/kopiamaintenance_v1alpha1.html" data-url="/volsync.backube/kopiamaintenance_v1alpha1.json">kopiamaintenance_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/volsync.backube/kopiamaintenance_v1alpha1.json" aria-label="Copy schema URL for kopiamaintenance_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="replicationdestination_v1alpha1.json"><a href="/volsync.backube/replicationdestination_v1alpha1.html" data-url="/volsync.backube/replicationdestination_v1alpha1.json">replicationdestination_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/volsync.backube/replicationdestination_v1alpha1.json" aria-label="Copy schema URL for replicationdestination_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+<div class="schema-row" data-schema="replicationsource_v1alpha1.json"><a href="/volsync.backube/replicationsource_v1alpha1.html" data-url="/volsync.backube/replicationsource_v1alpha1.json">replicationsource_v1alpha1.json</a><button type="button" class="schema-copy" data-url="/volsync.backube/replicationsource_v1alpha1.json" aria-label="Copy schema URL for replicationsource_v1alpha1.json" title="Copy schema URL">copy URL</button></div>
+</div>
+</details>
+
+</div>
+<p class="no-results" id="no-results">No matching groups or schemas.</p>
+</main>
+<div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+<footer>
+  Generated by <a href="https://github.com/sholdee/crd-schema-publisher">crd-schema-publisher</a>
+</footer>
+<button class="back-to-top" id="back-to-top" title="Back to top" aria-label="Back to top">&#8593;</button>
+<script>
+function hasHashSearchQuery(){
+  return (location.hash || '').indexOf('#q=') === 0;
+}
+function readHashSearchQuery(){
+  var hash = location.hash || '';
+  if (hasHashSearchQuery()) {
+    try {
+      return decodeURIComponent(hash.slice(3));
+    } catch (err) {
+      return '';
+    }
+  }
+  return '';
+}
+function writeHashSearchQuery(q){
+  history.replaceState(null, '', q ? '#q=' + encodeURIComponent(q) : location.pathname);
+}
+function scrollToTop(){
+  var behavior = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  window.scrollTo({top: 0, behavior: behavior});
+}
+(function(){
+  var btt = document.getElementById('back-to-top');
+  if (!btt) return;
+  window.addEventListener('scroll', function(){
+    btt.classList.toggle('visible', window.scrollY > 300);
+  }, {passive: true});
+  btt.addEventListener('click', function(){
+    scrollToTop();
+  });
+})();
+var copyToastTimer;
+function showCopyToast(message){
+  var toast = document.getElementById('toast');
+  if (!toast) return;
+  clearTimeout(copyToastTimer);
+  toast.textContent = message;
+  toast.classList.add('show');
+  copyToastTimer = setTimeout(function(){
+    toast.classList.remove('show');
+    toast.textContent = '';
+  }, 1500);
+}
+function copyURLWithToast(url){
+  if (typeof navigator === 'undefined' || !navigator.clipboard || !navigator.clipboard.writeText) {
+    showCopyToast('Copy unavailable');
+    return Promise.resolve(false);
+  }
+  return navigator.clipboard.writeText(url).then(function(){
+    showCopyToast('Copied!');
+    return true;
+  }).catch(function(){
+    showCopyToast('Copy failed');
+    return false;
+  });
+}
+(function(){
+  var input = document.getElementById('search');
+  var searchClear = document.getElementById('search-clear');
+  var groups = document.querySelectorAll('.group');
+  var noResults = document.getElementById('no-results');
+  var searchStatus = document.getElementById('search-status');
+  var statGroups = document.getElementById('stat-groups');
+  var statSchemas = document.getElementById('stat-schemas');
+  var totalGroups = groups.length;
+  var totalSchemas = document.querySelectorAll('.schema-row').length;
+
+  function updateSearchClear() {
+    searchClear.hidden = !input.value;
+  }
+
+  function updateSearchStatus(q, visibleGroups, visibleSchemas) {
+    if (!q) {
+      searchStatus.textContent = '';
+      return;
+    }
+    if (!visibleGroups) {
+      searchStatus.textContent = 'No matching groups or schemas.';
+      return;
+    }
+    searchStatus.textContent = visibleGroups + ' of ' + totalGroups + ' API groups, ' + visibleSchemas + ' of ' + totalSchemas + ' schemas shown.';
+  }
+
+  input.addEventListener('input', function(){
+    var q = this.value.toLowerCase().trim();
+    updateSearchClear();
+    var visible = 0;
+    var visibleSchemas = 0;
+    groups.forEach(function(g){
+      var rows = g.querySelectorAll('.schema-row');
+      if (!q) {
+        g.style.display = '';
+        g.removeAttribute('open');
+        rows.forEach(function(row){ row.style.display = ''; });
+        visible++;
+        visibleSchemas += rows.length;
+        return;
+      }
+      var groupName = g.dataset.group.toLowerCase();
+      var groupMatch = groupName.indexOf(q) !== -1;
+      var schemaMatch = false;
+      rows.forEach(function(row){
+        if (row.dataset.schema.toLowerCase().indexOf(q) !== -1) {
+          row.style.display = '';
+          schemaMatch = true;
+        } else {
+          row.style.display = groupMatch ? '' : 'none';
+        }
+        if (row.style.display !== 'none') {
+          visibleSchemas++;
+        }
+      });
+      if (groupMatch || schemaMatch) {
+        g.style.display = '';
+        g.setAttribute('open','');
+        visible++;
+      } else {
+        g.style.display = 'none';
+        g.removeAttribute('open');
+      }
+    });
+    noResults.style.display = visible ? 'none' : 'block';
+    if (!q) {
+      statGroups.textContent = totalGroups;
+      statSchemas.textContent = totalSchemas;
+    } else {
+      statGroups.textContent = visible + ' / ' + totalGroups;
+      statSchemas.textContent = visibleSchemas + ' / ' + totalSchemas;
+    }
+    updateSearchStatus(q, visible, visibleSchemas);
+    writeHashSearchQuery(q);
+  });
+
+  searchClear.addEventListener('mousedown', function(e){
+    e.preventDefault();
+  });
+  searchClear.addEventListener('click', function(){
+    input.value = '';
+    input.dispatchEvent(new Event('input'));
+    input.focus();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      if (input.value) {
+        input.value = '';
+        input.dispatchEvent(new Event('input'));
+      } else if (document.activeElement === input) {
+        input.blur();
+      } else {
+        var hadOpen = false;
+        groups.forEach(function(g){ if (g.hasAttribute('open')) { hadOpen = true; g.removeAttribute('open'); } });
+        if (hadOpen) {
+          allExpanded = false;
+          toggleAll.textContent = 'Expand all';
+        } else {
+          scrollToTop();
+        }
+        if (document.activeElement && document.activeElement !== document.body) {
+          document.activeElement.blur();
+        }
+      }
+    }
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement !== input) {
+      e.preventDefault();
+      input.focus();
+    }
+  });
+
+  document.getElementById('groups').addEventListener('click', function(e){
+    var copyButton = e.target.closest('.schema-copy');
+    if (!copyButton) return;
+    e.preventDefault();
+    copyURLWithToast(location.origin + copyButton.dataset.url);
+  });
+
+  var toggleAll = document.getElementById('toggle-all');
+  var allExpanded = false;
+  toggleAll.addEventListener('click', function(){
+    allExpanded = !allExpanded;
+    groups.forEach(function(g){
+      if (g.style.display === 'none') return;
+      if (allExpanded) g.setAttribute('open','');
+      else g.removeAttribute('open');
+    });
+    toggleAll.textContent = allExpanded ? 'Collapse all' : 'Expand all';
+  });
+
+  (function(){
+    updateSearchClear();
+    var query = readHashSearchQuery();
+    if (!query) return;
+    input.value = query;
+    input.dispatchEvent(new Event('input'));
+  })();
+
+  document.querySelectorAll('.usage-content code').forEach(function(el){
+    var base = document.body.dataset.basePath || '';
+    el.textContent = el.textContent.replace(/https:\/\/YOUR_DOMAIN/g, location.origin + base);
+  });
+
+  
+  document.getElementById('groups').addEventListener('click', function(e){
+    if (e.target.closest('.schema-copy')) return;
+    var link = e.target.closest('.schema-row a');
+    if (!link) return;
+    var expanded = [];
+    groups.forEach(function(g){ if (g.hasAttribute('open')) expanded.push(g.dataset.group); });
+    sessionStorage.setItem('indexState', JSON.stringify({
+      expanded: expanded,
+      scroll: window.scrollY,
+      toggleAll: allExpanded,
+      search: input.value
+    }));
+  });
+
+  
+  var saved = sessionStorage.getItem('indexState');
+  if (!hasHashSearchQuery() && saved) {
+    sessionStorage.removeItem('indexState');
+    try {
+      var state = JSON.parse(saved);
+      if (state.search) {
+        input.value = state.search;
+        input.dispatchEvent(new Event('input'));
+      }
+      if (state.expanded && state.expanded.length) {
+        groups.forEach(function(g){
+          if (state.expanded.indexOf(g.dataset.group) !== -1) g.setAttribute('open','');
+        });
+      }
+      if (state.toggleAll) {
+        allExpanded = true;
+        toggleAll.textContent = 'Collapse all';
+      }
+      if (state.scroll) {
+        window.scrollTo(0, state.scroll);
+      }
+    } catch(e) {}
+  }
+})();
+
+function updateThemeToggle(){
+  var toggle = document.getElementById('theme-toggle');
+  if (!toggle) return;
+  var light = document.documentElement.classList.contains('light');
+  toggle.setAttribute('aria-pressed', light ? 'true' : 'false');
+  toggle.setAttribute('aria-label', 'Light mode');
+  toggle.setAttribute('title', 'Toggle light/dark mode');
+}
+function toggleTheme(){
+  document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
+  updateThemeToggle();
+}
+updateThemeToggle();
+</script>
+</body>
+</html>
