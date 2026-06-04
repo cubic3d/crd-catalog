@@ -415,38 +415,16 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">Drain configuration for the node prior to upgrade</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.drain.deleteLocalData" data-path-key="|spec|drain|deleteLocalData|" data-parent-path="spec.drain" data-name="deleteLocalData" data-text="DeleteLocalData causes the drain to continue even if there are pods using emptyDir
-(local data that will be deleted when the node is drained).">
-  <span class="prop-name">deleteLocalData</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">DeleteLocalData causes the drain to continue even if there are pods using emptyDir
-(local data that will be deleted when the node is drained).
-  </div>
-</div>
 <div class="prop-leaf" data-prop-row data-path="spec.drain.disableEviction" data-path-key="|spec|drain|disableEviction|" data-parent-path="spec.drain" data-name="disableEviction" data-text="DisableEviction forces drain to use delete, even if eviction is supported.">
   <span class="prop-name">disableEviction</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">DisableEviction forces drain to use delete, even if eviction is supported.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.drain.force" data-path-key="|spec|drain|force|" data-parent-path="spec.drain" data-name="force" data-text="Force continues even if there are pods that do not declare a controller.">
-  <span class="prop-name">force</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Force continues even if there are pods that do not declare a controller.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.drain.ignoreDaemonSets" data-path-key="|spec|drain|ignoreDaemonSets|" data-parent-path="spec.drain" data-name="ignoreDaemonSets" data-text="IgnoreDaemonSets ignores DaemonSet-managed pods.">
-  <span class="prop-name">ignoreDaemonSets</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">IgnoreDaemonSets ignores DaemonSet-managed pods.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.drain.skipWaitForDeleteTimeout" data-path-key="|spec|drain|skipWaitForDeleteTimeout|" data-parent-path="spec.drain" data-name="skipWaitForDeleteTimeout" data-text="SkipWaitForDeleteTimeout specifies that if a pod DeletionTimestamp is older than N seconds,
-skip waiting for the pod. Seconds must be greater than 0 to skip.">
-  <span class="prop-name">skipWaitForDeleteTimeout</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">SkipWaitForDeleteTimeout specifies that if a pod DeletionTimestamp is older than N seconds,
-skip waiting for the pod. Seconds must be greater than 0 to skip.
+<div class="prop-leaf" data-prop-row data-path="spec.drain.enabled" data-path-key="|spec|drain|enabled|" data-parent-path="spec.drain" data-name="enabled" data-text="Enabled drains the node before it is rebooted for upgrade.">
+  <span class="prop-name">enabled</span>
+  <span class="type-badge">boolean</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Enabled drains the node before it is rebooted for upgrade.
   </div>
 </div>
   </div>

@@ -29,13 +29,6 @@
           "additionalProperties": false,
           "description": "Drain configuration for the node prior to upgrade",
           "properties": {
-            "deleteLocalData": {
-              "description": "DeleteLocalData causes the drain to continue even if there are pods using emptyDir\n(local data that will be deleted when the node is drained).",
-              "type": [
-                "boolean",
-                "null"
-              ]
-            },
             "disableEviction": {
               "description": "DisableEviction forces drain to use delete, even if eviction is supported.",
               "type": [
@@ -43,28 +36,14 @@
                 "null"
               ]
             },
-            "force": {
-              "description": "Force continues even if there are pods that do not declare a controller.",
-              "type": [
-                "boolean",
-                "null"
-              ]
-            },
-            "ignoreDaemonSets": {
-              "description": "IgnoreDaemonSets ignores DaemonSet-managed pods.",
-              "type": [
-                "boolean",
-                "null"
-              ]
-            },
-            "skipWaitForDeleteTimeout": {
-              "description": "SkipWaitForDeleteTimeout specifies that if a pod DeletionTimestamp is older than N seconds,\nskip waiting for the pod. Seconds must be greater than 0 to skip.",
-              "type": [
-                "integer",
-                "null"
-              ]
+            "enabled": {
+              "description": "Enabled drains the node before it is rebooted for upgrade.",
+              "type": "boolean"
             }
           },
+          "required": [
+            "enabled"
+          ],
           "type": [
             "object",
             "null"
