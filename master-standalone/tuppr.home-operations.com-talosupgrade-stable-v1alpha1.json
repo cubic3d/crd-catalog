@@ -27,7 +27,7 @@
       "properties": {
         "drain": {
           "additionalProperties": false,
-          "description": "Drain configuration for the node prior to upgrade",
+          "description": "Drain configuration for the node prior to upgrade.\nDeprecated: Use Talos policy drain configuration instead.",
           "properties": {
             "disableEviction": {
               "description": "DisableEviction forces drain to use delete, even if eviction is supported.",
@@ -5392,6 +5392,14 @@
             "force": {
               "default": false,
               "description": "Force the upgrade (skip checks on etcd health and members)",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "nodrain": {
+              "default": false,
+              "description": "NoDrain disables drain for the upgrade.",
               "type": [
                 "boolean",
                 "null"

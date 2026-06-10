@@ -417,12 +417,14 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">TalosUpgradeSpec defines the desired state of TalosUpgrade</div>
   <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.drain" data-path-key="|spec|drain|" data-parent-path="spec" data-name="drain" data-text="Drain configuration for the node prior to upgrade">
+<details class="prop" data-prop-row data-path="spec.drain" data-path-key="|spec|drain|" data-parent-path="spec" data-name="drain" data-text="Drain configuration for the node prior to upgrade.
+Deprecated: Use Talos policy drain configuration instead.">
 <summary>
   <span class="prop-name">drain</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Drain configuration for the node prior to upgrade</div>
+<div class="prop-content"><div class="prop-desc">Drain configuration for the node prior to upgrade.
+Deprecated: Use Talos policy drain configuration instead.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.drain.disableEviction" data-path-key="|spec|drain|disableEviction|" data-parent-path="spec.drain" data-name="disableEviction" data-text="DisableEviction forces drain to use delete, even if eviction is supported.">
   <span class="prop-name">disableEviction</span>
@@ -7499,6 +7501,12 @@ Defaults to 1 (sequential upgrades). Must be &gt;= 1 and &lt;= the number of mat
   <span class="prop-name">force</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">Force the upgrade (skip checks on etcd health and members)
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.policy.nodrain" data-path-key="|spec|policy|nodrain|" data-parent-path="spec.policy" data-name="nodrain" data-text="NoDrain disables drain for the upgrade.">
+  <span class="prop-name">nodrain</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">NoDrain disables drain for the upgrade.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.policy.placement" data-path-key="|spec|policy|placement|" data-parent-path="spec.policy" data-name="placement" data-text="Placement controls how strictly upgrade jobs avoid the target node
