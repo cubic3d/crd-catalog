@@ -7510,14 +7510,20 @@ Defaults to 1 (sequential upgrades). Must be &gt;= 1 and &lt;= the number of mat
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.policy.placement" data-path-key="|spec|policy|placement|" data-parent-path="spec.policy" data-name="placement" data-text="Placement controls how strictly upgrade jobs avoid the target node
-hard: required avoidance (job will fail if can&#39;t avoid target node)
+hard: required avoidance, degrades to preferred on single-node clusters
 soft: preferred avoidance (job prefers to avoid but can run on target node) enum: hard, soft">
   <span class="prop-name">placement</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Placement controls how strictly upgrade jobs avoid the target node
-hard: required avoidance (job will fail if can&#39;t avoid target node)
+hard: required avoidance, degrades to preferred on single-node clusters
 soft: preferred avoidance (job prefers to avoid but can run on target node)<div class="leaf-constraints">
 <div class="schema-constraint" title="enum: hard, soft"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">hard, soft</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.policy.priorityClassName" data-path-key="|spec|policy|priorityClassName|" data-parent-path="spec.policy" data-name="priorityClassName" data-text="PriorityClassName for the upgrade job pod; set a preempting class to displace lower-priority pods under resource pressure.">
+  <span class="prop-name">priorityClassName</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">PriorityClassName for the upgrade job pod; set a preempting class to displace lower-priority pods under resource pressure.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.policy.rebootMode" data-path-key="|spec|policy|rebootMode|" data-parent-path="spec.policy" data-name="rebootMode" data-text="RebootMode select the reboot mode during upgrade enum: default, powercycle">

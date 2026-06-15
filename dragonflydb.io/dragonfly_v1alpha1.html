@@ -6454,10 +6454,10 @@ Empty topologyKey is not allowed.
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.annotations" data-path-key="|spec|annotations|" data-parent-path="spec" data-name="annotations" data-text="(Optional) Annotations to add to the Dragonfly pods.">
+<div class="prop-leaf" data-prop-row data-path="spec.annotations" data-path-key="|spec|annotations|" data-parent-path="spec" data-name="annotations" data-text="Deprecated: use spec.podMetadata.annotations instead.">
   <span class="prop-name">annotations</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">(Optional) Annotations to add to the Dragonfly pods.
+  <div class="leaf-desc">Deprecated: use spec.podMetadata.annotations instead.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.args" data-path-key="|spec|args|" data-parent-path="spec" data-name="args" data-text="(Optional) Dragonfly container args to pass to the container
@@ -6867,6 +6867,84 @@ PodSecurityContext, the value specified in SecurityContext takes precedence.
   </div>
 </div>
 </details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.customLivenessProbeConfigMap" data-path-key="|spec|customLivenessProbeConfigMap|" data-parent-path="spec" data-name="customLivenessProbeConfigMap" data-text="Custom ConfigMap providing key &#34;liveness-check.sh&#34; to override the default liveness probe.
+An additionalVolumes entry named &#34;liveness-probe&#34; takes precedence.">
+<summary>
+  <span class="prop-name">customLivenessProbeConfigMap</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Custom ConfigMap providing key &#34;liveness-check.sh&#34; to override the default liveness probe.
+An additionalVolumes entry named &#34;liveness-probe&#34; takes precedence.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.customLivenessProbeConfigMap.name" data-path-key="|spec|customLivenessProbeConfigMap|name|" data-parent-path="spec.customLivenessProbeConfigMap" data-name="name" data-text="Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.customReadinessProbeConfigMap" data-path-key="|spec|customReadinessProbeConfigMap|" data-parent-path="spec" data-name="customReadinessProbeConfigMap" data-text="Custom ConfigMap providing key &#34;readiness-check.sh&#34; to override the default readiness probe.
+An additionalVolumes entry named &#34;readiness-probe&#34; takes precedence.">
+<summary>
+  <span class="prop-name">customReadinessProbeConfigMap</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Custom ConfigMap providing key &#34;readiness-check.sh&#34; to override the default readiness probe.
+An additionalVolumes entry named &#34;readiness-probe&#34; takes precedence.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.customReadinessProbeConfigMap.name" data-path-key="|spec|customReadinessProbeConfigMap|name|" data-parent-path="spec.customReadinessProbeConfigMap" data-name="name" data-text="Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.customStartupProbeConfigMap" data-path-key="|spec|customStartupProbeConfigMap|" data-parent-path="spec" data-name="customStartupProbeConfigMap" data-text="Custom ConfigMap providing key &#34;startup-check.sh&#34; to override the default startup probe.
+An additionalVolumes entry named &#34;startup-probe&#34; takes precedence.">
+<summary>
+  <span class="prop-name">customStartupProbeConfigMap</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Custom ConfigMap providing key &#34;startup-check.sh&#34; to override the default startup probe.
+An additionalVolumes entry named &#34;startup-probe&#34; takes precedence.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.customStartupProbeConfigMap.name" data-path-key="|spec|customStartupProbeConfigMap|name|" data-parent-path="spec.customStartupProbeConfigMap" data-name="name" data-text="Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Name of the referent.
+This field is effectively required, but due to backwards compatibility is
+allowed to be empty. Instances of this type with an empty value here are
+almost certainly wrong.
+More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+  </div>
+</div>
   </div>
 </div>
 </details>
@@ -9213,10 +9291,10 @@ Cannot be updated.
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.labels" data-path-key="|spec|labels|" data-parent-path="spec" data-name="labels" data-text="(Optional) Labels to add to the Dragonfly pods.">
+<div class="prop-leaf" data-prop-row data-path="spec.labels" data-path-key="|spec|labels|" data-parent-path="spec" data-name="labels" data-text="Deprecated: use spec.podMetadata.labels instead.">
   <span class="prop-name">labels</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">(Optional) Labels to add to the Dragonfly pods.
+  <div class="leaf-desc">Deprecated: use spec.podMetadata.labels instead.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.memcachedPort" data-path-key="|spec|memcachedPort|" data-parent-path="spec" data-name="memcachedPort" data-text="(Optional) Dragonfly memcached port format: int32">
@@ -9242,12 +9320,12 @@ Defaults to true.
   <div class="leaf-desc">(Optional) Dragonfly pod node selector
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec.ownedObjectsMetadata" data-path-key="|spec|ownedObjectsMetadata|" data-parent-path="spec" data-name="ownedObjectsMetadata" data-text="(Optional) Dragonfly direct child resources additional annotations and labels">
+<details class="prop" data-prop-row data-path="spec.ownedObjectsMetadata" data-path-key="|spec|ownedObjectsMetadata|" data-parent-path="spec" data-name="ownedObjectsMetadata" data-text="(Optional) Labels and annotations to add to all owned resources (StatefulSet, Service, PDB, etc).">
 <summary>
   <span class="prop-name">ownedObjectsMetadata</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">(Optional) Dragonfly direct child resources additional annotations and labels</div>
+<div class="prop-content"><div class="prop-desc">(Optional) Labels and annotations to add to all owned resources (StatefulSet, Service, PDB, etc).</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.ownedObjectsMetadata.annotations" data-path-key="|spec|ownedObjectsMetadata|annotations|" data-parent-path="spec.ownedObjectsMetadata" data-name="annotations" data-text="">
   <span class="prop-name">annotations</span>
@@ -9289,6 +9367,28 @@ Cannot be used together with MaxUnavailable; only one of minAvailable or maxUnav
   <div class="leaf-desc">(Optional) Minimum number of Dragonfly pods that must be available during voluntary disruptions.
 Accepts an absolute number (e.g. &#34;1&#34;) or a percentage of total pods (e.g. &#34;25%&#34;).
 Cannot be used together with MaxUnavailable; only one of minAvailable or maxUnavailable should be set.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.podMetadata" data-path-key="|spec|podMetadata|" data-parent-path="spec" data-name="podMetadata" data-text="(Optional) Labels and annotations to add to the Dragonfly pods.">
+<summary>
+  <span class="prop-name">podMetadata</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">(Optional) Labels and annotations to add to the Dragonfly pods.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.podMetadata.annotations" data-path-key="|spec|podMetadata|annotations|" data-parent-path="spec.podMetadata" data-name="annotations" data-text="">
+  <span class="prop-name">annotations</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.podMetadata.labels" data-path-key="|spec|podMetadata|labels|" data-parent-path="spec.podMetadata" data-name="labels" data-text="">
+  <span class="prop-name">labels</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">
   </div>
 </div>
   </div>
