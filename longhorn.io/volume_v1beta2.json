@@ -149,6 +149,13 @@
             }
           ]
         },
+        "engineNodeID": {
+          "description": "engineNodeID defines the node where the backend engine (target) runs.\nIf empty, falls back to NodeID.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "freezeFilesystemForSnapshot": {
           "description": "Setting that freezes the filesystem on the root partition before a snapshot is created.",
           "enum": [
@@ -205,6 +212,7 @@
           ]
         },
         "nodeID": {
+          "description": "nodeID defines the node where the volume is attached (where the frontend initiator runs).",
           "type": [
             "string",
             "null"
@@ -334,6 +342,13 @@
             "enabled",
             "fast-check"
           ],
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "snapshotHashingRequestedAt": {
+          "description": "SnapshotHashingRequestedAt is the RFC3339 timestamp (e.g., \"2026-03-16T10:30:00Z\") when an on-demand snapshot checksum calculation is requested.\nWhen this value is set and is later than LastOnDemandSnapshotHashingCompleteAt, the system will calculate checksums\nfor all user snapshots.\n\nIf SnapshotHashingRequestedAt differs from LastOnDemandSnapshotHashingCompleteAt, it indicates that a hashing request\nis still in progress, and a new request will be rejected.",
           "type": [
             "string",
             "null"
@@ -494,6 +509,13 @@
             "null"
           ]
         },
+        "currentEngineNodeID": {
+          "description": "the node that the engine (target) is currently running on.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "currentImage": {
           "type": [
             "string",
@@ -615,6 +637,12 @@
             "null"
           ]
         },
+        "lastAutoSalvagedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "lastBackup": {
           "type": [
             "string",
@@ -628,6 +656,13 @@
           ]
         },
         "lastDegradedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastOnDemandSnapshotHashingCompleteAt": {
+          "description": "LastOnDemandSnapshotHashingCompleteAt is the RFC3339 timestamp (e.g., \"2026-03-16T10:30:00Z\") when the\nmost recent on-demand snapshot checksum calculation completed.\nWhen this value matches SnapshotHashingRequestedAt, the requested on-demand checksum calculation is considered complete.",
           "type": [
             "string",
             "null"
@@ -676,6 +711,13 @@
           ]
         },
         "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "switchoverState": {
+          "description": "SwitchoverState describes the current progress of a v2 engine live switchover.\nEmpty when no switchover is in progress.",
           "type": [
             "string",
             "null"

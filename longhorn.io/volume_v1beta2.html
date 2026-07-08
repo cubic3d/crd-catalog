@@ -502,6 +502,14 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
   <div class="leaf-desc">
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.engineNodeID" data-path-key="|spec|engineNodeID|" data-parent-path="spec" data-name="engineNodeID" data-text="engineNodeID defines the node where the backend engine (target) runs.
+If empty, falls back to NodeID.">
+  <span class="prop-name">engineNodeID</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">engineNodeID defines the node where the backend engine (target) runs.
+If empty, falls back to NodeID.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.freezeFilesystemForSnapshot" data-path-key="|spec|freezeFilesystemForSnapshot|" data-parent-path="spec" data-name="freezeFilesystemForSnapshot" data-text="Setting that freezes the filesystem on the root partition before a snapshot is created. enum: ignored, enabled, disabled">
   <span class="prop-name">freezeFilesystemForSnapshot</span>
   <span class="type-badge">string</span>
@@ -546,10 +554,10 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
   <div class="leaf-desc">
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="nodeID defines the node where the volume is attached (where the frontend initiator runs).">
   <span class="prop-name">nodeID</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">nodeID defines the node where the volume is attached (where the frontend initiator runs).
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.nodeSelector" data-path-key="|spec|nodeSelector|" data-parent-path="spec" data-name="nodeSelector" data-text="">
@@ -650,6 +658,22 @@ When set to 0, it means following the global setting.<div class="leaf-constraint
   <span class="type-badge">string</span>
   <div class="leaf-desc"><div class="leaf-constraints">
 <div class="schema-constraint" title="enum: ignored, disabled, enabled, fast-check"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">ignored, disabled, enabled, fast-check</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.snapshotHashingRequestedAt" data-path-key="|spec|snapshotHashingRequestedAt|" data-parent-path="spec" data-name="snapshotHashingRequestedAt" data-text="SnapshotHashingRequestedAt is the RFC3339 timestamp (e.g., &#34;2026-03-16T10:30:00Z&#34;) when an on-demand snapshot checksum calculation is requested.
+When this value is set and is later than LastOnDemandSnapshotHashingCompleteAt, the system will calculate checksums
+for all user snapshots.
+
+If SnapshotHashingRequestedAt differs from LastOnDemandSnapshotHashingCompleteAt, it indicates that a hashing request
+is still in progress, and a new request will be rejected.">
+  <span class="prop-name">snapshotHashingRequestedAt</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">SnapshotHashingRequestedAt is the RFC3339 timestamp (e.g., &#34;2026-03-16T10:30:00Z&#34;) when an on-demand snapshot checksum calculation is requested.
+When this value is set and is later than LastOnDemandSnapshotHashingCompleteAt, the system will calculate checksums
+for all user snapshots.
+
+If SnapshotHashingRequestedAt differs from LastOnDemandSnapshotHashingCompleteAt, it indicates that a hashing request
+is still in progress, and a new request will be rejected.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.snapshotMaxCount" data-path-key="|spec|snapshotMaxCount|" data-parent-path="spec" data-name="snapshotMaxCount" data-text="">
@@ -795,6 +819,12 @@ Can be True, False, Unknown.
   </div>
 </div>
 </details>
+<div class="prop-leaf" data-prop-row data-path="status.currentEngineNodeID" data-path-key="|status|currentEngineNodeID|" data-parent-path="status" data-name="currentEngineNodeID" data-text="the node that the engine (target) is currently running on.">
+  <span class="prop-name">currentEngineNodeID</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">the node that the engine (target) is currently running on.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="status.currentImage" data-path-key="|status|currentImage|" data-parent-path="status" data-name="currentImage" data-text="">
   <span class="prop-name">currentImage</span>
   <span class="type-badge">string</span>
@@ -911,6 +941,12 @@ Can be True, False, Unknown.
   </div>
 </div>
 </details>
+<div class="prop-leaf" data-prop-row data-path="status.lastAutoSalvagedAt" data-path-key="|status|lastAutoSalvagedAt|" data-parent-path="status" data-name="lastAutoSalvagedAt" data-text="">
+  <span class="prop-name">lastAutoSalvagedAt</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="status.lastBackup" data-path-key="|status|lastBackup|" data-parent-path="status" data-name="lastBackup" data-text="">
   <span class="prop-name">lastBackup</span>
   <span class="type-badge">string</span>
@@ -927,6 +963,16 @@ Can be True, False, Unknown.
   <span class="prop-name">lastDegradedAt</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.lastOnDemandSnapshotHashingCompleteAt" data-path-key="|status|lastOnDemandSnapshotHashingCompleteAt|" data-parent-path="status" data-name="lastOnDemandSnapshotHashingCompleteAt" data-text="LastOnDemandSnapshotHashingCompleteAt is the RFC3339 timestamp (e.g., &#34;2026-03-16T10:30:00Z&#34;) when the
+most recent on-demand snapshot checksum calculation completed.
+When this value matches SnapshotHashingRequestedAt, the requested on-demand checksum calculation is considered complete.">
+  <span class="prop-name">lastOnDemandSnapshotHashingCompleteAt</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">LastOnDemandSnapshotHashingCompleteAt is the RFC3339 timestamp (e.g., &#34;2026-03-16T10:30:00Z&#34;) when the
+most recent on-demand snapshot checksum calculation completed.
+When this value matches SnapshotHashingRequestedAt, the requested on-demand checksum calculation is considered complete.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="status.ownerID" data-path-key="|status|ownerID|" data-parent-path="status" data-name="ownerID" data-text="">
@@ -975,6 +1021,14 @@ Can be True, False, Unknown.
   <span class="prop-name">state</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.switchoverState" data-path-key="|status|switchoverState|" data-parent-path="status" data-name="switchoverState" data-text="SwitchoverState describes the current progress of a v2 engine live switchover.
+Empty when no switchover is in progress.">
+  <span class="prop-name">switchoverState</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">SwitchoverState describes the current progress of a v2 engine live switchover.
+Empty when no switchover is in progress.
   </div>
 </div>
   </div>

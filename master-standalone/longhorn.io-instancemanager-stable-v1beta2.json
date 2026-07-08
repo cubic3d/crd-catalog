@@ -259,6 +259,203 @@
             "null"
           ]
         },
+        "instanceEngineFrontends": {
+          "additionalProperties": {
+            "additionalProperties": false,
+            "properties": {
+              "spec": {
+                "additionalProperties": false,
+                "properties": {
+                  "dataEngine": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "name": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "status": {
+                "additionalProperties": false,
+                "properties": {
+                  "activePath": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "conditions": {
+                    "additionalProperties": {
+                      "type": "boolean"
+                    },
+                    "nullable": true,
+                    "type": [
+                      "object",
+                      "null"
+                    ]
+                  },
+                  "endpoint": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "errorMsg": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "frontend": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "listen": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "paths": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "anaState": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "engineName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nguid": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nqn": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetIP": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetPort": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": [
+                      "array",
+                      "null"
+                    ]
+                  },
+                  "portEnd": {
+                    "format": "int32",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "portStart": {
+                    "format": "int32",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "preferredPath": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "resourceVersion": {
+                    "format": "int64",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "state": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "targetPortEnd": {
+                    "format": "int32",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "targetPortStart": {
+                    "format": "int32",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "type": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "ublkID": {
+                    "format": "int32",
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "uuid": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "type": [
+                  "object",
+                  "null"
+                ]
+              }
+            },
+            "type": "object"
+          },
+          "nullable": true,
+          "type": [
+            "object",
+            "null"
+          ]
+        },
         "instanceEngines": {
           "additionalProperties": {
             "additionalProperties": false,
@@ -287,6 +484,12 @@
               "status": {
                 "additionalProperties": false,
                 "properties": {
+                  "activePath": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "conditions": {
                     "additionalProperties": {
                       "type": "boolean"
@@ -309,9 +512,63 @@
                       "null"
                     ]
                   },
+                  "frontend": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "listen": {
                     "type": [
                       "string",
+                      "null"
+                    ]
+                  },
+                  "paths": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "anaState": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "engineName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nguid": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nqn": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetIP": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetPort": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": [
+                      "array",
                       "null"
                     ]
                   },
@@ -326,6 +583,12 @@
                     "format": "int32",
                     "type": [
                       "integer",
+                      "null"
+                    ]
+                  },
+                  "preferredPath": {
+                    "type": [
+                      "string",
                       "null"
                     ]
                   },
@@ -418,6 +681,12 @@
               "status": {
                 "additionalProperties": false,
                 "properties": {
+                  "activePath": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "conditions": {
                     "additionalProperties": {
                       "type": "boolean"
@@ -440,9 +709,63 @@
                       "null"
                     ]
                   },
+                  "frontend": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
                   "listen": {
                     "type": [
                       "string",
+                      "null"
+                    ]
+                  },
+                  "paths": {
+                    "items": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "anaState": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "engineName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nguid": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "nqn": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetIP": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "targetPort": {
+                          "type": [
+                            "integer",
+                            "null"
+                          ]
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "type": [
+                      "array",
                       "null"
                     ]
                   },
@@ -457,6 +780,12 @@
                     "format": "int32",
                     "type": [
                       "integer",
+                      "null"
+                    ]
+                  },
+                  "preferredPath": {
+                    "type": [
+                      "string",
                       "null"
                     ]
                   },
