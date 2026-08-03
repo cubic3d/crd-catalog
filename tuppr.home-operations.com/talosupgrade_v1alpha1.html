@@ -7740,6 +7740,16 @@ released, so a resumed run gets a fresh budget.<div class="leaf-constraints">
   <div class="leaf-desc">CompletedNodes are nodes that have been successfully upgraded
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="status.completionCycles" data-path-key="|status|completionCycles|" data-parent-path="status" data-name="completionCycles" data-text="CompletionCycles counts Completed→Pending re-entries: a completed run
+re-opened because a matching node still needs the target version. Bounds
+restart loops; reset by spec changes and the reset annotation.">
+  <span class="prop-name">completionCycles</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompletionCycles counts Completed→Pending re-entries: a completed run
+re-opened because a matching node still needs the target version. Bounds
+restart loops; reset by spec changes and the reset annotation.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="Conditions report the upgrade&#39;s &#34;Progressing&#34; and &#34;Ready&#34; status.">
 <summary>
   <span class="prop-name">conditions</span>
@@ -7859,13 +7869,13 @@ This field may not be empty.<div class="leaf-constraints">
   </div>
 </div>
 </details>
-<details class="prop" data-prop-row data-path="status.history" data-path-key="|status|history|" data-parent-path="status" data-name="history" data-text="History records past version transitions on this CR, newest first maxItems: 10">
+<details class="prop" data-prop-row data-path="status.history" data-path-key="|status|history|" data-parent-path="status" data-name="history" data-text="History records past version transitions on this CR, newest first maxItems: 3">
 <summary>
   <span class="prop-name">history</span>
   <span class="type-badge">[]object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">History records past version transitions on this CR, newest first</div><div class="prop-constraints">
-<div class="schema-constraint" title="maxItems: 10"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">10</code></div></div>
+<div class="schema-constraint" title="maxItems: 3"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">3</code></div></div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="status.history[].completedAt" data-path-key="|status|history[]|completedAt|" data-parent-path="status.history" data-name="completedAt" data-text="CompletedAt is when the run reached its terminal phase format: date-time">
   <span class="prop-name">completedAt</span>
@@ -7965,6 +7975,34 @@ Equals len(spec.hooks.pre) once all pre-hooks are done.">
 Equals len(spec.hooks.pre) once all pre-hooks are done.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="status.prePullFailure" data-path-key="|status|prePullFailure|" data-parent-path="status" data-name="prePullFailure" data-text="PrePullFailure tracks the current streak of consecutive failed pre-pull
+cycles, so a crash-looping pre-pull stays visible in status instead of
+being overwritten by the next cycle&#39;s Pre-pulling message. Drives the
+retry backoff; cleared once a pass completes without a failure.">
+<summary>
+  <span class="prop-name">prePullFailure</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">PrePullFailure tracks the current streak of consecutive failed pre-pull
+cycles, so a crash-looping pre-pull stays visible in status instead of
+being overwritten by the next cycle&#39;s Pre-pulling message. Drives the
+retry backoff; cleared once a pass completes without a failure.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.prePullFailure.attempts" data-path-key="|status|prePullFailure|attempts|" data-parent-path="status.prePullFailure" data-name="attempts" data-text="Attempts is the number of consecutive pre-pull cycles that have failed.">
+  <span class="prop-name">attempts</span>
+  <span class="type-badge">integer</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Attempts is the number of consecutive pre-pull cycles that have failed.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.prePullFailure.lastError" data-path-key="|status|prePullFailure|lastError|" data-parent-path="status.prePullFailure" data-name="lastError" data-text="LastError is the failure from the most recent cycle.">
+  <span class="prop-name">lastError</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">LastError is the failure from the most recent cycle.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="status.prePulledNodes" data-path-key="|status|prePulledNodes|" data-parent-path="status" data-name="prePulledNodes" data-text="PrePulledNodes records the installer image pre-pulled on each node
 during this run (or noted as skipped because the node&#39;s Talos version
 predates the ImageService API), so pulls are not repeated on every
