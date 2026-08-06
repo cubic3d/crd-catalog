@@ -1026,11 +1026,13 @@
             },
             "probe": {
               "additionalProperties": false,
-              "description": "Opt-in periodic backend health probe: re-connect a `Ready` repository on a\ntimer to confirm the kopia repository still exists at the backend.",
+              "description": "Periodic backend health probe (on by default): re-connect the repository\non a timer to confirm the kopia repository still exists at the backend.\nWith the default `onFailure: Degrade` it doubles as the repository\ncircuit breaker — see `probe.onFailure`. Disable with\n`probe.enabled: false`.",
               "nullable": true,
               "properties": {
                 "enabled": {
-                  "description": "Turn the probe on. Off by default — existing repositories keep their\ncurrent behavior until a user opts in.",
+                  "default": true,
+                  "description": "Whether the probe runs (default `true`). `false` disables probing — and\nwith it the circuit breaker, since the probe is its only sensor: a wiped\nor unreachable backend then goes unnoticed until the next backup fails.",
+                  "nullable": true,
                   "type": [
                     "boolean",
                     "null"
@@ -1038,7 +1040,7 @@
                 },
                 "failureThreshold": {
                   "default": 3,
-                  "description": "How many *consecutive* failing probes to require before raising the loud\ncondition + event (default `3`). Debounces a single transient blip from\nalarming or nudging a destructive manual recreate. Any success resets it.",
+                  "description": "How many *consecutive* failing probes to require before the failure is\nacted on (default `3`): the loud `BackendReachable=False` condition +\nevent fire, and — under `onFailure: Degrade` — the repository moves to\n`Degraded`. Debounces a single transient blip from alarming, tripping\nthe breaker, or nudging a destructive manual recreate. Any success\nresets it.",
                   "format": "int64",
                   "nullable": true,
                   "type": [
@@ -1048,7 +1050,20 @@
                 },
                 "interval": {
                   "default": "30m",
-                  "description": "How often to re-probe the backend (Go-style duration like `30m` or `1h`;\nminimum `30s`, default `30m`). Inert unless `enabled`.",
+                  "description": "How often to re-probe the backend (Go-style duration like `30m` or `1h`;\nminimum `30s`, default `30m`). Inert when `enabled: false`.",
+                  "nullable": true,
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "onFailure": {
+                  "default": "Degrade",
+                  "description": "What sustained backend-probe failure (past `failureThreshold`) does to the\nrepository (default `Degrade`). `Degrade` moves it to `Degraded`, pausing\nbackups, maintenance, and replication until a re-connect succeeds —\nrecovery is automatic. `Alert` keeps the repository `Ready` and only raises\nthe `BackendReachable` condition + Warning event + metric; backups keep\nrunning against the failing backend. Neither ever auto-recreates.",
+                  "enum": [
+                    "Degrade",
+                    "Alert"
+                  ],
                   "nullable": true,
                   "type": [
                     "string",
@@ -3695,6 +3710,72 @@
           "description": "Mutable kopia repository parameters, re-applied on bootstrap whenever they drift.",
           "nullable": true,
           "properties": {
+            "blobRetention": {
+              "additionalProperties": false,
+              "description": "Object-lock blob retention (S3/Azure/GCS) — ransomware protection. Absent means\n\"don't touch it\"; use `disabled: true` to actively turn it off.",
+              "nullable": true,
+              "oneOf": [
+                {
+                  "required": [
+                    "governance"
+                  ]
+                },
+                {
+                  "required": [
+                    "compliance"
+                  ]
+                },
+                {
+                  "required": [
+                    "disabled"
+                  ]
+                }
+              ],
+              "properties": {
+                "compliance": {
+                  "additionalProperties": false,
+                  "description": "`COMPLIANCE` — **nobody can shorten or remove the lock before it expires**, including\nthe account root. An oversized period is an unfixable storage-cost commitment; there\nis no recovery path short of deleting the bucket after expiry.",
+                  "properties": {
+                    "period": {
+                      "description": "Go-style duration; kopia's minimum is `24h` and there is no maximum.\n\nAccepts `h`/`m`/`s` (or a bare number of seconds) — **not `d`**. Note that kopia's own\nCLI *does* take `30d`, so a period copied from kopia's documentation is rejected here;\nwrite 30 days as `720h`. Kopiur deliberately keeps one duration grammar across every\nCRD field rather than matching kopia's per-flag variations.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "period"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                },
+                "disabled": {
+                  "description": "Actively disable retention (`--retention-mode=none`). Must be `true`.\n\nA `bool` rather than a unit variant because an externally-tagged unit variant\nserializes as the bare string `\"Disabled\"`, mixing string and object forms in one\n`oneOf` and breaking the structural schema. Same shape, and same reason, as\n[`crate::cluster_repository::AllowedNamespaces::All`].\n\nThis is distinct from omitting `blobRetention` entirely: absent means \"leave the\nrepository alone\", so deleting the block from a manifest can never silently strip\nransomware protection someone configured deliberately.",
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "governance": {
+                  "additionalProperties": false,
+                  "description": "`GOVERNANCE` — locked against ordinary deletes, but a sufficiently privileged\nidentity can still shorten or remove the lock. The safe default for most clusters.",
+                  "properties": {
+                    "period": {
+                      "description": "Go-style duration; kopia's minimum is `24h` and there is no maximum.\n\nAccepts `h`/`m`/`s` (or a bare number of seconds) — **not `d`**. Note that kopia's own\nCLI *does* take `30d`, so a period copied from kopia's documentation is rejected here;\nwrite 30 days as `720h`. Kopiur deliberately keeps one duration grammar across every\nCRD field rather than matching kopia's per-flag variations.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "period"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                }
+              },
+              "type": "object"
+            },
             "epoch": {
               "additionalProperties": false,
               "description": "Epoch-manager tuning — how fast kopia closes epochs and therefore how fast index\nblobs get compacted.",
@@ -4675,6 +4756,34 @@
           "description": "The kopia repository parameters actually observed at the last bootstrap. Compare\nagainst `spec.parameters` to see whether a declared value landed.",
           "nullable": true,
           "properties": {
+            "blobRetention": {
+              "additionalProperties": false,
+              "description": "The blob retention the repository reports.",
+              "nullable": true,
+              "properties": {
+                "enabled": {
+                  "description": "Whether the repository currently has blob retention in force (kopia's\n`IsRetentionEnabled()`: a non-empty mode AND a non-zero period).",
+                  "type": "boolean"
+                },
+                "mode": {
+                  "description": "Observed retention mode exactly as kopia reports it (`GOVERNANCE`, `COMPLIANCE`, or\nempty when off).",
+                  "type": "string"
+                },
+                "period": {
+                  "description": "Observed retention period, as a Go-style duration (`720h`). Empty-equivalent (`0s`)\nwhen retention is off.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "enabled",
+                "mode",
+                "period"
+              ],
+              "type": [
+                "object",
+                "null"
+              ]
+            },
             "epoch": {
               "additionalProperties": false,
               "description": "The epoch parameters the repository reports.",
