@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RepositoryReplication v1alpha1 — kopiur.home-operations.com</title>
+<title>SnapshotReplication v1alpha1 — kopiur.home-operations.com</title>
 <link rel="icon" type="image/svg+xml" href="/crd-catalog/favicon.svg">
 <style>
   :root {
@@ -352,11 +352,11 @@
   <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" aria-label="Light mode" aria-pressed="false">☀/☾</button>
 </nav>
 <header>
-  <h1 class="schema-title">RepositoryReplication</h1>
+  <h1 class="schema-title">SnapshotReplication</h1>
   <p class="schema-title-group">kopiur.home-operations.com / v1alpha1</p>
 </header>
 <div class="yaml-block">apiVersion: kopiur.home-operations.com/v1alpha1
-kind: RepositoryReplication
+kind: SnapshotReplication
 metadata:
   name: example</div>
 <div class="search-row">
@@ -365,7 +365,7 @@ metadata:
     <div class="search-ghost" id="search-ghost" aria-hidden="true"><span class="search-ghost-prefix" id="search-ghost-prefix"></span><span class="search-ghost-suffix" id="search-ghost-suffix"></span></div>
     <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
   </div>
-  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.destination for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.credentialProjection for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="toolbar">
   <div class="toolbar-left">
@@ -373,774 +373,109 @@ metadata:
     <button id="collapse-all">Collapse all</button>
   </div>
   <div class="toolbar-left">
-    <a href="/crd-catalog/kopiur.home-operations.com/repositoryreplication_v1alpha1.json" target="_blank">View raw schema</a>
-    <button id="copy-url" data-url="/crd-catalog/kopiur.home-operations.com/repositoryreplication_v1alpha1.json">Copy schema URL</button>
+    <a href="/crd-catalog/kopiur.home-operations.com/snapshotreplication_v1alpha1.json" target="_blank">View raw schema</a>
+    <button id="copy-url" data-url="/crd-catalog/kopiur.home-operations.com/snapshotreplication_v1alpha1.json">Copy schema URL</button>
   </div>
 </div>
 <div id="properties">
-<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="Mirror a source repository&#39;s blobs to a destination backend on a schedule (`kopia repository sync-to`).
+<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="Copy selected snapshots from a source repository into a destination repository on a schedule (`kopia snapshot migrate`).
 
 Not `Eq`: `mover` transitively embeds k8s-openapi types.">
 <summary>
   <span class="prop-name">spec</span>
   <span class="type-badge">object</span> <span class="required-badge">required</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Mirror a source repository&#39;s blobs to a destination backend on a schedule (`kopia repository sync-to`).
+<div class="prop-content"><div class="prop-desc">Copy selected snapshots from a source repository into a destination repository on a schedule (`kopia snapshot migrate`).
 
 Not `Eq`: `mover` transitively embeds k8s-openapi types.</div>
   <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination" data-path-key="|spec|destination|" data-parent-path="spec" data-name="destination" data-text="The backend to mirror to; must differ from the source&#39;s backend (webhook-enforced).
-
-`kopia repository sync-to` is a blob-level copy: the destination inherits the
-source repository&#39;s format and encryption password verbatim, so there is no
-separate destination password to configure. The destination backend&#39;s own
-access credentials (e.g. S3 keys) ride its `auth.secretRef`, which — like the
-source&#39;s — must live in this CR&#39;s namespace.">
+<details class="prop" data-prop-row data-path="spec.credentialProjection" data-path-key="|spec|credentialProjection|" data-parent-path="spec" data-name="credentialProjection" data-text="Opt-in projection of BOTH repositories&#39; credential Secrets into the mover
+Job&#39;s namespace (required when the destination is a `ClusterRepository`
+whose Secrets live elsewhere).">
 <summary>
-  <span class="prop-name">destination</span>
+  <span class="prop-name">credentialProjection</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Opt-in projection of BOTH repositories&#39; credential Secrets into the mover
+Job&#39;s namespace (required when the destination is a `ClusterRepository`
+whose Secrets live elsewhere).</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.credentialProjection.enabled" data-path-key="|spec|credentialProjection|enabled|" data-parent-path="spec.credentialProjection" data-name="enabled" data-text="Copy the repository&#39;s credential Secret(s) into the namespace of each mover Job; off by default.">
+  <span class="prop-name">enabled</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">Copy the repository&#39;s credential Secret(s) into the namespace of each mover Job; off by default.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.destinationRef" data-path-key="|spec|destinationRef|" data-parent-path="spec" data-name="destinationRef" data-text="The `Repository` or `ClusterRepository` snapshots are copied INTO. A real
+repository CR with its own password and format (unlike a
+`RepositoryReplication` destination, which is a bare backend reusing the
+source&#39;s password). Must not resolve to the same repository as `sourceRef`
+(webhook-enforced structurally; the shared validator catches the literal
+same-ref case at admission).">
+<summary>
+  <span class="prop-name">destinationRef</span>
   <span class="type-badge">object</span> <span class="required-badge">required</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">The backend to mirror to; must differ from the source&#39;s backend (webhook-enforced).
-
-`kopia repository sync-to` is a blob-level copy: the destination inherits the
-source repository&#39;s format and encryption password verbatim, so there is no
-separate destination password to configure. The destination backend&#39;s own
-access credentials (e.g. S3 keys) ride its `auth.secretRef`, which — like the
-source&#39;s — must live in this CR&#39;s namespace.</div>
+<div class="prop-content"><div class="prop-desc">The `Repository` or `ClusterRepository` snapshots are copied INTO. A real
+repository CR with its own password and format (unlike a
+`RepositoryReplication` destination, which is a bare backend reusing the
+source&#39;s password). Must not resolve to the same repository as `sourceRef`
+(webhook-enforced structurally; the shared validator catches the literal
+same-ref case at admission).</div>
   <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.azure" data-path-key="|spec|destination|azure|" data-parent-path="spec.destination" data-name="azure" data-text="Azure Blob Storage.">
-<summary>
-  <span class="prop-name">azure</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Azure Blob Storage.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.azure.auth" data-path-key="|spec|destination|azure|auth|" data-parent-path="spec.destination.azure" data-name="auth" data-text="Access credentials (Secret ref / workload identity).">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Access credentials (Secret ref / workload identity).</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.azure.auth.secretRef" data-path-key="|spec|destination|azure|auth|secretRef|" data-parent-path="spec.destination.azure.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.auth.secretRef.name" data-path-key="|spec|destination|azure|auth|secretRef|name|" data-parent-path="spec.destination.azure.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
+<div class="prop-leaf" data-prop-row data-path="spec.destinationRef.kind" data-path-key="|spec|destinationRef|kind|" data-parent-path="spec.destinationRef" data-name="kind" data-text="Which repository CRD this points at; defaults to [`RepositoryKind::Repository`]. enum: Repository, ClusterRepository">
+  <span class="prop-name">kind</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Which repository CRD this points at; defaults to [`RepositoryKind::Repository`].<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Repository, ClusterRepository"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Repository, ClusterRepository</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.auth.secretRef.namespace" data-path-key="|spec|destination|azure|auth|secretRef|namespace|" data-parent-path="spec.destination.azure.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
+<div class="prop-leaf" data-prop-row data-path="spec.destinationRef.name" data-path-key="|spec|destinationRef|name|" data-parent-path="spec.destinationRef" data-name="name" data-text="Name of the referenced `Repository`/`ClusterRepository`.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the referenced `Repository`/`ClusterRepository`.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.destinationRef.namespace" data-path-key="|spec|destinationRef|namespace|" data-parent-path="spec.destinationRef" data-name="namespace" data-text="Cross-namespace `Repository` reference; ignored/forbidden for `ClusterRepository`.">
   <span class="prop-name">namespace</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
+  <div class="leaf-desc">Cross-namespace `Repository` reference; ignored/forbidden for `ClusterRepository`.
   </div>
 </div>
   </div>
 </div>
 </details>
-<details class="prop" data-prop-row data-path="spec.destination.azure.auth.workloadIdentity" data-path-key="|spec|destination|azure|auth|workloadIdentity|" data-parent-path="spec.destination.azure.auth" data-name="workloadIdentity" data-text="Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).">
+<details class="prop" data-prop-row data-path="spec.migrate" data-path-key="|spec|migrate|" data-parent-path="spec" data-name="migrate" data-text="Tuning for the underlying `kopia snapshot migrate` invocation. Absent:
+sequential copy, and NO policy copying (see [`PolicyCopyMode`]).">
 <summary>
-  <span class="prop-name">workloadIdentity</span>
+  <span class="prop-name">migrate</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).</div>
+<div class="prop-content"><div class="prop-desc">Tuning for the underlying `kopia snapshot migrate` invocation. Absent:
+sequential copy, and NO policy copying (see [`PolicyCopyMode`]).</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.auth.workloadIdentity.serviceAccountName" data-path-key="|spec|destination|azure|auth|workloadIdentity|serviceAccountName|" data-parent-path="spec.destination.azure.auth.workloadIdentity" data-name="serviceAccountName" data-text="Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.">
-  <span class="prop-name">serviceAccountName</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.container" data-path-key="|spec|destination|azure|container|" data-parent-path="spec.destination.azure" data-name="container" data-text="Blob container holding the kopia repository.">
-  <span class="prop-name">container</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Blob container holding the kopia repository.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.prefix" data-path-key="|spec|destination|azure|prefix|" data-parent-path="spec.destination.azure" data-name="prefix" data-text="Blob-name prefix within the container; empty/absent means the container root.">
-  <span class="prop-name">prefix</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Blob-name prefix within the container; empty/absent means the container root.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.azure.storageAccount" data-path-key="|spec|destination|azure|storageAccount|" data-parent-path="spec.destination.azure" data-name="storageAccount" data-text="Storage-account name (when not inferred from credentials).">
-  <span class="prop-name">storageAccount</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Storage-account name (when not inferred from credentials).
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.b2" data-path-key="|spec|destination|b2|" data-parent-path="spec.destination" data-name="b2" data-text="Backblaze B2.">
-<summary>
-  <span class="prop-name">b2</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Backblaze B2.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.b2.auth" data-path-key="|spec|destination|b2|auth|" data-parent-path="spec.destination.b2" data-name="auth" data-text="Access credentials (application key ID/key Secret); Secret-only.">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Access credentials (application key ID/key Secret); Secret-only.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.b2.auth.secretRef" data-path-key="|spec|destination|b2|auth|secretRef|" data-parent-path="spec.destination.b2.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s access credentials, read by well-known keys.">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s access credentials, read by well-known keys.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.b2.auth.secretRef.name" data-path-key="|spec|destination|b2|auth|secretRef|name|" data-parent-path="spec.destination.b2.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.b2.auth.secretRef.namespace" data-path-key="|spec|destination|b2|auth|secretRef|namespace|" data-parent-path="spec.destination.b2.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.b2.bucket" data-path-key="|spec|destination|b2|bucket|" data-parent-path="spec.destination.b2" data-name="bucket" data-text="B2 bucket holding the kopia repository.">
-  <span class="prop-name">bucket</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">B2 bucket holding the kopia repository.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.b2.prefix" data-path-key="|spec|destination|b2|prefix|" data-parent-path="spec.destination.b2" data-name="prefix" data-text="Object-name prefix within the bucket; empty/absent means the bucket root.">
-  <span class="prop-name">prefix</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Object-name prefix within the bucket; empty/absent means the bucket root.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.filesystem" data-path-key="|spec|destination|filesystem|" data-parent-path="spec.destination" data-name="filesystem" data-text="A local filesystem path, backed by a PVC the operator mounts into the mover.">
-<summary>
-  <span class="prop-name">filesystem</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">A local filesystem path, backed by a PVC the operator mounts into the mover.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.filesystem.path" data-path-key="|spec|destination|filesystem|path|" data-parent-path="spec.destination.filesystem" data-name="path" data-text="Mount path inside the mover pod where kopia writes the repository (e.g. `/repo`).">
-  <span class="prop-name">path</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Mount path inside the mover pod where kopia writes the repository (e.g. `/repo`).
-  </div>
-</div>
-<details class="prop" data-prop-row data-path="spec.destination.filesystem.volume" data-path-key="|spec|destination|filesystem|volume|" data-parent-path="spec.destination.filesystem" data-name="volume" data-text="What backs `path`: a PVC or an inline NFS export; absent for a path already on the node/image.">
-<summary>
-  <span class="prop-name">volume</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">What backs `path`: a PVC or an inline NFS export; absent for a path already on the node/image.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.filesystem.volume.nfs" data-path-key="|spec|destination|filesystem|volume|nfs|" data-parent-path="spec.destination.filesystem.volume" data-name="nfs" data-text="An inline NFS export mounted directly (no PVC).">
-<summary>
-  <span class="prop-name">nfs</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">An inline NFS export mounted directly (no PVC).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.filesystem.volume.nfs.path" data-path-key="|spec|destination|filesystem|volume|nfs|path|" data-parent-path="spec.destination.filesystem.volume.nfs" data-name="path" data-text="Exported path on the NFS server (e.g. `/export/kopia` or `/mnt/eros/Media`).">
-  <span class="prop-name">path</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Exported path on the NFS server (e.g. `/export/kopia` or `/mnt/eros/Media`).
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.filesystem.volume.nfs.server" data-path-key="|spec|destination|filesystem|volume|nfs|server|" data-parent-path="spec.destination.filesystem.volume.nfs" data-name="server" data-text="NFS server hostname or IP (e.g. `nas.lan` or `expanse.internal`).">
-  <span class="prop-name">server</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">NFS server hostname or IP (e.g. `nas.lan` or `expanse.internal`).
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.filesystem.volume.pvc" data-path-key="|spec|destination|filesystem|volume|pvc|" data-parent-path="spec.destination.filesystem.volume" data-name="pvc" data-text="A `PersistentVolumeClaim` mounted read-write at the repo path.">
-<summary>
-  <span class="prop-name">pvc</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">A `PersistentVolumeClaim` mounted read-write at the repo path.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.filesystem.volume.pvc.name" data-path-key="|spec|destination|filesystem|volume|pvc|name|" data-parent-path="spec.destination.filesystem.volume.pvc" data-name="name" data-text="Name of the `PersistentVolumeClaim` to mount (in the mover&#39;s namespace).">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `PersistentVolumeClaim` to mount (in the mover&#39;s namespace).
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.gcs" data-path-key="|spec|destination|gcs|" data-parent-path="spec.destination" data-name="gcs" data-text="Google Cloud Storage.">
-<summary>
-  <span class="prop-name">gcs</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Google Cloud Storage.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.gcs.auth" data-path-key="|spec|destination|gcs|auth|" data-parent-path="spec.destination.gcs" data-name="auth" data-text="Access credentials (service-account key Secret / workload identity).">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Access credentials (service-account key Secret / workload identity).</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.gcs.auth.secretRef" data-path-key="|spec|destination|gcs|auth|secretRef|" data-parent-path="spec.destination.gcs.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gcs.auth.secretRef.name" data-path-key="|spec|destination|gcs|auth|secretRef|name|" data-parent-path="spec.destination.gcs.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gcs.auth.secretRef.namespace" data-path-key="|spec|destination|gcs|auth|secretRef|namespace|" data-parent-path="spec.destination.gcs.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.gcs.auth.workloadIdentity" data-path-key="|spec|destination|gcs|auth|workloadIdentity|" data-parent-path="spec.destination.gcs.auth" data-name="workloadIdentity" data-text="Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).">
-<summary>
-  <span class="prop-name">workloadIdentity</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gcs.auth.workloadIdentity.serviceAccountName" data-path-key="|spec|destination|gcs|auth|workloadIdentity|serviceAccountName|" data-parent-path="spec.destination.gcs.auth.workloadIdentity" data-name="serviceAccountName" data-text="Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.">
-  <span class="prop-name">serviceAccountName</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gcs.bucket" data-path-key="|spec|destination|gcs|bucket|" data-parent-path="spec.destination.gcs" data-name="bucket" data-text="GCS bucket holding the kopia repository.">
-  <span class="prop-name">bucket</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">GCS bucket holding the kopia repository.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gcs.prefix" data-path-key="|spec|destination|gcs|prefix|" data-parent-path="spec.destination.gcs" data-name="prefix" data-text="Object-name prefix within the bucket; empty/absent means the bucket root.">
-  <span class="prop-name">prefix</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Object-name prefix within the bucket; empty/absent means the bucket root.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.gdrive" data-path-key="|spec|destination|gdrive|" data-parent-path="spec.destination" data-name="gdrive" data-text="Google Drive via kopia&#39;s native `gdrive` provider (service-account JSON).
-kopia marks this provider experimental / not maintained, and a native
-gdrive repository is not interchangeable with an rclone-backed Drive remote.">
-<summary>
-  <span class="prop-name">gdrive</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Google Drive via kopia&#39;s native `gdrive` provider (service-account JSON).
-kopia marks this provider experimental / not maintained, and a native
-gdrive repository is not interchangeable with an rclone-backed Drive remote.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.gdrive.credentialsSecretRef" data-path-key="|spec|destination|gdrive|credentialsSecretRef|" data-parent-path="spec.destination.gdrive" data-name="credentialsSecretRef" data-text="Secret holding the Google service-account JSON used to reach the folder,
-read by the well-known key `KOPIA_GDRIVE_CREDENTIALS`. Absent means kopia
-falls back to ambient credentials (`GOOGLE_APPLICATION_CREDENTIALS` or
-instance metadata).">
-<summary>
-  <span class="prop-name">credentialsSecretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the Google service-account JSON used to reach the folder,
-read by the well-known key `KOPIA_GDRIVE_CREDENTIALS`. Absent means kopia
-falls back to ambient credentials (`GOOGLE_APPLICATION_CREDENTIALS` or
-instance metadata).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gdrive.credentialsSecretRef.name" data-path-key="|spec|destination|gdrive|credentialsSecretRef|name|" data-parent-path="spec.destination.gdrive.credentialsSecretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gdrive.credentialsSecretRef.namespace" data-path-key="|spec|destination|gdrive|credentialsSecretRef|namespace|" data-parent-path="spec.destination.gdrive.credentialsSecretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.gdrive.folderId" data-path-key="|spec|destination|gdrive|folderId|" data-parent-path="spec.destination.gdrive" data-name="folderId" data-text="Google Drive folder ID that holds the kopia repository.">
-  <span class="prop-name">folderId</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Google Drive folder ID that holds the kopia repository.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.rclone" data-path-key="|spec|destination|rclone|" data-parent-path="spec.destination" data-name="rclone" data-text="Any rclone remote (kopia shells out to `rclone`), broadening reach to
-providers without a native kopia backend.">
-<summary>
-  <span class="prop-name">rclone</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Any rclone remote (kopia shells out to `rclone`), broadening reach to
-providers without a native kopia backend.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.rclone.configSecretRef" data-path-key="|spec|destination|rclone|configSecretRef|" data-parent-path="spec.destination.rclone" data-name="configSecretRef" data-text="Secret holding the `rclone.conf` that defines the remote referenced by
-`remote_path`.">
-<summary>
-  <span class="prop-name">configSecretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the `rclone.conf` that defines the remote referenced by
-`remote_path`.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.rclone.configSecretRef.name" data-path-key="|spec|destination|rclone|configSecretRef|name|" data-parent-path="spec.destination.rclone.configSecretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.rclone.configSecretRef.namespace" data-path-key="|spec|destination|rclone|configSecretRef|namespace|" data-parent-path="spec.destination.rclone.configSecretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.rclone.remotePath" data-path-key="|spec|destination|rclone|remotePath|" data-parent-path="spec.destination.rclone" data-name="remotePath" data-text="rclone path in `remote:path` form (the remote name must exist in the
-supplied rclone config).">
-  <span class="prop-name">remotePath</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">rclone path in `remote:path` form (the remote name must exist in the
-supplied rclone config).
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.rclone.startupTimeout" data-path-key="|spec|destination|rclone|startupTimeout|" data-parent-path="spec.destination.rclone" data-name="startupTimeout" data-text="How long kopia waits for its embedded `rclone serve` to come up before
-failing the connect, as a Go duration (e.g. `2m`). kopia&#39;s default is
-`15s`; raise it for slow remotes whose repository metadata/indexes load
-through the rclone/WebDAV bridge and take longer than the default budget.">
-  <span class="prop-name">startupTimeout</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">How long kopia waits for its embedded `rclone serve` to come up before
-failing the connect, as a Go duration (e.g. `2m`). kopia&#39;s default is
-`15s`; raise it for slow remotes whose repository metadata/indexes load
-through the rclone/WebDAV bridge and take longer than the default budget.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.s3" data-path-key="|spec|destination|s3|" data-parent-path="spec.destination" data-name="s3" data-text="Amazon S3 or any S3-compatible object store (MinIO, RustFS, Ceph RGW, …).">
-<summary>
-  <span class="prop-name">s3</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Amazon S3 or any S3-compatible object store (MinIO, RustFS, Ceph RGW, …).</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.s3.auth" data-path-key="|spec|destination|s3|auth|" data-parent-path="spec.destination.s3" data-name="auth" data-text="Access credentials (Secret ref / workload identity).">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Access credentials (Secret ref / workload identity).</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.s3.auth.secretRef" data-path-key="|spec|destination|s3|auth|secretRef|" data-parent-path="spec.destination.s3.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s static access credentials (mutually exclusive with `workloadIdentity`).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.auth.secretRef.name" data-path-key="|spec|destination|s3|auth|secretRef|name|" data-parent-path="spec.destination.s3.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.auth.secretRef.namespace" data-path-key="|spec|destination|s3|auth|secretRef|namespace|" data-parent-path="spec.destination.s3.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.s3.auth.workloadIdentity" data-path-key="|spec|destination|s3|auth|workloadIdentity|" data-parent-path="spec.destination.s3.auth" data-name="workloadIdentity" data-text="Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).">
-<summary>
-  <span class="prop-name">workloadIdentity</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Use a cloud-federated ServiceAccount instead of static keys (mutually exclusive with `secretRef`).</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.auth.workloadIdentity.serviceAccountName" data-path-key="|spec|destination|s3|auth|workloadIdentity|serviceAccountName|" data-parent-path="spec.destination.s3.auth.workloadIdentity" data-name="serviceAccountName" data-text="Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.">
-  <span class="prop-name">serviceAccountName</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `ServiceAccount` the mover pod runs as, resolved in the Job&#39;s own namespace.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.bucket" data-path-key="|spec|destination|s3|bucket|" data-parent-path="spec.destination.s3" data-name="bucket" data-text="Bucket holding the kopia repository.">
-  <span class="prop-name">bucket</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Bucket holding the kopia repository.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.endpoint" data-path-key="|spec|destination|s3|endpoint|" data-parent-path="spec.destination.s3" data-name="endpoint" data-text="S3 endpoint host. Omit for AWS; set it for MinIO/RustFS/other
-S3-compatible stores.">
-  <span class="prop-name">endpoint</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">S3 endpoint host. Omit for AWS; set it for MinIO/RustFS/other
-S3-compatible stores.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.prefix" data-path-key="|spec|destination|s3|prefix|" data-parent-path="spec.destination.s3" data-name="prefix" data-text="Key prefix under the bucket, letting several repositories share one bucket
-(e.g. `clusters/prod/`). Empty/absent means the bucket root.">
-  <span class="prop-name">prefix</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Key prefix under the bucket, letting several repositories share one bucket
-(e.g. `clusters/prod/`). Empty/absent means the bucket root.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.region" data-path-key="|spec|destination|s3|region|" data-parent-path="spec.destination.s3" data-name="region" data-text="S3 region. Required by AWS and some compatible providers.">
-  <span class="prop-name">region</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">S3 region. Required by AWS and some compatible providers.
-  </div>
-</div>
-<details class="prop" data-prop-row data-path="spec.destination.s3.tls" data-path-key="|spec|destination|s3|tls|" data-parent-path="spec.destination.s3" data-name="tls" data-text="TLS overrides for self-signed CAs or HTTP-only endpoints.">
-<summary>
-  <span class="prop-name">tls</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">TLS overrides for self-signed CAs or HTTP-only endpoints.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.s3.tls.caBundleRef" data-path-key="|spec|destination|s3|tls|caBundleRef|" data-parent-path="spec.destination.s3.tls" data-name="caBundleRef" data-text="CA bundle (PEM) used to verify the endpoint&#39;s certificate, sourced from a `ConfigMap`.">
-<summary>
-  <span class="prop-name">caBundleRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">CA bundle (PEM) used to verify the endpoint&#39;s certificate, sourced from a `ConfigMap`.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.tls.caBundleRef.configMapName" data-path-key="|spec|destination|s3|tls|caBundleRef|configMapName|" data-parent-path="spec.destination.s3.tls.caBundleRef" data-name="configMapName" data-text="Name of the `ConfigMap` holding the value (e.g. a CA bundle). Resolved in the
-referrer&#39;s namespace for a namespaced `Repository`, and in the operator&#39;s
-namespace (`KOPIUR_NAMESPACE`) for a `ClusterRepository` (cluster-scoped, no
-namespace of its own).">
-  <span class="prop-name">configMapName</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Name of the `ConfigMap` holding the value (e.g. a CA bundle). Resolved in the
-referrer&#39;s namespace for a namespaced `Repository`, and in the operator&#39;s
-namespace (`KOPIUR_NAMESPACE`) for a `ClusterRepository` (cluster-scoped, no
-namespace of its own).
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.tls.caBundleRef.key" data-path-key="|spec|destination|s3|tls|caBundleRef|key|" data-parent-path="spec.destination.s3.tls.caBundleRef" data-name="key" data-text="Which key inside the `ConfigMap` to read; defaults to `ca.crt` when unset.">
-  <span class="prop-name">key</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Which key inside the `ConfigMap` to read; defaults to `ca.crt` when unset.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.tls.disableTls" data-path-key="|spec|destination|s3|tls|disableTls|" data-parent-path="spec.destination.s3.tls" data-name="disableTls" data-text="Disable TLS entirely and talk plain HTTP; maps to kopia&#39;s `--disable-tls`.">
-  <span class="prop-name">disableTls</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Disable TLS entirely and talk plain HTTP; maps to kopia&#39;s `--disable-tls`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.s3.tls.insecureSkipVerify" data-path-key="|spec|destination|s3|tls|insecureSkipVerify|" data-parent-path="spec.destination.s3.tls" data-name="insecureSkipVerify" data-text="Skip TLS certificate verification (still uses TLS); maps to kopia&#39;s `--disable-tls-verification`.">
-  <span class="prop-name">insecureSkipVerify</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Skip TLS certificate verification (still uses TLS); maps to kopia&#39;s `--disable-tls-verification`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.sftp" data-path-key="|spec|destination|sftp|" data-parent-path="spec.destination" data-name="sftp" data-text="SFTP server.">
-<summary>
-  <span class="prop-name">sftp</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">SFTP server.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.sftp.auth" data-path-key="|spec|destination|sftp|auth|" data-parent-path="spec.destination.sftp" data-name="auth" data-text="Credentials (SSH private key / known-hosts) sourced from a Secret; Secret-only.">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Credentials (SSH private key / known-hosts) sourced from a Secret; Secret-only.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.sftp.auth.secretRef" data-path-key="|spec|destination|sftp|auth|secretRef|" data-parent-path="spec.destination.sftp.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s access credentials, read by well-known keys.">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s access credentials, read by well-known keys.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.auth.secretRef.name" data-path-key="|spec|destination|sftp|auth|secretRef|name|" data-parent-path="spec.destination.sftp.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.auth.secretRef.namespace" data-path-key="|spec|destination|sftp|auth|secretRef|namespace|" data-parent-path="spec.destination.sftp.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.host" data-path-key="|spec|destination|sftp|host|" data-parent-path="spec.destination.sftp" data-name="host" data-text="SFTP server hostname or IP.">
-  <span class="prop-name">host</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">SFTP server hostname or IP.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.path" data-path-key="|spec|destination|sftp|path|" data-parent-path="spec.destination.sftp" data-name="path" data-text="Remote path on the server that holds the kopia repository.">
-  <span class="prop-name">path</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Remote path on the server that holds the kopia repository.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.port" data-path-key="|spec|destination|sftp|port|" data-parent-path="spec.destination.sftp" data-name="port" data-text="TCP port; defaults to 22 when absent. format: uint16 minimum: 0 maximum: 65535">
-  <span class="prop-name">port</span>
+<div class="prop-leaf" data-prop-row data-path="spec.migrate.parallel" data-path-key="|spec|migrate|parallel|" data-parent-path="spec.migrate" data-name="parallel" data-text="`--parallel`: number of snapshots migrated concurrently (kopia default
+`1` — sequential). Must be &gt;= 1 when set. format: uint32 minimum: 0">
+  <span class="prop-name">parallel</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">TCP port; defaults to 22 when absent.<div class="leaf-constraints">
-<div class="schema-constraint" title="format: uint16"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint16</code></div></div><div class="leaf-constraints">
-<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
-<div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  <div class="leaf-desc">`--parallel`: number of snapshots migrated concurrently (kopia default
+`1` — sequential). Must be &gt;= 1 when set.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.sftp.username" data-path-key="|spec|destination|sftp|username|" data-parent-path="spec.destination.sftp" data-name="username" data-text="SSH username to connect as.">
-  <span class="prop-name">username</span>
+<div class="prop-leaf" data-prop-row data-path="spec.migrate.policies" data-path-key="|spec|migrate|policies|" data-parent-path="spec.migrate" data-name="policies" data-text="Whether kopia **policies** attached to the copied sources are also copied
+to the destination. Defaults to [`PolicyCopyMode::None`]. enum: none, copy, copyOverwrite">
+  <span class="prop-name">policies</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">SSH username to connect as.
+  <div class="leaf-desc">Whether kopia **policies** attached to the copied sources are also copied
+to the destination. Defaults to [`PolicyCopyMode::None`].<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: none, copy, copyOverwrite"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">none, copy, copyOverwrite</code></div></div>
   </div>
 </div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="spec.destination.webDav" data-path-key="|spec|destination|webDav|" data-parent-path="spec.destination" data-name="webDav" data-text="WebDAV endpoint.">
-<summary>
-  <span class="prop-name">webDav</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">WebDAV endpoint.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.webDav.auth" data-path-key="|spec|destination|webDav|auth|" data-parent-path="spec.destination.webDav" data-name="auth" data-text="HTTP basic-auth credentials sourced from a Secret; Secret-only.">
-<summary>
-  <span class="prop-name">auth</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">HTTP basic-auth credentials sourced from a Secret; Secret-only.</div>
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.destination.webDav.auth.secretRef" data-path-key="|spec|destination|webDav|auth|secretRef|" data-parent-path="spec.destination.webDav.auth" data-name="secretRef" data-text="Secret holding the backend&#39;s access credentials, read by well-known keys.">
-<summary>
-  <span class="prop-name">secretRef</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Secret holding the backend&#39;s access credentials, read by well-known keys.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.destination.webDav.auth.secretRef.name" data-path-key="|spec|destination|webDav|auth|secretRef|name|" data-parent-path="spec.destination.webDav.auth.secretRef" data-name="name" data-text="Name of the `Secret`.">
-  <span class="prop-name">name</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">Name of the `Secret`.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.webDav.auth.secretRef.namespace" data-path-key="|spec|destination|webDav|auth|secretRef|namespace|" data-parent-path="spec.destination.webDav.auth.secretRef" data-name="namespace" data-text="Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.">
-  <span class="prop-name">namespace</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Namespace of the `Secret`; absent = same namespace as the referrer. A
-`ClusterRepository` is cluster-scoped and has no namespace of its own, so when IT
-reads the `Secret` (to connect, to bootstrap, or to run its repository server) an
-absent namespace means the operator&#39;s namespace (`KOPIUR_NAMESPACE`). A workload
-mover (Snapshot/Restore/Maintenance) still needs the `Secret` in its OWN namespace —
-`envFrom` is namespace-local — so put it there, or use `credentialProjection`, which
-needs this namespace set EXPLICITLY to know what to copy. Set it whenever anything
-other than the operator itself reads the `Secret`.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.destination.webDav.url" data-path-key="|spec|destination|webDav|url|" data-parent-path="spec.destination.webDav" data-name="url" data-text="WebDAV collection URL holding the kopia repository.">
-  <span class="prop-name">url</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">WebDAV collection URL holding the kopia repository.
-  </div>
-</div>
-  </div>
-</div>
-</details>
   </div>
 </div>
 </details>
@@ -1823,6 +1158,102 @@ Localhost - a profile defined in a file on the node should be used. RuntimeDefau
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.pruning" data-path-key="|spec|pruning|" data-parent-path="spec" data-name="pruning" data-text="What happens to already-replicated copies at the destination on later runs.
+Absent = `none`: copies accumulate forever and — like every mode here —
+**survive deletion of this CR** (copy `Snapshot` CRs carry no
+ownerReference to it). Pruning only ever considers snapshots this CR
+replicated (labeled at birth); it never touches the destination&#39;s own
+directly-written snapshots.">
+<summary>
+  <span class="prop-name">pruning</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">What happens to already-replicated copies at the destination on later runs.
+Absent = `none`: copies accumulate forever and — like every mode here —
+**survive deletion of this CR** (copy `Snapshot` CRs carry no
+ownerReference to it). Pruning only ever considers snapshots this CR
+replicated (labeled at birth); it never touches the destination&#39;s own
+directly-written snapshots.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.mirrorSource" data-path-key="|spec|pruning|mirrorSource|" data-parent-path="spec.pruning" data-name="mirrorSource" data-text="Mirror the source: delete a copy when its `(identity, startTime)` has
+vanished from the source repository.">
+  <span class="prop-name">mirrorSource</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">Mirror the source: delete a copy when its `(identity, startTime)` has
+vanished from the source repository.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.none" data-path-key="|spec|pruning|none|" data-parent-path="spec.pruning" data-name="none" data-text="Never prune: copies accumulate until deleted by hand (the default when
+`spec.pruning` is absent).">
+  <span class="prop-name">none</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">Never prune: copies accumulate until deleted by hand (the default when
+`spec.pruning` is absent).
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.pruning.retention" data-path-key="|spec|pruning|retention|" data-parent-path="spec.pruning" data-name="retention" data-text="Keep copies under an independent GFS retention at the destination,
+regardless of what the source still holds.">
+<summary>
+  <span class="prop-name">retention</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Keep copies under an independent GFS retention at the destination,
+regardless of what the source still holds.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepAnnual" data-path-key="|spec|pruning|retention|keepAnnual|" data-parent-path="spec.pruning.retention" data-name="keepAnnual" data-text="Keep one snapshot per year for the most-recent N years. format: uint32 minimum: 0">
+  <span class="prop-name">keepAnnual</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep one snapshot per year for the most-recent N years.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepDaily" data-path-key="|spec|pruning|retention|keepDaily|" data-parent-path="spec.pruning.retention" data-name="keepDaily" data-text="Keep one snapshot per day for the most-recent N days. format: uint32 minimum: 0">
+  <span class="prop-name">keepDaily</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep one snapshot per day for the most-recent N days.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepHourly" data-path-key="|spec|pruning|retention|keepHourly|" data-parent-path="spec.pruning.retention" data-name="keepHourly" data-text="Keep one snapshot per hour for the most-recent N hours. format: uint32 minimum: 0">
+  <span class="prop-name">keepHourly</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep one snapshot per hour for the most-recent N hours.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepLatest" data-path-key="|spec|pruning|retention|keepLatest|" data-parent-path="spec.pruning.retention" data-name="keepLatest" data-text="Keep the N most-recent snapshots regardless of age. format: uint32 minimum: 0">
+  <span class="prop-name">keepLatest</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep the N most-recent snapshots regardless of age.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepMonthly" data-path-key="|spec|pruning|retention|keepMonthly|" data-parent-path="spec.pruning.retention" data-name="keepMonthly" data-text="Keep one snapshot per month for the most-recent N months. format: uint32 minimum: 0">
+  <span class="prop-name">keepMonthly</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep one snapshot per month for the most-recent N months.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.pruning.retention.keepWeekly" data-path-key="|spec|pruning|retention|keepWeekly|" data-parent-path="spec.pruning.retention" data-name="keepWeekly" data-text="Keep one snapshot per week for the most-recent N weeks. format: uint32 minimum: 0">
+  <span class="prop-name">keepWeekly</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Keep one snapshot per week for the most-recent N weeks.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.schedule" data-path-key="|spec|schedule|" data-parent-path="spec" data-name="schedule" data-text="Cron and deterministic jitter for the replication runs.">
 <summary>
   <span class="prop-name">schedule</span>
@@ -1853,12 +1284,102 @@ the enclosing schedule&#39;s timezone, else the controller default (UTC).
   </div>
 </div>
 </details>
-<details class="prop" data-prop-row data-path="spec.sourceRef" data-path-key="|spec|sourceRef|" data-parent-path="spec" data-name="sourceRef" data-text="Reference to the `Repository` or `ClusterRepository` to mirror from.">
+<details class="prop" data-prop-row data-path="spec.selection" data-path-key="|spec|selection|" data-parent-path="spec" data-name="selection" data-text="Which snapshots to copy. Absent: every identity in the source repository,
+full history (`kopia snapshot migrate --all`).">
+<summary>
+  <span class="prop-name">selection</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Which snapshots to copy. Absent: every identity in the source repository,
+full history (`kopia snapshot migrate --all`).</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.selection.identities" data-path-key="|spec|selection|identities|" data-parent-path="spec.selection" data-name="identities" data-text="Select source identities (`username@hostname:path`) to copy. Absent: all
+identities in the source repository.">
+<summary>
+  <span class="prop-name">identities</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Select source identities (`username@hostname:path`) to copy. Absent: all
+identities in the source repository.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.selection.identities.exclude" data-path-key="|spec|selection|identities|exclude|" data-parent-path="spec.selection.identities" data-name="exclude" data-text="Identities to skip, applied after `include`. Exclude wins on overlap.">
+<summary>
+  <span class="prop-name">exclude</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Identities to skip, applied after `include`. Exclude wins on overlap.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.exclude[].hostname" data-path-key="|spec|selection|identities|exclude[]|hostname|" data-parent-path="spec.selection.identities.exclude" data-name="hostname" data-text="Glob for the `hostname` component; absent matches any hostname.">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `hostname` component; absent matches any hostname.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.exclude[].sourcePath" data-path-key="|spec|selection|identities|exclude[]|sourcePath|" data-parent-path="spec.selection.identities.exclude" data-name="sourcePath" data-text="Glob for the `sourcePath` component; absent matches any path.">
+  <span class="prop-name">sourcePath</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `sourcePath` component; absent matches any path.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.exclude[].username" data-path-key="|spec|selection|identities|exclude[]|username|" data-parent-path="spec.selection.identities.exclude" data-name="username" data-text="Glob for the `username` component; absent matches any username.">
+  <span class="prop-name">username</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `username` component; absent matches any username.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.selection.identities.include" data-path-key="|spec|selection|identities|include|" data-parent-path="spec.selection.identities" data-name="include" data-text="Identities to copy. Empty/absent: every identity in the source.">
+<summary>
+  <span class="prop-name">include</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Identities to copy. Empty/absent: every identity in the source.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.include[].hostname" data-path-key="|spec|selection|identities|include[]|hostname|" data-parent-path="spec.selection.identities.include" data-name="hostname" data-text="Glob for the `hostname` component; absent matches any hostname.">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `hostname` component; absent matches any hostname.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.include[].sourcePath" data-path-key="|spec|selection|identities|include[]|sourcePath|" data-parent-path="spec.selection.identities.include" data-name="sourcePath" data-text="Glob for the `sourcePath` component; absent matches any path.">
+  <span class="prop-name">sourcePath</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `sourcePath` component; absent matches any path.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selection.identities.include[].username" data-path-key="|spec|selection|identities|include[]|username|" data-parent-path="spec.selection.identities.include" data-name="username" data-text="Glob for the `username` component; absent matches any username.">
+  <span class="prop-name">username</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Glob for the `username` component; absent matches any username.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.selection.latestOnly" data-path-key="|spec|selection|latestOnly|" data-parent-path="spec.selection" data-name="latestOnly" data-text="Copy only each selected identity&#39;s most recent snapshot instead of its
+full history (`kopia snapshot migrate --latest`). Default `false`.">
+  <span class="prop-name">latestOnly</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">Copy only each selected identity&#39;s most recent snapshot instead of its
+full history (`kopia snapshot migrate --latest`). Default `false`.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.sourceRef" data-path-key="|spec|sourceRef|" data-parent-path="spec" data-name="sourceRef" data-text="The `Repository` or `ClusterRepository` snapshots are copied FROM. Opened
+read-only by the replication mover — a replication never writes to its source.">
 <summary>
   <span class="prop-name">sourceRef</span>
   <span class="type-badge">object</span> <span class="required-badge">required</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Reference to the `Repository` or `ClusterRepository` to mirror from.</div>
+<div class="prop-content"><div class="prop-desc">The `Repository` or `ClusterRepository` snapshots are copied FROM. Opened
+read-only by the replication mover — a replication never writes to its source.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.sourceRef.kind" data-path-key="|spec|sourceRef|kind|" data-parent-path="spec.sourceRef" data-name="kind" data-text="Which repository CRD this points at; defaults to [`RepositoryKind::Repository`]. enum: Repository, ClusterRepository">
   <span class="prop-name">kind</span>
@@ -1882,109 +1403,21 @@ the enclosing schedule&#39;s timezone, else the controller default (UTC).
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.suspend" data-path-key="|spec|suspend|" data-parent-path="spec" data-name="suspend" data-text="Pause this replication; a suspended replication runs no syncs (default `false`).">
+<div class="prop-leaf" data-prop-row data-path="spec.suspend" data-path-key="|spec|suspend|" data-parent-path="spec" data-name="suspend" data-text="Pause this replication; a suspended replication runs no copies (default `false`).">
   <span class="prop-name">suspend</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Pause this replication; a suspended replication runs no syncs (default `false`).
-  </div>
-</div>
-<details class="prop" data-prop-row data-path="spec.sync" data-path-key="|spec|sync|" data-parent-path="spec" data-name="sync" data-text="Tuning knobs for the underlying `kopia repository sync-to` invocation
-(issue #216). `None` reproduces today&#39;s behavior: sequential copy
-(`--parallel` unset), additive sync (no `--delete`), kopia&#39;s own
-`--must-exist`/`--times`/`--update` defaults, and no throughput cap.">
-<summary>
-  <span class="prop-name">sync</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Tuning knobs for the underlying `kopia repository sync-to` invocation
-(issue #216). `None` reproduces today&#39;s behavior: sequential copy
-(`--parallel` unset), additive sync (no `--delete`), kopia&#39;s own
-`--must-exist`/`--times`/`--update` defaults, and no throughput cap.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.sync.deleteExtra" data-path-key="|spec|sync|deleteExtra|" data-parent-path="spec.sync" data-name="deleteExtra" data-text="`--delete`: prune destination-only blobs so the mirror is an exact copy
-(kopia default `false` — additive sync, never removes destination
-content). Named `deleteExtra`, not kopia&#39;s bare `delete`: a `delete: true`
-key on backup-adjacent YAML is dangerously ambiguous at a glance.
-
-CAUTION: with this `true`, blobs present at the destination but absent
-from the source are deleted on every run.">
-  <span class="prop-name">deleteExtra</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">`--delete`: prune destination-only blobs so the mirror is an exact copy
-(kopia default `false` — additive sync, never removes destination
-content). Named `deleteExtra`, not kopia&#39;s bare `delete`: a `delete: true`
-key on backup-adjacent YAML is dangerously ambiguous at a glance.
-
-CAUTION: with this `true`, blobs present at the destination but absent
-from the source are deleted on every run.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.maxDownloadSpeedBytesPerSecond" data-path-key="|spec|sync|maxDownloadSpeedBytesPerSecond|" data-parent-path="spec.sync" data-name="maxDownloadSpeedBytesPerSecond" data-text="`--max-download-speed`: cap read throughput from the source, in
-bytes/sec (kopia default: unlimited). format: int64">
-  <span class="prop-name">maxDownloadSpeedBytesPerSecond</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">`--max-download-speed`: cap read throughput from the source, in
-bytes/sec (kopia default: unlimited).<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.maxUploadSpeedBytesPerSecond" data-path-key="|spec|sync|maxUploadSpeedBytesPerSecond|" data-parent-path="spec.sync" data-name="maxUploadSpeedBytesPerSecond" data-text="`--max-upload-speed`: cap write throughput to the destination, in
-bytes/sec (kopia default: unlimited). format: int64">
-  <span class="prop-name">maxUploadSpeedBytesPerSecond</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">`--max-upload-speed`: cap write throughput to the destination, in
-bytes/sec (kopia default: unlimited).<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.mustExist" data-path-key="|spec|sync|mustExist|" data-parent-path="spec.sync" data-name="mustExist" data-text="`--[no-]must-exist`: fail the sync instead of initializing the
-destination&#39;s repository-format blob (kopia default `false` — sync-to may
-create the destination layout on first run).">
-  <span class="prop-name">mustExist</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">`--[no-]must-exist`: fail the sync instead of initializing the
-destination&#39;s repository-format blob (kopia default `false` — sync-to may
-create the destination layout on first run).
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.parallel" data-path-key="|spec|sync|parallel|" data-parent-path="spec.sync" data-name="parallel" data-text="`--parallel`: number of concurrent blob-copy workers (kopia default `1` —
-sequential, the root cause of #216&#39;s multi-week seed times to R2). format: uint32 minimum: 0">
-  <span class="prop-name">parallel</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">`--parallel`: number of concurrent blob-copy workers (kopia default `1` —
-sequential, the root cause of #216&#39;s multi-week seed times to R2).<div class="leaf-constraints">
-<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
-<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.times" data-path-key="|spec|sync|times|" data-parent-path="spec.sync" data-name="times" data-text="`--[no-]times`: synchronize blob modification times to the destination,
-when the destination backend supports it (kopia default `true`).">
-  <span class="prop-name">times</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">`--[no-]times`: synchronize blob modification times to the destination,
-when the destination backend supports it (kopia default `true`).
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.sync.update" data-path-key="|spec|sync|update|" data-parent-path="spec.sync" data-name="update" data-text="`--[no-]update`: update blobs already present at the destination when the
-source copy is newer (kopia default `true`).">
-  <span class="prop-name">update</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">`--[no-]update`: update blobs already present at the destination when the
-source copy is newer (kopia default `true`).
+  <div class="leaf-desc">Pause this replication; a suspended replication runs no copies (default `false`).
   </div>
 </div>
   </div>
 </div>
 </details>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="Observed state of a `RepositoryReplication`.">
+<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="Observed state of a `SnapshotReplication`.">
 <summary>
   <span class="prop-name">status</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Observed state of a `RepositoryReplication`.</div>
+<div class="prop-content"><div class="prop-desc">Observed state of a `SnapshotReplication`.</div>
   <div class="prop-children">
 <details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="Standard Kubernetes conditions (`Ready`, `Reconciling`, `Stalled`).">
 <summary>
@@ -2034,38 +1467,66 @@ source copy is newer (kopia default `true`).
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="status.destinationBackend" data-path-key="|status|destinationBackend|" data-parent-path="status" data-name="destinationBackend" data-text="The destination backend kind, for the `DESTINATION` print column.">
-  <span class="prop-name">destinationBackend</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">The destination backend kind, for the `DESTINATION` print column.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.lastReplicated" data-path-key="|status|lastReplicated|" data-parent-path="status" data-name="lastReplicated" data-text="RFC3339 timestamp of the most recent successful replication run.">
+<div class="prop-leaf" data-prop-row data-path="status.lastReplicated" data-path-key="|status|lastReplicated|" data-parent-path="status" data-name="lastReplicated" data-text="RFC3339 timestamp of the most recent successful replication run (also the
+scheduling anchor for the next slot).">
   <span class="prop-name">lastReplicated</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">RFC3339 timestamp of the most recent successful replication run.
+  <div class="leaf-desc">RFC3339 timestamp of the most recent successful replication run (also the
+scheduling anchor for the next slot).
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.lastReplicatedBlobs" data-path-key="|status|lastReplicatedBlobs|" data-parent-path="status" data-name="lastReplicatedBlobs" data-text="Blobs replicated by the last successful run (best-effort). format: int64">
-  <span class="prop-name">lastReplicatedBlobs</span>
+<details class="prop" data-prop-row data-path="status.lastRun" data-path-key="|status|lastRun|" data-parent-path="status" data-name="lastRun" data-text="Counters from the most recent run.">
+<summary>
+  <span class="prop-name">lastRun</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Counters from the most recent run.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.lastRun.alreadyPresent" data-path-key="|status|lastRun|alreadyPresent|" data-parent-path="status.lastRun" data-name="alreadyPresent" data-text="Selected snapshots that were already present at the destination (skipped). format: uint32 minimum: 0">
+  <span class="prop-name">alreadyPresent</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">Blobs replicated by the last successful run (best-effort).<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
+  <div class="leaf-desc">Selected snapshots that were already present at the destination (skipped).<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.lastReplicatedBytes" data-path-key="|status|lastReplicatedBytes|" data-parent-path="status" data-name="lastReplicatedBytes" data-text="Bytes replicated by the last successful run (best-effort from kopia output). format: int64">
-  <span class="prop-name">lastReplicatedBytes</span>
+<div class="prop-leaf" data-prop-row data-path="status.lastRun.failed" data-path-key="|status|lastRun|failed|" data-parent-path="status.lastRun" data-name="failed" data-text="Selected snapshots that failed to copy (kopia migrate exits 0 on
+per-source failures; the mover&#39;s post-verify counts them here). format: uint32 minimum: 0">
+  <span class="prop-name">failed</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">Bytes replicated by the last successful run (best-effort from kopia output).<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
+  <div class="leaf-desc">Selected snapshots that failed to copy (kopia migrate exits 0 on
+per-source failures; the mover&#39;s post-verify counts them here).<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.nextScheduledAt" data-path-key="|status|nextScheduledAt|" data-parent-path="status" data-name="nextScheduledAt" data-text="RFC3339 timestamp of the next scheduled replication run (cron &#43; jitter, pinned).">
-  <span class="prop-name">nextScheduledAt</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">RFC3339 timestamp of the next scheduled replication run (cron &#43; jitter, pinned).
+<div class="prop-leaf" data-prop-row data-path="status.lastRun.identitiesSelected" data-path-key="|status|lastRun|identitiesSelected|" data-parent-path="status.lastRun" data-name="identitiesSelected" data-text="Source identities the selector matched this run. format: uint32 minimum: 0">
+  <span class="prop-name">identitiesSelected</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Source identities the selector matched this run.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="status.lastRun.pruned" data-path-key="|status|lastRun|pruned|" data-parent-path="status.lastRun" data-name="pruned" data-text="Copies pruned this run per `spec.pruning`. format: uint32 minimum: 0">
+  <span class="prop-name">pruned</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Copies pruned this run per `spec.pruning`.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.lastRun.snapshotsCopied" data-path-key="|status|lastRun|snapshotsCopied|" data-parent-path="status.lastRun" data-name="snapshotsCopied" data-text="Snapshots newly copied to the destination this run. format: uint32 minimum: 0">
+  <span class="prop-name">snapshotsCopied</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Snapshots newly copied to the destination this run.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="status.observedGeneration" data-path-key="|status|observedGeneration|" data-parent-path="status" data-name="observedGeneration" data-text="`metadata.generation` last reconciled, for staleness detection / kstatus. format: int64">
   <span class="prop-name">observedGeneration</span>
   <span class="type-badge">integer</span>
@@ -2073,10 +1534,10 @@ source copy is newer (kopia default `true`).
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.phase" data-path-key="|status|phase|" data-parent-path="status" data-name="phase" data-text="Lifecycle phase of a replication. enum: Pending, Replicating, Succeeded, Failed, Suspended">
+<div class="prop-leaf" data-prop-row data-path="status.phase" data-path-key="|status|phase|" data-parent-path="status" data-name="phase" data-text="Lifecycle phase of a snapshot replication. enum: Pending, Replicating, Succeeded, Failed, Suspended">
   <span class="prop-name">phase</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Lifecycle phase of a replication.<div class="leaf-constraints">
+  <div class="leaf-desc">Lifecycle phase of a snapshot replication.<div class="leaf-constraints">
 <div class="schema-constraint" title="enum: Pending, Replicating, Succeeded, Failed, Suspended"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Pending, Replicating, Succeeded, Failed, Suspended</code></div></div>
   </div>
 </div>
@@ -2084,7 +1545,7 @@ source copy is newer (kopia default `true`).
 </div>
 </details>
 </div>
-<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.destination for an exact path">No matches. Try .spec.destination for an exact path</p>
+<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.credentialProjection for an exact path">No matches. Try .spec.credentialProjection for an exact path</p>
 </main>
 <div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <footer>
