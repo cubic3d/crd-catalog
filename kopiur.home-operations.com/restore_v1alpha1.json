@@ -1620,6 +1620,14 @@
             "object",
             "null"
           ]
+        },
+        "waitStartedAt": {
+          "description": "When the `policy.waitTimeout` window OPENED (RFC3339) — the first reconcile on which\nthe restore could actually proceed (its repository reached `Ready`, and for a\n`target.populator` a PVC already claims it), NOT when the Restore was created. The\nwindow does NOT open while the referenced `Repository` object or `fromPolicy`\n`SnapshotPolicy` doesn't exist: the restore parks in `Pending`\n(`ReferentAvailable=False`, reason `RestoreReferentMissing`) and stays unstamped. It\nDOES still open for a `snapshotRef` whose `Snapshot` row doesn't exist yet (so\n`onMissingSnapshot` can fire for a ref that never appears) and for a restore whose\nmover Job already launched. Stamped once and then honored verbatim, so the window\nsurvives controller restarts and Job pod retries; cleared when a populator re-opens\nresolution for a re-created claim, so that claim gets the full window again. Absent\nmeans the window has not opened yet (or no `policy.waitTimeout` is configured, in\nwhich case there is no window to anchor).",
+          "nullable": true,
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "type": [
