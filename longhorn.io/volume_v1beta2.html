@@ -471,6 +471,65 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 <div class="schema-constraint" title="enum: v1, v2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">v1, v2</code></div></div>
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.dataLayout" data-path-key="|spec|dataLayout|" data-parent-path="spec" data-name="dataLayout" data-text="DataLayout declares the user&#39;s intended data layout (topology type, protection mode, and EC parameters).
+The entire struct is immutable after creation.">
+<summary>
+  <span class="prop-name">dataLayout</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">DataLayout declares the user&#39;s intended data layout (topology type, protection mode, and EC parameters).
+The entire struct is immutable after creation.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.dataLayout.dataChunks" data-path-key="|spec|dataLayout|dataChunks|" data-parent-path="spec.dataLayout" data-name="dataChunks" data-text="DataChunks is the number of data chunks (k) in the EC array.
+Required when Type is sharded; must be 0 for replicated volumes. minimum: 0">
+  <span class="prop-name">dataChunks</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">DataChunks is the number of data chunks (k) in the EC array.
+Required when Type is sharded; must be 0 for replicated volumes.<div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.dataLayout.mode" data-path-key="|spec|dataLayout|mode|" data-parent-path="spec.dataLayout" data-name="mode" data-text="Mode describes the specific data protection mechanism in use.
+Empty for V1 volumes where no SPDK-level mode applies. enum: raid1, erasureCoding, ">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode describes the specific data protection mechanism in use.
+Empty for V1 volumes where no SPDK-level mode applies.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: raid1, erasureCoding, "><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">raid1, erasureCoding, </code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.dataLayout.parityChunks" data-path-key="|spec|dataLayout|parityChunks|" data-parent-path="spec.dataLayout" data-name="parityChunks" data-text="ParityChunks is the number of parity chunks (m) in the EC array.
+The volume tolerates up to m simultaneous disk failures.
+Required when Type is sharded; must be 0 for replicated volumes. minimum: 0">
+  <span class="prop-name">parityChunks</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ParityChunks is the number of parity chunks (m) in the EC array.
+The volume tolerates up to m simultaneous disk failures.
+Required when Type is sharded; must be 0 for replicated volumes.<div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.dataLayout.stripSizeKB" data-path-key="|spec|dataLayout|stripSizeKB|" data-parent-path="spec.dataLayout" data-name="stripSizeKB" data-text="StripSizeKB is the chunk size in KiB used by the EC bdev.
+Must be a power of two in the range [4, 1024].
+Required when Type is sharded; must be 0 for replicated volumes. minimum: 0">
+  <span class="prop-name">stripSizeKB</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">StripSizeKB is the chunk size in KiB used by the EC bdev.
+Must be a power of two in the range [4, 1024].
+Required when Type is sharded; must be 0 for replicated volumes.<div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.dataLayout.type" data-path-key="|spec|dataLayout|type|" data-parent-path="spec.dataLayout" data-name="type" data-text="Type describes how volume data is distributed across nodes. enum: replicated, sharded, ">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Type describes how volume data is distributed across nodes.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: replicated, sharded, "><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">replicated, sharded, </code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.dataLocality" data-path-key="|spec|dataLocality|" data-parent-path="spec" data-name="dataLocality" data-text="enum: disabled, best-effort, strict-local">
   <span class="prop-name">dataLocality</span>
   <span class="type-badge">string</span>

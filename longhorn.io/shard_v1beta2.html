@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>InstanceManager v1beta2 — longhorn.io</title>
+<title>Shard v1beta2 — longhorn.io</title>
 <link rel="icon" type="image/svg+xml" href="/crd-catalog/favicon.svg">
 <style>
   :root {
@@ -352,11 +352,11 @@
   <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" aria-label="Light mode" aria-pressed="false">☀/☾</button>
 </nav>
 <header>
-  <h1 class="schema-title">InstanceManager</h1>
+  <h1 class="schema-title">Shard</h1>
   <p class="schema-title-group">longhorn.io / v1beta2</p>
 </header>
 <div class="yaml-block">apiVersion: longhorn.io/v1beta2
-kind: InstanceManager
+kind: Shard
 metadata:
   name: example</div>
 <div class="search-row">
@@ -365,7 +365,7 @@ metadata:
     <div class="search-ghost" id="search-ghost" aria-hidden="true"><span class="search-ghost-prefix" id="search-ghost-prefix"></span><span class="search-ghost-suffix" id="search-ghost-suffix"></span></div>
     <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
   </div>
-  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.dataEngine for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.diskPath for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="toolbar">
   <div class="toolbar-left">
@@ -373,8 +373,8 @@ metadata:
     <button id="collapse-all">Collapse all</button>
   </div>
   <div class="toolbar-left">
-    <a href="/crd-catalog/longhorn.io/instancemanager_v1beta2.json" target="_blank">View raw schema</a>
-    <button id="copy-url" data-url="/crd-catalog/longhorn.io/instancemanager_v1beta2.json">Copy schema URL</button>
+    <a href="/crd-catalog/longhorn.io/shard_v1beta2.json" target="_blank">View raw schema</a>
+    <button id="copy-url" data-url="/crd-catalog/longhorn.io/shard_v1beta2.json">Copy schema URL</button>
   </div>
 </div>
 <div id="properties">
@@ -410,268 +410,139 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
   <div class="leaf-desc">
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="InstanceManagerSpec defines the desired state of the Longhorn instance manager">
+<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="ShardSpec defines the desired state of the Longhorn Shard">
 <summary>
   <span class="prop-name">spec</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">InstanceManagerSpec defines the desired state of the Longhorn instance manager</div>
+<div class="prop-content"><div class="prop-desc">ShardSpec defines the desired state of the Longhorn Shard</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.dataEngine" data-path-key="|spec|dataEngine|" data-parent-path="spec" data-name="dataEngine" data-text="">
-  <span class="prop-name">dataEngine</span>
+<div class="prop-leaf" data-prop-row data-path="spec.diskPath" data-path-key="|spec|diskPath|" data-parent-path="spec" data-name="diskPath" data-text="DiskPath is the path of the disk that hosts the shard lvol.">
+  <span class="prop-name">diskPath</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">DiskPath is the path of the disk that hosts the shard lvol.
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec.dataEngineSpec" data-path-key="|spec|dataEngineSpec|" data-parent-path="spec" data-name="dataEngineSpec" data-text="">
-<summary>
-  <span class="prop-name">dataEngineSpec</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content">
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.dataEngineSpec.v2" data-path-key="|spec|dataEngineSpec|v2|" data-parent-path="spec.dataEngineSpec" data-name="v2" data-text="">
-<summary>
-  <span class="prop-name">v2</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content">
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.dataEngineSpec.v2.cpuIsolationEnabled" data-path-key="|spec|dataEngineSpec|v2|cpuIsolationEnabled|" data-parent-path="spec.dataEngineSpec.v2" data-name="cpuIsolationEnabled" data-text="CPUIsolationEnabled overrides the cluster-wide
-data-engine-cpu-isolation-enabled setting for this instance manager.
-&#34;true&#34;  -&gt; pass --enable-irq-affinity and --enable-workqueue-affinity
-           to start-spdk-tgt (steer host IRQs and unbound kernel
-           workqueues away from the SPDK reactor CPUs).
-&#34;false&#34; -&gt; do not pass the flags.
-&#34;&#34;      -&gt; inherit the global setting value. enum: , true, false">
-  <span class="prop-name">cpuIsolationEnabled</span>
+<div class="prop-leaf" data-prop-row data-path="spec.diskUUID" data-path-key="|spec|diskUUID|" data-parent-path="spec" data-name="diskUUID" data-text="DiskUUID is the UUID of the disk that hosts the shard lvol.">
+  <span class="prop-name">diskUUID</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">CPUIsolationEnabled overrides the cluster-wide
-data-engine-cpu-isolation-enabled setting for this instance manager.
-&#34;true&#34;  -&gt; pass --enable-irq-affinity and --enable-workqueue-affinity
-           to start-spdk-tgt (steer host IRQs and unbound kernel
-           workqueues away from the SPDK reactor CPUs).
-&#34;false&#34; -&gt; do not pass the flags.
-&#34;&#34;      -&gt; inherit the global setting value.<div class="leaf-constraints">
-<div class="schema-constraint" title="enum: , true, false"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">, true, false</code></div></div>
+  <div class="leaf-desc">DiskUUID is the UUID of the disk that hosts the shard lvol.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.dataEngineSpec.v2.cpuMask" data-path-key="|spec|dataEngineSpec|v2|cpuMask|" data-parent-path="spec.dataEngineSpec.v2" data-name="cpuMask" data-text="">
-  <span class="prop-name">cpuMask</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
+<div class="prop-leaf" data-prop-row data-path="spec.evictionRequested" data-path-key="|spec|evictionRequested|" data-parent-path="spec" data-name="evictionRequested" data-text="EvictionRequested indicates this shard should be relocated to a different node or disk.
+Set by the node controller when the shard&#39;s node is being drained or its disk is evicted.">
+  <span class="prop-name">evictionRequested</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EvictionRequested indicates this shard should be relocated to a different node or disk.
+Set by the node controller when the shard&#39;s node is being drained or its disk is evicted.
   </div>
 </div>
-  </div>
-</div>
-</details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="spec.image" data-path-key="|spec|image|" data-parent-path="spec" data-name="image" data-text="">
-  <span class="prop-name">image</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="NodeID is the node where this shard&#39;s lvol resides and its NVMe-oF target runs.">
   <span class="prop-name">nodeID</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">NodeID is the node where this shard&#39;s lvol resides and its NVMe-oF target runs.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.type" data-path-key="|spec|type|" data-parent-path="spec" data-name="type" data-text="enum: aio, engine, replica">
-  <span class="prop-name">type</span>
+<div class="prop-leaf" data-prop-row data-path="spec.shardGroupName" data-path-key="|spec|shardGroupName|" data-parent-path="spec" data-name="shardGroupName" data-text="ShardGroupName is the name of the owning ShardGroup CR. Immutable after creation.">
+  <span class="prop-name">shardGroupName</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
-<div class="schema-constraint" title="enum: aio, engine, replica"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">aio, engine, replica</code></div></div>
+  <div class="leaf-desc">ShardGroupName is the name of the owning ShardGroup CR. Immutable after creation.
   </div>
 </div>
-  </div>
-</div>
-</details>
-<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="InstanceManagerStatus defines the observed state of the Longhorn instance manager">
-<summary>
-  <span class="prop-name">status</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">InstanceManagerStatus defines the observed state of the Longhorn instance manager</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="status.apiMinVersion" data-path-key="|status|apiMinVersion|" data-parent-path="status" data-name="apiMinVersion" data-text="">
-  <span class="prop-name">apiMinVersion</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.apiVersion" data-path-key="|status|apiVersion|" data-parent-path="status" data-name="apiVersion" data-text="">
-  <span class="prop-name">apiVersion</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.backingImages" data-path-key="|status|backingImages|" data-parent-path="status" data-name="backingImages" data-text="">
-  <span class="prop-name">backingImages</span>
-  <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="">
-<summary>
-  <span class="prop-name">conditions</span>
-  <span class="type-badge">[]object</span>
-</summary>
-<div class="prop-content">
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].lastProbeTime" data-path-key="|status|conditions[]|lastProbeTime|" data-parent-path="status.conditions" data-name="lastProbeTime" data-text="Last time we probed the condition.">
-  <span class="prop-name">lastProbeTime</span>
+<div class="prop-leaf" data-prop-row data-path="spec.size" data-path-key="|spec|size|" data-parent-path="spec" data-name="size" data-text="Size is the shard lvol size in bytes. Set by the ShardGroup controller at creation time
+and used for idempotent reconciliation. format: int64">
+  <span class="prop-name">size</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Last time we probed the condition.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].lastTransitionTime" data-path-key="|status|conditions[]|lastTransitionTime|" data-parent-path="status.conditions" data-name="lastTransitionTime" data-text="Last time the condition transitioned from one status to another.">
-  <span class="prop-name">lastTransitionTime</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Last time the condition transitioned from one status to another.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].message" data-path-key="|status|conditions[]|message|" data-parent-path="status.conditions" data-name="message" data-text="Human-readable message indicating details about last transition.">
-  <span class="prop-name">message</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Human-readable message indicating details about last transition.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].reason" data-path-key="|status|conditions[]|reason|" data-parent-path="status.conditions" data-name="reason" data-text="Unique, one-word, CamelCase reason for the condition&#39;s last transition.">
-  <span class="prop-name">reason</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Unique, one-word, CamelCase reason for the condition&#39;s last transition.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].status" data-path-key="|status|conditions[]|status|" data-parent-path="status.conditions" data-name="status" data-text="Status is the status of the condition.
-Can be True, False, Unknown.">
-  <span class="prop-name">status</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Status is the status of the condition.
-Can be True, False, Unknown.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.conditions[].type" data-path-key="|status|conditions[]|type|" data-parent-path="status.conditions" data-name="type" data-text="Type is the type of the condition.">
-  <span class="prop-name">type</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Type is the type of the condition.
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="status.currentState" data-path-key="|status|currentState|" data-parent-path="status" data-name="currentState" data-text="">
-  <span class="prop-name">currentState</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<details class="prop" data-prop-row data-path="status.dataEngineStatus" data-path-key="|status|dataEngineStatus|" data-parent-path="status" data-name="dataEngineStatus" data-text="">
-<summary>
-  <span class="prop-name">dataEngineStatus</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content">
-  <div class="prop-children">
-<details class="prop" data-prop-row data-path="status.dataEngineStatus.v2" data-path-key="|status|dataEngineStatus|v2|" data-parent-path="status.dataEngineStatus" data-name="v2" data-text="">
-<summary>
-  <span class="prop-name">v2</span>
-  <span class="type-badge">object</span>
-</summary>
-<div class="prop-content">
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="status.dataEngineStatus.v2.cpuCoreNumber" data-path-key="|status|dataEngineStatus|v2|cpuCoreNumber|" data-parent-path="status.dataEngineStatus.v2" data-name="cpuCoreNumber" data-text="format: int64">
-  <span class="prop-name">cpuCoreNumber</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
+  <div class="leaf-desc">Size is the shard lvol size in bytes. Set by the ShardGroup controller at creation time
+and used for idempotent reconciliation.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.dataEngineStatus.v2.cpuMask" data-path-key="|status|dataEngineStatus|v2|cpuMask|" data-parent-path="status.dataEngineStatus.v2" data-name="cpuMask" data-text="">
-  <span class="prop-name">cpuMask</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.dataEngineStatus.v2.interruptModeEnabled" data-path-key="|status|dataEngineStatus|v2|interruptModeEnabled|" data-parent-path="status.dataEngineStatus.v2" data-name="interruptModeEnabled" data-text="InterruptModeEnabled indicates whether the V2 data engine is running in
-interrupt mode (true) or polling mode (false). Set by Longhorn manager;
-read-only to users. enum: , true, false">
-  <span class="prop-name">interruptModeEnabled</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">InterruptModeEnabled indicates whether the V2 data engine is running in
-interrupt mode (true) or polling mode (false). Set by Longhorn manager;
-read-only to users.<div class="leaf-constraints">
-<div class="schema-constraint" title="enum: , true, false"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">, true, false</code></div></div>
+<div class="prop-leaf" data-prop-row data-path="spec.slotIndex" data-path-key="|spec|slotIndex|" data-parent-path="spec" data-name="slotIndex" data-text="SlotIndex is the zero-based position of this shard in the EC base-bdev array.
+Determines the shard&#39;s role: indices 0..k-1 are DATA, k..k&#43;m-1 are PARITY.
+Immutable after creation. minimum: 0">
+  <span class="prop-name">slotIndex</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">SlotIndex is the zero-based position of this shard in the EC base-bdev array.
+Determines the shard&#39;s role: indices 0..k-1 are DATA, k..k&#43;m-1 are PARITY.
+Immutable after creation.<div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
 </div>
   </div>
 </div>
 </details>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="status.instanceEngineFrontends" data-path-key="|status|instanceEngineFrontends|" data-parent-path="status" data-name="instanceEngineFrontends" data-text="">
-  <span class="prop-name">instanceEngineFrontends</span>
+<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="ShardStatus defines the observed state of the Longhorn Shard">
+<summary>
+  <span class="prop-name">status</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.instanceEngines" data-path-key="|status|instanceEngines|" data-parent-path="status" data-name="instanceEngines" data-text="">
-  <span class="prop-name">instanceEngines</span>
-  <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.instanceReplicas" data-path-key="|status|instanceReplicas|" data-parent-path="status" data-name="instanceReplicas" data-text="">
-  <span class="prop-name">instanceReplicas</span>
-  <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.instanceShardGroups" data-path-key="|status|instanceShardGroups|" data-parent-path="status" data-name="instanceShardGroups" data-text="">
-  <span class="prop-name">instanceShardGroups</span>
-  <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.instanceShards" data-path-key="|status|instanceShards|" data-parent-path="status" data-name="instanceShards" data-text="">
-  <span class="prop-name">instanceShards</span>
-  <span class="type-badge">object</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.ip" data-path-key="|status|ip|" data-parent-path="status" data-name="ip" data-text="">
-  <span class="prop-name">ip</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ShardStatus defines the observed state of the Longhorn Shard</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.lastFailureTimestamp" data-path-key="|status|lastFailureTimestamp|" data-parent-path="status" data-name="lastFailureTimestamp" data-text="LastFailureTimestamp is the RFC3339 timestamp of the most recent shard failure.">
+  <span class="prop-name">lastFailureTimestamp</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">LastFailureTimestamp is the RFC3339 timestamp of the most recent shard failure.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.ownerID" data-path-key="|status|ownerID|" data-parent-path="status" data-name="ownerID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="status.ownerID" data-path-key="|status|ownerID|" data-parent-path="status" data-name="ownerID" data-text="OwnerID is the ID of the node that owns this Shard.">
   <span class="prop-name">ownerID</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">OwnerID is the ID of the node that owns this Shard.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.proxyApiMinVersion" data-path-key="|status|proxyApiMinVersion|" data-parent-path="status" data-name="proxyApiMinVersion" data-text="">
-  <span class="prop-name">proxyApiMinVersion</span>
+<div class="prop-leaf" data-prop-row data-path="status.port" data-path-key="|status|port|" data-parent-path="status" data-name="port" data-text="Port is the NVMe-oF port of the shard&#39;s target export. format: int32">
+  <span class="prop-name">port</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">Port is the NVMe-oF port of the shard&#39;s target export.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.proxyApiVersion" data-path-key="|status|proxyApiVersion|" data-parent-path="status" data-name="proxyApiVersion" data-text="">
-  <span class="prop-name">proxyApiVersion</span>
+<div class="prop-leaf" data-prop-row data-path="status.rebuildProgress" data-path-key="|status|rebuildProgress|" data-parent-path="status" data-name="rebuildProgress" data-text="RebuildProgress is the rebuild completion percentage (0-100).">
+  <span class="prop-name">rebuildProgress</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">RebuildProgress is the rebuild completion percentage (0-100).
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.replaceTriggered" data-path-key="|status|replaceTriggered|" data-parent-path="status" data-name="replaceTriggered" data-text="ReplaceTriggered is set to true after shard replacement has been initiated, to prevent
+re-issuing the replace command on subsequent cycles while SPDK advances the slot state.
+Cleared when the slot state transitions away from Failed.">
+  <span class="prop-name">replaceTriggered</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">ReplaceTriggered is set to true after shard replacement has been initiated, to prevent
+re-issuing the replace command on subsequent cycles while SPDK advances the slot state.
+Cleared when the slot state transitions away from Failed.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.role" data-path-key="|status|role|" data-parent-path="status" data-name="role" data-text="Role is the EC role of this slot (data or parity). Derived from SlotIndex and the parent
+ShardGroup&#39;s DataChunks; stored here for informational purposes only. enum: data, parity, ">
+  <span class="prop-name">role</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Role is the EC role of this slot (data or parity). Derived from SlotIndex and the parent
+ShardGroup&#39;s DataChunks; stored here for informational purposes only.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: data, parity, "><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">data, parity, </code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.state" data-path-key="|status|state|" data-parent-path="status" data-name="state" data-text="State is the health state of this EC shard slot. enum: normal, failed, replacing, ">
+  <span class="prop-name">state</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">State is the health state of this EC shard slot.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: normal, failed, replacing, "><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">normal, failed, replacing, </code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.storageIP" data-path-key="|status|storageIP|" data-parent-path="status" data-name="storageIP" data-text="StorageIP is the IP address of the NVMe-oF target exported by the shard&#39;s InstanceManager.
+Populated after the shard instance is running.">
+  <span class="prop-name">storageIP</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">StorageIP is the IP address of the NVMe-oF target exported by the shard&#39;s InstanceManager.
+Populated after the shard instance is running.
   </div>
 </div>
   </div>
 </div>
 </details>
 </div>
-<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.dataEngine for an exact path">No matches. Try .spec.dataEngine for an exact path</p>
+<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.diskPath for an exact path">No matches. Try .spec.diskPath for an exact path</p>
 </main>
 <div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <footer>

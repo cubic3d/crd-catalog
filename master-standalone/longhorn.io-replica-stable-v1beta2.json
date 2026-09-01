@@ -123,6 +123,13 @@
             "null"
           ]
         },
+        "linkedCloneSrcReplicaName": {
+          "description": "LinkedCloneSrcReplicaName is the name of the src replica this clone replica is parented to.\nImmutable once set. Non-empty only for linked-clone replicas.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "logRequested": {
           "type": [
             "boolean",

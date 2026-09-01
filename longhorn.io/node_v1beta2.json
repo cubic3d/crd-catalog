@@ -197,6 +197,12 @@
             "null"
           ]
         },
+        "cpuPolicy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "diskStatus": {
           "additionalProperties": {
             "additionalProperties": false,
