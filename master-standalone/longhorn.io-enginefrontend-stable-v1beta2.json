@@ -91,6 +91,13 @@
             "null"
           ]
         },
+        "nvmeTcpNrIoQueues": {
+          "description": "nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator\ncreates when connecting the blockdev frontend over NVMe-TCP.\n0 means inheriting the global setting default-nvme-tcp-nr-io-queues.\nTakes effect on (re)attach.",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
         "salvageRequested": {
           "type": [
             "boolean",

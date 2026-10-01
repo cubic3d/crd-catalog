@@ -631,6 +631,18 @@ If empty, falls back to NodeID.
   <div class="leaf-desc">
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.nvmeTcpNrIoQueues" data-path-key="|spec|nvmeTcpNrIoQueues|" data-parent-path="spec" data-name="nvmeTcpNrIoQueues" data-text="nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
+creates when connecting the blockdev frontend over NVMe-TCP.
+0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
+Takes effect on (re)attach.">
+  <span class="prop-name">nvmeTcpNrIoQueues</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
+creates when connecting the blockdev frontend over NVMe-TCP.
+0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
+Takes effect on (re)attach.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.offlineRebuilding" data-path-key="|spec|offlineRebuilding|" data-parent-path="spec" data-name="offlineRebuilding" data-text="Specifies whether Longhorn should rebuild replicas while the detached volume is degraded.
 - ignored: Use the global setting for offline replica rebuilding.
 - enabled: Enable offline rebuilding for this volume, regardless of the global setting.
@@ -754,6 +766,34 @@ is still in progress, and a new request will be rejected.
   <div class="leaf-desc">
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.topologyRequirement" data-path-key="|spec|topologyRequirement|" data-parent-path="spec" data-name="topologyRequirement" data-text="TopologyRequirement lists the failure domains the volume&#39;s replicas must
+be scheduled in, derived from the CSI accessible topology at creation —
+the same failure domains as the PV nodeAffinity terms (a node must match
+at least one term). Empty means unconstrained.">
+<summary>
+  <span class="prop-name">topologyRequirement</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">TopologyRequirement lists the failure domains the volume&#39;s replicas must
+be scheduled in, derived from the CSI accessible topology at creation —
+the same failure domains as the PV nodeAffinity terms (a node must match
+at least one term). Empty means unconstrained.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.topologyRequirement[].region" data-path-key="|spec|topologyRequirement[]|region|" data-parent-path="spec.topologyRequirement" data-name="region" data-text="">
+  <span class="prop-name">region</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.topologyRequirement[].zone" data-path-key="|spec|topologyRequirement[]|zone|" data-parent-path="spec.topologyRequirement" data-name="zone" data-text="">
+  <span class="prop-name">zone</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.ublkNumberOfQueue" data-path-key="|spec|ublkNumberOfQueue|" data-parent-path="spec" data-name="ublkNumberOfQueue" data-text="ublkNumberOfQueue controls the number of queues for ublk frontend.">
   <span class="prop-name">ublkNumberOfQueue</span>
   <span class="type-badge">integer</span>

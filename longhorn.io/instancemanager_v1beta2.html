@@ -443,7 +443,9 @@ data-engine-cpu-isolation-enabled setting for this instance manager.
            to start-spdk-tgt (steer host IRQs and unbound kernel
            workqueues away from the SPDK reactor CPUs).
 &#34;false&#34; -&gt; do not pass the flags.
-&#34;&#34;      -&gt; inherit the global setting value. enum: , true, false">
+&#34;&#34;      -&gt; inherit the global setting value.
+This field is ignored when interrupt mode is enabled, since the SPDK
+reactors no longer busy-poll and CPU isolation is always disabled. enum: , true, false">
   <span class="prop-name">cpuIsolationEnabled</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">CPUIsolationEnabled overrides the cluster-wide
@@ -452,7 +454,9 @@ data-engine-cpu-isolation-enabled setting for this instance manager.
            to start-spdk-tgt (steer host IRQs and unbound kernel
            workqueues away from the SPDK reactor CPUs).
 &#34;false&#34; -&gt; do not pass the flags.
-&#34;&#34;      -&gt; inherit the global setting value.<div class="leaf-constraints">
+&#34;&#34;      -&gt; inherit the global setting value.
+This field is ignored when interrupt mode is enabled, since the SPDK
+reactors no longer busy-poll and CPU isolation is always disabled.<div class="leaf-constraints">
 <div class="schema-constraint" title="enum: , true, false"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">, true, false</code></div></div>
   </div>
 </div>

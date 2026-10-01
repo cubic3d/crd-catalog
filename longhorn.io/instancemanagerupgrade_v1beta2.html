@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EngineFrontend v1beta2 — longhorn.io</title>
+<title>InstanceManagerUpgrade v1beta2 — longhorn.io</title>
 <link rel="icon" type="image/svg+xml" href="/crd-catalog/favicon.svg">
 <style>
   :root {
@@ -352,11 +352,11 @@
   <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" aria-label="Light mode" aria-pressed="false">☀/☾</button>
 </nav>
 <header>
-  <h1 class="schema-title">EngineFrontend</h1>
+  <h1 class="schema-title">InstanceManagerUpgrade</h1>
   <p class="schema-title-group">longhorn.io / v1beta2</p>
 </header>
 <div class="yaml-block">apiVersion: longhorn.io/v1beta2
-kind: EngineFrontend
+kind: InstanceManagerUpgrade
 metadata:
   name: example</div>
 <div class="search-row">
@@ -365,7 +365,7 @@ metadata:
     <div class="search-ghost" id="search-ghost" aria-hidden="true"><span class="search-ghost-prefix" id="search-ghost-prefix"></span><span class="search-ghost-suffix" id="search-ghost-suffix"></span></div>
     <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
   </div>
-  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.active for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.nodeID for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="toolbar">
   <div class="toolbar-left">
@@ -373,8 +373,8 @@ metadata:
     <button id="collapse-all">Collapse all</button>
   </div>
   <div class="toolbar-left">
-    <a href="/crd-catalog/longhorn.io/enginefrontend_v1beta2.json" target="_blank">View raw schema</a>
-    <button id="copy-url" data-url="/crd-catalog/longhorn.io/enginefrontend_v1beta2.json">Copy schema URL</button>
+    <a href="/crd-catalog/longhorn.io/instancemanagerupgrade_v1beta2.json" target="_blank">View raw schema</a>
+    <button id="copy-url" data-url="/crd-catalog/longhorn.io/instancemanagerupgrade_v1beta2.json">Copy schema URL</button>
   </div>
 </div>
 <div id="properties">
@@ -410,157 +410,53 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
   <div class="leaf-desc">
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="EngineFrontendSpec defines the desired state of the Longhorn engine frontend (v2 initiator)">
+<details class="prop" data-prop-row data-path="spec" data-path-key="|spec|" data-parent-path="" data-name="spec" data-text="InstanceManagerUpgradeSpec defines the desired state of the InstanceManagerUpgrade.">
 <summary>
   <span class="prop-name">spec</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">EngineFrontendSpec defines the desired state of the Longhorn engine frontend (v2 initiator)</div>
+<div class="prop-content"><div class="prop-desc">InstanceManagerUpgradeSpec defines the desired state of the InstanceManagerUpgrade.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.active" data-path-key="|spec|active|" data-parent-path="spec" data-name="active" data-text="">
-  <span class="prop-name">active</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.dataEngine" data-path-key="|spec|dataEngine|" data-parent-path="spec" data-name="dataEngine" data-text="enum: v1, v2">
-  <span class="prop-name">dataEngine</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
-<div class="schema-constraint" title="enum: v1, v2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">v1, v2</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.desireState" data-path-key="|spec|desireState|" data-parent-path="spec" data-name="desireState" data-text="">
-  <span class="prop-name">desireState</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.disableFrontend" data-path-key="|spec|disableFrontend|" data-parent-path="spec" data-name="disableFrontend" data-text="">
-  <span class="prop-name">disableFrontend</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.engineName" data-path-key="|spec|engineName|" data-parent-path="spec" data-name="engineName" data-text="EngineName is the name of the v2 engine target (required for EngineFrontend instance creation)">
-  <span class="prop-name">engineName</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">EngineName is the name of the v2 engine target (required for EngineFrontend instance creation)
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.frontend" data-path-key="|spec|frontend|" data-parent-path="spec" data-name="frontend" data-text="enum: blockdev, iscsi, nvmf, ublk, ">
-  <span class="prop-name">frontend</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
-<div class="schema-constraint" title="enum: blockdev, iscsi, nvmf, ublk, "><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">blockdev, iscsi, nvmf, ublk, </code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.image" data-path-key="|spec|image|" data-parent-path="spec" data-name="image" data-text="">
-  <span class="prop-name">image</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.logRequested" data-path-key="|spec|logRequested|" data-parent-path="spec" data-name="logRequested" data-text="">
-  <span class="prop-name">logRequested</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.nodeID" data-path-key="|spec|nodeID|" data-parent-path="spec" data-name="nodeID" data-text="NodeID is the node where the source instance manager is running.">
   <span class="prop-name">nodeID</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">NodeID is the node where the source instance manager is running.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.nvmeTcpNrIoQueues" data-path-key="|spec|nvmeTcpNrIoQueues|" data-parent-path="spec" data-name="nvmeTcpNrIoQueues" data-text="nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
-creates when connecting the blockdev frontend over NVMe-TCP.
-0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
-Takes effect on (re)attach.">
-  <span class="prop-name">nvmeTcpNrIoQueues</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">nvmeTcpNrIoQueues limits the number of I/O queues the kernel initiator
-creates when connecting the blockdev frontend over NVMe-TCP.
-0 means inheriting the global setting default-nvme-tcp-nr-io-queues.
-Takes effect on (re)attach.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.salvageRequested" data-path-key="|spec|salvageRequested|" data-parent-path="spec" data-name="salvageRequested" data-text="">
-  <span class="prop-name">salvageRequested</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.size" data-path-key="|spec|size|" data-parent-path="spec" data-name="size" data-text="Size is the desired size of the frontend device in bytes, as requested
-by the volume owner. The EngineFrontend controller drives the frontend
-device toward this size independently of the engine&#39;s target size. format: int64">
-  <span class="prop-name">size</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Size is the desired size of the frontend device in bytes, as requested
-by the volume owner. The EngineFrontend controller drives the frontend
-device toward this size independently of the engine&#39;s target size.<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.targetIP" data-path-key="|spec|targetIP|" data-parent-path="spec" data-name="targetIP" data-text="TargetIP is the IP address of the v2 engine target">
-  <span class="prop-name">targetIP</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">TargetIP is the IP address of the v2 engine target
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.targetPort" data-path-key="|spec|targetPort|" data-parent-path="spec" data-name="targetPort" data-text="TargetPort is the port of the v2 engine target">
-  <span class="prop-name">targetPort</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">TargetPort is the port of the v2 engine target
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.ublkNumberOfQueue" data-path-key="|spec|ublkNumberOfQueue|" data-parent-path="spec" data-name="ublkNumberOfQueue" data-text="ublkNumberOfQueue controls the number of queues for ublk frontend.">
-  <span class="prop-name">ublkNumberOfQueue</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">ublkNumberOfQueue controls the number of queues for ublk frontend.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.ublkQueueDepth" data-path-key="|spec|ublkQueueDepth|" data-parent-path="spec" data-name="ublkQueueDepth" data-text="ublkQueueDepth controls the depth of each queue for ublk frontend.">
-  <span class="prop-name">ublkQueueDepth</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">ublkQueueDepth controls the depth of each queue for ublk frontend.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.volumeName" data-path-key="|spec|volumeName|" data-parent-path="spec" data-name="volumeName" data-text="">
-  <span class="prop-name">volumeName</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="spec.volumeSize" data-path-key="|spec|volumeSize|" data-parent-path="spec" data-name="volumeSize" data-text="format: int64">
-  <span class="prop-name">volumeSize</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
+<div class="prop-leaf" data-prop-row data-path="spec.targetImage" data-path-key="|spec|targetImage|" data-parent-path="spec" data-name="targetImage" data-text="TargetImage is the desired instance manager image after upgrade.">
+  <span class="prop-name">targetImage</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">TargetImage is the desired instance manager image after upgrade.
   </div>
 </div>
   </div>
 </div>
 </details>
-<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="EngineFrontendStatus defines the observed state of the Longhorn engine frontend">
+<details class="prop" data-prop-row data-path="status" data-path-key="|status|" data-parent-path="" data-name="status" data-text="InstanceManagerUpgradeStatus defines the observed state of the InstanceManagerUpgrade.">
 <summary>
   <span class="prop-name">status</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">EngineFrontendStatus defines the observed state of the Longhorn engine frontend</div>
+<div class="prop-content"><div class="prop-desc">InstanceManagerUpgradeStatus defines the observed state of the InstanceManagerUpgrade.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="status.activePath" data-path-key="|status|activePath|" data-parent-path="status" data-name="activePath" data-text="ActivePath is the currently active frontend path address.">
-  <span class="prop-name">activePath</span>
+<div class="prop-leaf" data-prop-row data-path="status.abortReason" data-path-key="|status|abortReason|" data-parent-path="status" data-name="abortReason" data-text="AbortReason explains why AbortRequested was set.">
+  <span class="prop-name">abortReason</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">ActivePath is the currently active frontend path address.
+  <div class="leaf-desc">AbortReason explains why AbortRequested was set.
   </div>
 </div>
-<details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="">
+<div class="prop-leaf" data-prop-row data-path="status.abortRequested" data-path-key="|status|abortRequested|" data-parent-path="status" data-name="abortRequested" data-text="AbortRequested is set by the controller when an abort condition is detected.">
+  <span class="prop-name">abortRequested</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">AbortRequested is set by the controller when an abort condition is detected.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="Conditions records the current conditions of the upgrade.">
 <summary>
   <span class="prop-name">conditions</span>
   <span class="type-badge">[]object</span>
 </summary>
-<div class="prop-content">
+<div class="prop-content"><div class="prop-desc">Conditions records the current conditions of the upgrade.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="status.conditions[].lastProbeTime" data-path-key="|status|conditions[]|lastProbeTime|" data-parent-path="status.conditions" data-name="lastProbeTime" data-text="Last time we probed the condition.">
   <span class="prop-name">lastProbeTime</span>
@@ -603,177 +499,53 @@ Can be True, False, Unknown.
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="status.currentImage" data-path-key="|status|currentImage|" data-parent-path="status" data-name="currentImage" data-text="">
-  <span class="prop-name">currentImage</span>
+<div class="prop-leaf" data-prop-row data-path="status.engines" data-path-key="|status|engines|" data-parent-path="status" data-name="engines" data-text="Engines records the relocation plan for each engine managed by the source
+instance manager. The map key is the volume name.">
+  <span class="prop-name">engines</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">Engines records the relocation plan for each engine managed by the source
+instance manager. The map key is the volume name.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.errorMsg" data-path-key="|status|errorMsg|" data-parent-path="status" data-name="errorMsg" data-text="ErrorMsg records the terminal error encountered during the upgrade, if any.">
+  <span class="prop-name">errorMsg</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">ErrorMsg records the terminal error encountered during the upgrade, if any.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.currentSize" data-path-key="|status|currentSize|" data-parent-path="status" data-name="currentSize" data-text="CurrentSize is the current size of the frontend device in bytes, as
-observed from the data plane. It is 0 while the engine frontend is not
-running. format: int64">
-  <span class="prop-name">currentSize</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">CurrentSize is the current size of the frontend device in bytes, as
-observed from the data plane. It is 0 while the engine frontend is not
-running.<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.currentState" data-path-key="|status|currentState|" data-parent-path="status" data-name="currentState" data-text="">
-  <span class="prop-name">currentState</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.endpoint" data-path-key="|status|endpoint|" data-parent-path="status" data-name="endpoint" data-text="Endpoint is the initiator endpoint (e.g., /dev/longhorn/vol-name)">
-  <span class="prop-name">endpoint</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">Endpoint is the initiator endpoint (e.g., /dev/longhorn/vol-name)
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.instanceManagerName" data-path-key="|status|instanceManagerName|" data-parent-path="status" data-name="instanceManagerName" data-text="">
-  <span class="prop-name">instanceManagerName</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.ip" data-path-key="|status|ip|" data-parent-path="status" data-name="ip" data-text="">
-  <span class="prop-name">ip</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.logFetched" data-path-key="|status|logFetched|" data-parent-path="status" data-name="logFetched" data-text="">
-  <span class="prop-name">logFetched</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.ownerID" data-path-key="|status|ownerID|" data-parent-path="status" data-name="ownerID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="status.ownerID" data-path-key="|status|ownerID|" data-parent-path="status" data-name="ownerID" data-text="OwnerID is the owner node ID of this InstanceManagerUpgrade.">
   <span class="prop-name">ownerID</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">OwnerID is the owner node ID of this InstanceManagerUpgrade.
   </div>
 </div>
-<details class="prop" data-prop-row data-path="status.paths" data-path-key="|status|paths|" data-parent-path="status" data-name="paths" data-text="Paths describes the currently known frontend multipath state.">
-<summary>
-  <span class="prop-name">paths</span>
-  <span class="type-badge">[]object</span>
-</summary>
-<div class="prop-content"><div class="prop-desc">Paths describes the currently known frontend multipath state.</div>
-  <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="status.paths[].anaState" data-path-key="|status|paths[]|anaState|" data-parent-path="status.paths" data-name="anaState" data-text="">
-  <span class="prop-name">anaState</span>
+<div class="prop-leaf" data-prop-row data-path="status.plannedDetachedReplicas" data-path-key="|status|plannedDetachedReplicas|" data-parent-path="status" data-name="plannedDetachedReplicas" data-text="PlannedDetachedReplicas records the replicas that should be temporarily
+detached from engines during the instance manager upgrade. The map key is
+the volume name.">
+  <span class="prop-name">plannedDetachedReplicas</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">PlannedDetachedReplicas records the replicas that should be temporarily
+detached from engines during the instance manager upgrade. The map key is
+the volume name.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.startedAt" data-path-key="|status|startedAt|" data-parent-path="status" data-name="startedAt" data-text="StartedAt records when the timed or active portion of the upgrade began.">
+  <span class="prop-name">startedAt</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">StartedAt records when the timed or active portion of the upgrade began.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="status.paths[].engineName" data-path-key="|status|paths[]|engineName|" data-parent-path="status.paths" data-name="engineName" data-text="">
-  <span class="prop-name">engineName</span>
+<div class="prop-leaf" data-prop-row data-path="status.state" data-path-key="|status|state|" data-parent-path="status" data-name="state" data-text="State indicates the overall progress of the instance manager upgrade.">
+  <span class="prop-name">state</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.paths[].nguid" data-path-key="|status|paths[]|nguid|" data-parent-path="status.paths" data-name="nguid" data-text="">
-  <span class="prop-name">nguid</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.paths[].nqn" data-path-key="|status|paths[]|nqn|" data-parent-path="status.paths" data-name="nqn" data-text="">
-  <span class="prop-name">nqn</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.paths[].targetIP" data-path-key="|status|paths[]|targetIP|" data-parent-path="status.paths" data-name="targetIP" data-text="">
-  <span class="prop-name">targetIP</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.paths[].targetPort" data-path-key="|status|paths[]|targetPort|" data-parent-path="status.paths" data-name="targetPort" data-text="">
-  <span class="prop-name">targetPort</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-  </div>
-</div>
-</details>
-<div class="prop-leaf" data-prop-row data-path="status.port" data-path-key="|status|port|" data-parent-path="status" data-name="port" data-text="">
-  <span class="prop-name">port</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.preferredPath" data-path-key="|status|preferredPath|" data-parent-path="status" data-name="preferredPath" data-text="PreferredPath is the preferred frontend path address.">
-  <span class="prop-name">preferredPath</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">PreferredPath is the preferred frontend path address.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.salvageExecuted" data-path-key="|status|salvageExecuted|" data-parent-path="status" data-name="salvageExecuted" data-text="">
-  <span class="prop-name">salvageExecuted</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.started" data-path-key="|status|started|" data-parent-path="status" data-name="started" data-text="">
-  <span class="prop-name">started</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.starting" data-path-key="|status|starting|" data-parent-path="status" data-name="starting" data-text="">
-  <span class="prop-name">starting</span>
-  <span class="type-badge">boolean</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.storageIP" data-path-key="|status|storageIP|" data-parent-path="status" data-name="storageIP" data-text="">
-  <span class="prop-name">storageIP</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.switchoverPhase" data-path-key="|status|switchoverPhase|" data-parent-path="status" data-name="switchoverPhase" data-text="SwitchoverPhase is the last completed switchover phase reported by the data plane.">
-  <span class="prop-name">switchoverPhase</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">SwitchoverPhase is the last completed switchover phase reported by the data plane.
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.targetIP" data-path-key="|status|targetIP|" data-parent-path="status" data-name="targetIP" data-text="TargetIP is the currently connected IP address of the v2 engine target">
-  <span class="prop-name">targetIP</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">TargetIP is the currently connected IP address of the v2 engine target
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.targetPort" data-path-key="|status|targetPort|" data-parent-path="status" data-name="targetPort" data-text="TargetPort is the currently connected port of the v2 engine target">
-  <span class="prop-name">targetPort</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc">TargetPort is the currently connected port of the v2 engine target
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.ublkID" data-path-key="|status|ublkID|" data-parent-path="status" data-name="ublkID" data-text="format: int32">
-  <span class="prop-name">ublkID</span>
-  <span class="type-badge">integer</span>
-  <div class="leaf-desc"><div class="leaf-constraints">
-<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
-  </div>
-</div>
-<div class="prop-leaf" data-prop-row data-path="status.uuid" data-path-key="|status|uuid|" data-parent-path="status" data-name="uuid" data-text="">
-  <span class="prop-name">uuid</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">State indicates the overall progress of the instance manager upgrade.
   </div>
 </div>
   </div>
 </div>
 </details>
 </div>
-<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.active for an exact path">No matches. Try .spec.active for an exact path</p>
+<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.nodeID for an exact path">No matches. Try .spec.nodeID for an exact path</p>
 </main>
 <div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <footer>

@@ -455,10 +455,43 @@ Support parameters: &#34;full-backup-interval&#34;, &#34;volume-backup-policy&#3
 Support parameters: &#34;full-backup-interval&#34;, &#34;volume-backup-policy&#34;.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.retain" data-path-key="|spec|retain|" data-parent-path="spec" data-name="retain" data-text="The retain count of the snapshot/backup.">
+<div class="prop-leaf" data-prop-row data-path="spec.retain" data-path-key="|spec|retain|" data-parent-path="spec" data-name="retain" data-text="The retain count of the snapshot/backup.
+Retain represents the number of snapshots/backups to retain and only when the retention policy is &#34;count-based&#34;.">
   <span class="prop-name">retain</span>
   <span class="type-badge">integer</span>
   <div class="leaf-desc">The retain count of the snapshot/backup.
+Retain represents the number of snapshots/backups to retain and only when the retention policy is &#34;count-based&#34;.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.retainAge" data-path-key="|spec|retainAge|" data-parent-path="spec" data-name="retainAge" data-text="The retention age of the snapshot/backup, specified as a Go duration string,
+such as &#34;10m&#34;, &#34;24h&#34;, or &#34;8760h&#34;. Note that Go durations have no day or year unit,
+so a day is &#34;24h&#34;. Snapshots/backups older than this are cleaned up by the recurring job.
+Only takes effect when the retention policy is &#34;age-based&#34;.
+If the retention policy is &#34;age-based&#34;, this value is 0s, the recurring job will not start.">
+  <span class="prop-name">retainAge</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The retention age of the snapshot/backup, specified as a Go duration string,
+such as &#34;10m&#34;, &#34;24h&#34;, or &#34;8760h&#34;. Note that Go durations have no day or year unit,
+so a day is &#34;24h&#34;. Snapshots/backups older than this are cleaned up by the recurring job.
+Only takes effect when the retention policy is &#34;age-based&#34;.
+If the retention policy is &#34;age-based&#34;, this value is 0s, the recurring job will not start.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.retentionPolicy" data-path-key="|spec|retentionPolicy|" data-parent-path="spec" data-name="retentionPolicy" data-text="The retention policy that determines whether the recurring job cleans up
+snapshots/backups based on their count or age. Can be &#34;count-based&#34; or
+&#34;age-based&#34;. The two policies work independently: &#34;count-based&#34; (the default)
+retains the configured number of newest snapshots/backups and ignores
+RetainAge, while &#34;age-based&#34; retains snapshots/backups no older than RetainAge
+and ignores Retain. enum: count-based, age-based">
+  <span class="prop-name">retentionPolicy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The retention policy that determines whether the recurring job cleans up
+snapshots/backups based on their count or age. Can be &#34;count-based&#34; or
+&#34;age-based&#34;. The two policies work independently: &#34;count-based&#34; (the default)
+retains the configured number of newest snapshots/backups and ignores
+RetainAge, while &#34;age-based&#34; retains snapshots/backups no older than RetainAge
+and ignores Retain.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: count-based, age-based"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">count-based, age-based</code></div></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.task" data-path-key="|spec|task|" data-parent-path="spec" data-name="task" data-text="The recurring job task.

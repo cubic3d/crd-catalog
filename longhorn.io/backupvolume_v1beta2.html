@@ -502,6 +502,18 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 <div class="schema-constraint" title="format: date-time"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">date-time</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="status.linkedCloneSourceSnapshot" data-path-key="|status|linkedCloneSourceSnapshot|" data-parent-path="status" data-name="linkedCloneSourceSnapshot" data-text="The source snapshot of the backed up volume, set only when it was a linked clone.">
+  <span class="prop-name">linkedCloneSourceSnapshot</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The source snapshot of the backed up volume, set only when it was a linked clone.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.linkedCloneSourceVolume" data-path-key="|status|linkedCloneSourceVolume|" data-parent-path="status" data-name="linkedCloneSourceVolume" data-text="The source volume of the backed up volume, set only when it was a linked clone.">
+  <span class="prop-name">linkedCloneSourceVolume</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The source volume of the backed up volume, set only when it was a linked clone.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="status.messages" data-path-key="|status|messages|" data-parent-path="status" data-name="messages" data-text="The error messages when call longhorn engine on list or inspect backup volumes.">
   <span class="prop-name">messages</span>
   <span class="type-badge">object</span>
