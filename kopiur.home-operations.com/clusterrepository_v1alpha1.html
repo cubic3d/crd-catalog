@@ -2210,10 +2210,20 @@ Localhost - a profile defined in a file on the node should be used. RuntimeDefau
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.privilegedMode" data-path-key="|spec|maintenance|mover|privilegedMode|" data-parent-path="spec.maintenance.mover" data-name="privilegedMode" data-text="Opt-in, namespace-gated privileged mode; preserves UID/GID on restore.">
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.privilegedMode" data-path-key="|spec|maintenance|mover|privilegedMode|" data-parent-path="spec.maintenance.mover" data-name="privilegedMode" data-text="Opt-in, namespace-gated privileged mode. Never changes the UID. When the mover runs
+as root (`runAsUser: 0`), adds the capabilities the operation needs on top of
+`drop: [ALL]`: `DAC_OVERRIDE` for a backup (read files owned by any uid/gid);
+`CHOWN`, `DAC_OVERRIDE`, `FOWNER`, `FSETID` for a restore (reproduce original
+ownership). Grants nothing for maintenance, or when the mover does not run as
+root (capabilities are inert for non-root); set `runAsUser: 0` yourself.">
   <span class="prop-name">privilegedMode</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Opt-in, namespace-gated privileged mode; preserves UID/GID on restore.
+  <div class="leaf-desc">Opt-in, namespace-gated privileged mode. Never changes the UID. When the mover runs
+as root (`runAsUser: 0`), adds the capabilities the operation needs on top of
+`drop: [ALL]`: `DAC_OVERRIDE` for a backup (read files owned by any uid/gid);
+`CHOWN`, `DAC_OVERRIDE`, `FOWNER`, `FSETID` for a restore (reproduce original
+ownership). Grants nothing for maintenance, or when the mover does not run as
+root (capabilities are inert for non-root); set `runAsUser: 0` yourself.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.maintenance.mover.resources" data-path-key="|spec|maintenance|mover|resources|" data-parent-path="spec.maintenance.mover" data-name="resources" data-text="Resource requests/limits for the mover container.">
