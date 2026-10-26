@@ -417,12 +417,53 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">GithubAccessTokenSpec defines the desired state to generate a GitHub access token.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.appID" data-path-key="|spec|appID|" data-parent-path="spec" data-name="appID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.appID" data-path-key="|spec|appID|" data-parent-path="spec" data-name="appID" data-text="AppID is the GitHub App ID. Exactly one of AppID or AppIDRef must be set.">
   <span class="prop-name">appID</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">AppID is the GitHub App ID. Exactly one of AppID or AppIDRef must be set.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.appIDRef" data-path-key="|spec|appIDRef|" data-parent-path="spec" data-name="appIDRef" data-text="AppIDRef references a secret key containing the GitHub App ID. Exactly one of AppID or AppIDRef must be set.">
+<summary>
+  <span class="prop-name">appIDRef</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">AppIDRef references a secret key containing the GitHub App ID. Exactly one of AppID or AppIDRef must be set.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.appIDRef.key" data-path-key="|spec|appIDRef|key|" data-parent-path="spec.appIDRef" data-name="key" data-text="A key in the referenced Secret.
+Some instances of this field may be defaulted, in others it may be required. pattern: ^[-._a-zA-Z0-9]&#43;$ minLength: 1 maxLength: 253">
+  <span class="prop-name">key</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">A key in the referenced Secret.
+Some instances of this field may be defaulted, in others it may be required.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[-._a-zA-Z0-9]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[-._a-zA-Z0-9]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.appIDRef.name" data-path-key="|spec|appIDRef|name|" data-parent-path="spec.appIDRef" data-name="name" data-text="The name of the Secret resource being referred to. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The name of the Secret resource being referred to.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.appIDRef.namespace" data-path-key="|spec|appIDRef|namespace|" data-parent-path="spec.appIDRef" data-name="namespace" data-text="The namespace of the Secret resource being referred to.
+Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The namespace of the Secret resource being referred to.
+Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.auth" data-path-key="|spec|auth|" data-parent-path="spec" data-name="auth" data-text="Auth configures how ESO authenticates with a Github instance.">
 <summary>
   <span class="prop-name">auth</span>
@@ -486,12 +527,55 @@ Ignored if referent is not cluster-scoped, otherwise defaults to the namespace o
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.installID" data-path-key="|spec|installID|" data-parent-path="spec" data-name="installID" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.installID" data-path-key="|spec|installID|" data-parent-path="spec" data-name="installID" data-text="InstallID is the GitHub App installation ID. Exactly one of InstallID or InstallIDRef must be set.">
   <span class="prop-name">installID</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
-  <div class="leaf-desc">
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">InstallID is the GitHub App installation ID. Exactly one of InstallID or InstallIDRef must be set.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.installIDRef" data-path-key="|spec|installIDRef|" data-parent-path="spec" data-name="installIDRef" data-text="InstallIDRef references a secret key containing the GitHub App installation ID. Exactly one of InstallID or
+InstallIDRef must be set.">
+<summary>
+  <span class="prop-name">installIDRef</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">InstallIDRef references a secret key containing the GitHub App installation ID. Exactly one of InstallID or
+InstallIDRef must be set.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.installIDRef.key" data-path-key="|spec|installIDRef|key|" data-parent-path="spec.installIDRef" data-name="key" data-text="A key in the referenced Secret.
+Some instances of this field may be defaulted, in others it may be required. pattern: ^[-._a-zA-Z0-9]&#43;$ minLength: 1 maxLength: 253">
+  <span class="prop-name">key</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">A key in the referenced Secret.
+Some instances of this field may be defaulted, in others it may be required.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[-._a-zA-Z0-9]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[-._a-zA-Z0-9]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.installIDRef.name" data-path-key="|spec|installIDRef|name|" data-parent-path="spec.installIDRef" data-name="name" data-text="The name of the Secret resource being referred to. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The name of the Secret resource being referred to.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.installIDRef.namespace" data-path-key="|spec|installIDRef|namespace|" data-parent-path="spec.installIDRef" data-name="namespace" data-text="The namespace of the Secret resource being referred to.
+Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The namespace of the Secret resource being referred to.
+Ignored if referent is not cluster-scoped, otherwise defaults to the namespace of the referent.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.permissions" data-path-key="|spec|permissions|" data-parent-path="spec" data-name="permissions" data-text="Map of permissions the token will have. If omitted, defaults to all permissions the GitHub App has.">
   <span class="prop-name">permissions</span>
   <span class="type-badge">object</span>

@@ -1359,6 +1359,16 @@ in accordance with RFC 9773. This is only populated if the ARI feature gate is e
 <div class="prop-content"><div class="prop-desc">ARI stores the ACME Renewal Information that is fetched from the ACME server
 in accordance with RFC 9773. This is only populated if the ARI feature gate is enabled.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.acme.ari.certID" data-path-key="|status|acme|ari|certID|" data-parent-path="status.acme.ari" data-name="certID" data-text="CertID is the ARI CertID (RFC 9773) of the certificate this renewal information was
+fetched for. This is used to determine if we need to re-fetch the renewal information
+as changed cert id means that ARI fetched before is stale.">
+  <span class="prop-name">certID</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">CertID is the ARI CertID (RFC 9773) of the certificate this renewal information was
+fetched for. This is used to determine if we need to re-fetch the renewal information
+as changed cert id means that ARI fetched before is stale.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="status.acme.ari.explanationURL" data-path-key="|status|acme|ari|explanationURL|" data-parent-path="status.acme.ari" data-name="explanationURL" data-text="ExplanationURL is a human-readable URL that may explain why the suggested window
 has its current value.">
   <span class="prop-name">explanationURL</span>
