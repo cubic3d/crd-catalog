@@ -438,12 +438,22 @@ Defaults to &#39;cluster.local&#39;.
   <div class="leaf-desc">Multitenant enables the multitenancy lockdown. Defaults to false.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.cluster.multitenantWorkloadIdentity" data-path-key="|spec|cluster|multitenantWorkloadIdentity|" data-parent-path="spec.cluster" data-name="multitenantWorkloadIdentity" data-text="MultitenantWorkloadIdentity enables the multitenancy lockdown for
-workload identity. Defaults to false.">
+<div class="prop-leaf" data-prop-row data-path="spec.cluster.multitenantObjectIdentity" data-path-key="|spec|cluster|multitenantObjectIdentity|" data-parent-path="spec.cluster" data-name="multitenantObjectIdentity" data-text="MultitenantObjectIdentity enables the multitenancy lockdown for
+object identity. Defaults to false.">
+  <span class="prop-name">multitenantObjectIdentity</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">MultitenantObjectIdentity enables the multitenancy lockdown for
+object identity. Defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.cluster.multitenantWorkloadIdentity" data-path-key="|spec|cluster|multitenantWorkloadIdentity|" data-parent-path="spec.cluster" data-name="multitenantWorkloadIdentity" data-text="MultitenantWorkloadIdentity is now legacy.
+
+Legacy: Use MultitenantObjectIdentity instead.">
   <span class="prop-name">multitenantWorkloadIdentity</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">MultitenantWorkloadIdentity enables the multitenancy lockdown for
-workload identity. Defaults to false.
+  <div class="leaf-desc">MultitenantWorkloadIdentity is now legacy.
+
+Legacy: Use MultitenantObjectIdentity instead.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.networkPolicy" data-path-key="|spec|cluster|networkPolicy|" data-parent-path="spec.cluster" data-name="networkPolicy" data-text="NetworkPolicy restricts network access to the current namespace.
@@ -454,14 +464,46 @@ Defaults to true.">
 Defaults to true.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.cluster.objectLevelWorkloadIdentity" data-path-key="|spec|cluster|objectLevelWorkloadIdentity|" data-parent-path="spec.cluster" data-name="objectLevelWorkloadIdentity" data-text="ObjectLevelWorkloadIdentity enables the feature gate
-required for object-level workload identity.
+<div class="prop-leaf" data-prop-row data-path="spec.cluster.objectIdentityRBAC" data-path-key="|spec|cluster|objectIdentityRBAC|" data-parent-path="spec.cluster" data-name="objectIdentityRBAC" data-text="ObjectIdentityRBAC configures the RBAC required for object identity
+using Kubernetes service account tokens. Object identity is the new
+name of the upstream Flux object-level workload identity feature.
+In Flux v2.6.0 to v2.9.x this enables the
+ObjectLevelWorkloadIdentity feature gate and leaves the RBAC for
+creating service account tokens in place. When disabled, the
+operator removes that RBAC from the Flux controllers&#39; ClusterRole.
+Starting with Flux v2.10.0, the ObjectLevelWorkloadIdentity feature
+gate is retired and no longer changes behavior, so the operator no
+longer passes it to the controllers.
+Starting with Flux v2.10.0, the RBAC for creating service account
+tokens is removed from the Flux distribution, and this field
+controls whether the operator adds it.
 This feature is only available in Flux v2.6.0 and later.">
+  <span class="prop-name">objectIdentityRBAC</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">ObjectIdentityRBAC configures the RBAC required for object identity
+using Kubernetes service account tokens. Object identity is the new
+name of the upstream Flux object-level workload identity feature.
+In Flux v2.6.0 to v2.9.x this enables the
+ObjectLevelWorkloadIdentity feature gate and leaves the RBAC for
+creating service account tokens in place. When disabled, the
+operator removes that RBAC from the Flux controllers&#39; ClusterRole.
+Starting with Flux v2.10.0, the ObjectLevelWorkloadIdentity feature
+gate is retired and no longer changes behavior, so the operator no
+longer passes it to the controllers.
+Starting with Flux v2.10.0, the RBAC for creating service account
+tokens is removed from the Flux distribution, and this field
+controls whether the operator adds it.
+This feature is only available in Flux v2.6.0 and later.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.cluster.objectLevelWorkloadIdentity" data-path-key="|spec|cluster|objectLevelWorkloadIdentity|" data-parent-path="spec.cluster" data-name="objectLevelWorkloadIdentity" data-text="ObjectLevelWorkloadIdentity is now legacy.
+
+Legacy: Use ObjectIdentityRBAC instead.">
   <span class="prop-name">objectLevelWorkloadIdentity</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">ObjectLevelWorkloadIdentity enables the feature gate
-required for object-level workload identity.
-This feature is only available in Flux v2.6.0 and later.
+  <div class="leaf-desc">ObjectLevelWorkloadIdentity is now legacy.
+
+Legacy: Use ObjectIdentityRBAC instead.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.size" data-path-key="|spec|cluster|size|" data-parent-path="spec.cluster" data-name="size" data-text="Size defines the vertical scaling profile of the Flux controllers.
@@ -477,34 +519,34 @@ Accepted values are: &#39;small&#39;, &#39;medium&#39; and &#39;large&#39;.<div 
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.tenantDefaultDecryptionServiceAccount" data-path-key="|spec|cluster|tenantDefaultDecryptionServiceAccount|" data-parent-path="spec.cluster" data-name="tenantDefaultDecryptionServiceAccount" data-text="TenantDefaultDecryptionServiceAccount is the name of the service account
 to use as default for kustomize-controller SOPS decryption when the
-multitenant lockdown for workload identity is enabled. Defaults to the
+multitenant lockdown for object identity is enabled. Defaults to the
 &#39;default&#39; service account from the tenant namespace.">
   <span class="prop-name">tenantDefaultDecryptionServiceAccount</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">TenantDefaultDecryptionServiceAccount is the name of the service account
 to use as default for kustomize-controller SOPS decryption when the
-multitenant lockdown for workload identity is enabled. Defaults to the
+multitenant lockdown for object identity is enabled. Defaults to the
 &#39;default&#39; service account from the tenant namespace.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.tenantDefaultKubeConfigServiceAccount" data-path-key="|spec|cluster|tenantDefaultKubeConfigServiceAccount|" data-parent-path="spec.cluster" data-name="tenantDefaultKubeConfigServiceAccount" data-text="TenantDefaultKubeConfigServiceAccount is the name of the service account
 to use as default for kustomize-controller and helm-controller remote
 cluster access via spec.kubeConfig.configMapRef when the multitenant
-lockdown for workload identity is enabled. Defaults to the &#39;default&#39;
+lockdown for object identity is enabled. Defaults to the &#39;default&#39;
 service account from the tenant namespace.">
   <span class="prop-name">tenantDefaultKubeConfigServiceAccount</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">TenantDefaultKubeConfigServiceAccount is the name of the service account
 to use as default for kustomize-controller and helm-controller remote
 cluster access via spec.kubeConfig.configMapRef when the multitenant
-lockdown for workload identity is enabled. Defaults to the &#39;default&#39;
+lockdown for object identity is enabled. Defaults to the &#39;default&#39;
 service account from the tenant namespace.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.tenantDefaultServiceAccount" data-path-key="|spec|cluster|tenantDefaultServiceAccount|" data-parent-path="spec.cluster" data-name="tenantDefaultServiceAccount" data-text="TenantDefaultServiceAccount is the name of the service account
 to use as default when the multitenant lockdown is enabled, for
 kustomize-controller and helm-controller.
-This field will also be used for multitenant workload identity
+This field will also be used for multitenant object identity
 lockdown for source-controller, notification-controller,
 image-reflector-controller and image-automation-controller.
 Defaults to the &#39;default&#39; service account from the tenant namespace.">
@@ -513,7 +555,7 @@ Defaults to the &#39;default&#39; service account from the tenant namespace.">
   <div class="leaf-desc">TenantDefaultServiceAccount is the name of the service account
 to use as default when the multitenant lockdown is enabled, for
 kustomize-controller and helm-controller.
-This field will also be used for multitenant workload identity
+This field will also be used for multitenant object identity
 lockdown for source-controller, notification-controller,
 image-reflector-controller and image-automation-controller.
 Defaults to the &#39;default&#39; service account from the tenant namespace.
@@ -782,6 +824,215 @@ When set to &#39;persistent&#39;, the &#39;.spec.storage&#39; field must be set.
 <div class="schema-constraint" title="enum: ephemeral, persistent"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">ephemeral, persistent</code></div></div>
   </div>
 </div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.spiffe" data-path-key="|spec|spiffe|" data-parent-path="spec" data-name="spiffe" data-text="SPIFFE holds the configuration for the SPIFFE integration.
+When set, the operator configures the Flux controllers to use
+the SPIFFE Workload API and optionally enables object identity
+and mTLS between the controllers.
+The flux-operator pod must also be configured with the same Workload API
+and, when used, Broker API settings, but does not need the inter-controller
+flags.">
+<summary>
+  <span class="prop-name">spiffe</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">SPIFFE holds the configuration for the SPIFFE integration.
+When set, the operator configures the Flux controllers to use
+the SPIFFE Workload API and optionally enables object identity
+and mTLS between the controllers.
+The flux-operator pod must also be configured with the same Workload API
+and, when used, Broker API settings, but does not need the inter-controller
+flags.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.spiffe.brokerAPI" data-path-key="|spec|spiffe|brokerAPI|" data-parent-path="spec.spiffe" data-name="brokerAPI" data-text="BrokerAPI holds the configuration for the SPIFFE Broker API.
+When set, enables the object-level SPIFFE features.">
+<summary>
+  <span class="prop-name">brokerAPI</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">BrokerAPI holds the configuration for the SPIFFE Broker API.
+When set, enables the object-level SPIFFE features.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.brokerAPI.endpoint" data-path-key="|spec|spiffe|brokerAPI|endpoint|" data-parent-path="spec.spiffe.brokerAPI" data-name="endpoint" data-text="Endpoint is the address of the SPIFFE Broker API endpoint,
+e.g. &#39;dns:///spiffe-broker.example.com:443&#39;.
+The flux-operator pod accepts the same --spiffe-broker-endpoint flag
+as the Flux controllers. For OLM installations, the endpoint can be
+set with the SPIFFE_BROKER_ENDPOINT environment variable. pattern: ^[!-~]&#43;$ minLength: 1 maxLength: 1024">
+  <span class="prop-name">endpoint</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Endpoint is the address of the SPIFFE Broker API endpoint,
+e.g. &#39;dns:///spiffe-broker.example.com:443&#39;.
+The flux-operator pod accepts the same --spiffe-broker-endpoint flag
+as the Flux controllers. For OLM installations, the endpoint can be
+set with the SPIFFE_BROKER_ENDPOINT environment variable.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[!-~]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[!-~]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.brokerAPI.ids" data-path-key="|spec|spiffe|brokerAPI|ids|" data-parent-path="spec.spiffe.brokerAPI" data-name="ids" data-text="IDs is the list of SPIFFE IDs or SPIFFE ID prefixes authorized
+for the SPIFFE Broker API endpoint. SPIFFE IDs ending with a slash
+are treated as prefixes.
+The flux-operator pod accepts the same repeatable --spiffe-broker-id
+flag as the Flux controllers. For OLM installations, the IDs can be
+set with the SPIFFE_BROKER_IDS environment variable as a comma-separated
+list. minItems: 1 maxItems: 64">
+  <span class="prop-name">ids</span>
+  <span class="type-badge">[]string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">IDs is the list of SPIFFE IDs or SPIFFE ID prefixes authorized
+for the SPIFFE Broker API endpoint. SPIFFE IDs ending with a slash
+are treated as prefixes.
+The flux-operator pod accepts the same repeatable --spiffe-broker-id
+flag as the Flux controllers. For OLM installations, the IDs can be
+set with the SPIFFE_BROKER_IDS environment variable as a comma-separated
+list.<div class="leaf-constraints">
+<div class="schema-constraint" title="minItems: 1"><span class="schema-constraint-label">minItems:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.spiffe.mtls" data-path-key="|spec|spiffe|mtls|" data-parent-path="spec.spiffe" data-name="mtls" data-text="MTLS holds the configuration for mTLS between the Flux controllers.
+The flux-operator reads the controller SPIFFE IDs from .status.spiffe.">
+<summary>
+  <span class="prop-name">mtls</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">MTLS holds the configuration for mTLS between the Flux controllers.
+The flux-operator reads the controller SPIFFE IDs from .status.spiffe.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.componentIDTemplate" data-path-key="|spec|spiffe|mtls|componentIDTemplate|" data-parent-path="spec.spiffe.mtls" data-name="componentIDTemplate" data-text="ComponentIDTemplate is the SPIFFE ID template for the Flux controllers.
+The &#39;{component}&#39; placeholder is replaced with the name of each
+installed component. A trailing slash indicates a SPIFFE ID prefix.
+The flux-operator ID is the SPIFFE ID of the operator&#39;s X.509-SVID,
+or this template with &#39;flux-operator&#39; when the operator has no
+Workload API source.
+The flux-operator ID is always added to notification-controller as an
+authorized notifier, and to source-controller and source-watcher as an
+authorized artifact client for the Web UI artifact downloads.
+For a standalone Web UI, use ExtraArtifactClients and ExtraNotifiers. pattern: ^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$ maxLength: 2048">
+  <span class="prop-name">componentIDTemplate</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">ComponentIDTemplate is the SPIFFE ID template for the Flux controllers.
+The &#39;{component}&#39; placeholder is replaced with the name of each
+installed component. A trailing slash indicates a SPIFFE ID prefix.
+The flux-operator ID is the SPIFFE ID of the operator&#39;s X.509-SVID,
+or this template with &#39;flux-operator&#39; when the operator has no
+Workload API source.
+The flux-operator ID is always added to notification-controller as an
+authorized notifier, and to source-controller and source-watcher as an
+authorized artifact client for the Web UI artifact downloads.
+For a standalone Web UI, use ExtraArtifactClients and ExtraNotifiers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 2048"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">2048</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.enabled" data-path-key="|spec|spiffe|mtls|enabled|" data-parent-path="spec.spiffe.mtls" data-name="enabled" data-text="Enabled enables mTLS between the Flux controllers.">
+  <span class="prop-name">enabled</span>
+  <span class="type-badge">boolean</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Enabled enables mTLS between the Flux controllers.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.extraArtifactClients" data-path-key="|spec|spiffe|mtls|extraArtifactClients|" data-parent-path="spec.spiffe.mtls" data-name="extraArtifactClients" data-text="ExtraArtifactClients is a list of additional SPIFFE IDs added to
+source-controller and source-watcher as authorized artifact clients,
+e.g. the standalone Web UI or the Flux MCP Server. maxItems: 64">
+  <span class="prop-name">extraArtifactClients</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">ExtraArtifactClients is a list of additional SPIFFE IDs added to
+source-controller and source-watcher as authorized artifact clients,
+e.g. the standalone Web UI or the Flux MCP Server.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.extraArtifactServers" data-path-key="|spec|spiffe|mtls|extraArtifactServers|" data-parent-path="spec.spiffe.mtls" data-name="extraArtifactServers" data-text="ExtraArtifactServers is a list of additional SPIFFE IDs added to
+kustomize-controller, helm-controller and source-watcher as authorized
+artifact servers, e.g. an external source controller. maxItems: 64">
+  <span class="prop-name">extraArtifactServers</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">ExtraArtifactServers is a list of additional SPIFFE IDs added to
+kustomize-controller, helm-controller and source-watcher as authorized
+artifact servers, e.g. an external source controller.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.extraNotifiers" data-path-key="|spec|spiffe|mtls|extraNotifiers|" data-parent-path="spec.spiffe.mtls" data-name="extraNotifiers" data-text="ExtraNotifiers is a list of additional SPIFFE IDs added to
+notification-controller as authorized notifiers, e.g. the standalone
+Web UI or the Flux MCP Server. maxItems: 64">
+  <span class="prop-name">extraNotifiers</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">ExtraNotifiers is a list of additional SPIFFE IDs added to
+notification-controller as authorized notifiers, e.g. the standalone
+Web UI or the Flux MCP Server.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.receivers" data-path-key="|spec|spiffe|mtls|receivers|" data-parent-path="spec.spiffe.mtls" data-name="receivers" data-text="Receivers is the list of SPIFFE IDs of external Ingress or Gateway
+controllers authorized to send webhook requests to notification-controller.
+Setting at least one ID makes the receiver accept only SPIFFE mTLS clients. maxItems: 64">
+  <span class="prop-name">receivers</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">Receivers is the list of SPIFFE IDs of external Ingress or Gateway
+controllers authorized to send webhook requests to notification-controller.
+Setting at least one ID makes the receiver accept only SPIFFE mTLS clients.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.spiffe.workloadAPI" data-path-key="|spec|spiffe|workloadAPI|" data-parent-path="spec.spiffe" data-name="workloadAPI" data-text="WorkloadAPI holds the configuration for the SPIFFE Workload API.
+It is required for enabling any of the SPIFFE features and is used
+to render the go-spiffe environment variable and the SPIFFE CSI volume.">
+<summary>
+  <span class="prop-name">workloadAPI</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">WorkloadAPI holds the configuration for the SPIFFE Workload API.
+It is required for enabling any of the SPIFFE features and is used
+to render the go-spiffe environment variable and the SPIFFE CSI volume.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.workloadAPI.csiDriver" data-path-key="|spec|spiffe|workloadAPI|csiDriver|" data-parent-path="spec.spiffe.workloadAPI" data-name="csiDriver" data-text="CSIDriver is the name of the SPIFFE CSI driver used to mount
+the Workload API socket into the Flux controller pods.
+When set, the operator mounts the CSI volume at /spiffe-workload-api
+and the endpoint must be a unix socket under that path.
+When omitted, no CSI volume is configured. pattern: ^[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?)*$ minLength: 1 maxLength: 63">
+  <span class="prop-name">csiDriver</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">CSIDriver is the name of the SPIFFE CSI driver used to mount
+the Workload API socket into the Flux controller pods.
+When set, the operator mounts the CSI volume at /spiffe-workload-api
+and the endpoint must be a unix socket under that path.
+When omitted, no CSI volume is configured.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.spiffe.workloadAPI.endpoint" data-path-key="|spec|spiffe|workloadAPI|endpoint|" data-parent-path="spec.spiffe.workloadAPI" data-name="endpoint" data-text="Endpoint is the address of the SPIFFE Workload API endpoint,
+in the form &#39;unix:///&lt;absolute path&gt;&#39;, &#39;unix:/&lt;absolute path&gt;&#39;
+or &#39;tcp://&lt;ip&gt;:&lt;port&gt;&#39;,
+e.g. &#39;unix:///spiffe-workload-api/agent.sock&#39;.
+The flux-operator pod must be configured with the same endpoint
+through the SPIFFE_ENDPOINT_SOCKET environment variable. pattern: ^(?:unix:(?:///[!$&amp;-&gt;@-~]&#43;|/[!$&amp;-.0-&gt;@-~][!$&amp;-&gt;@-~]*)|tcp://(?:[0-9]{1,3}(?:\.[0-9]{1,3}){3}|\[[0-9a-fA-F:.]&#43;\]):[0-9]{1,5})$ minLength: 1 maxLength: 1024">
+  <span class="prop-name">endpoint</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Endpoint is the address of the SPIFFE Workload API endpoint,
+in the form &#39;unix:///&lt;absolute path&gt;&#39;, &#39;unix:/&lt;absolute path&gt;&#39;
+or &#39;tcp://&lt;ip&gt;:&lt;port&gt;&#39;,
+e.g. &#39;unix:///spiffe-workload-api/agent.sock&#39;.
+The flux-operator pod must be configured with the same endpoint
+through the SPIFFE_ENDPOINT_SOCKET environment variable.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^(?:unix:(?:///[!$&amp;-&gt;@-~]&#43;|/[!$&amp;-.0-&gt;@-~][!$&amp;-&gt;@-~]*)|tcp://(?:[0-9]{1,3}(?:\.[0-9]{1,3}){3}|\[[0-9a-fA-F:.]&#43;\]):[0-9]{1,5})$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^(?:unix:(?:///[!$&amp;-&gt;@-~]&#43;|/[!$&amp;-.0-&gt;@-~][!$&amp;-&gt;@-~]*)|tcp://(?:[0-9]{1,3}(?:\.[0-9]{1,3}){3}|\[[0-9a-fA-F:.]&#43;\]):[0-9]{1,5})$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>
@@ -1164,6 +1415,46 @@ reconcile request value, so a change of the annotation value
 can be detected.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="status.spiffe" data-path-key="|status|spiffe|" data-parent-path="status" data-name="spiffe" data-text="SPIFFE holds the SPIFFE settings of the last applied distribution.">
+<summary>
+  <span class="prop-name">spiffe</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">SPIFFE holds the SPIFFE settings of the last applied distribution.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="status.spiffe.mtls" data-path-key="|status|spiffe|mtls|" data-parent-path="status.spiffe" data-name="mtls" data-text="MTLS holds the applied mTLS settings.">
+<summary>
+  <span class="prop-name">mtls</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">MTLS holds the applied mTLS settings.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.spiffe.mtls.componentIDTemplate" data-path-key="|status|spiffe|mtls|componentIDTemplate|" data-parent-path="status.spiffe.mtls" data-name="componentIDTemplate" data-text="ComponentIDTemplate is the SPIFFE ID template of the Flux controllers.">
+  <span class="prop-name">componentIDTemplate</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">ComponentIDTemplate is the SPIFFE ID template of the Flux controllers.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.spiffe.mtls.enabled" data-path-key="|status|spiffe|mtls|enabled|" data-parent-path="status.spiffe.mtls" data-name="enabled" data-text="Enabled is true when the Flux controllers were deployed with mTLS.">
+  <span class="prop-name">enabled</span>
+  <span class="type-badge">boolean</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Enabled is true when the Flux controllers were deployed with mTLS.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.spiffe.mtls.extraArtifactServers" data-path-key="|status|spiffe|mtls|extraArtifactServers|" data-parent-path="status.spiffe.mtls" data-name="extraArtifactServers" data-text="ExtraArtifactServers is the list of additional SPIFFE IDs
+authorized as artifact servers.">
+  <span class="prop-name">extraArtifactServers</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">ExtraArtifactServers is the list of additional SPIFFE IDs
+authorized as artifact servers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>

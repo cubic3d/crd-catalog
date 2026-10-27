@@ -555,8 +555,7 @@ When specified, the controller will:
 
 When unspecified, controller-level authentication is used (single-tenant).
 
-An error is thrown if static credentials are also defined in SecretRef.
-This field requires the ObjectLevelWorkloadIdentity feature gate to be enabled.">
+An error is thrown if static credentials are also defined in SecretRef.">
   <span class="prop-name">serviceAccountName</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">ServiceAccountName is the name of the Kubernetes ServiceAccount used to
@@ -573,7 +572,6 @@ When specified, the controller will:
 When unspecified, controller-level authentication is used (single-tenant).
 
 An error is thrown if static credentials are also defined in SecretRef.
-This field requires the ObjectLevelWorkloadIdentity feature gate to be enabled.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.suspend" data-path-key="|spec|suspend|" data-parent-path="spec" data-name="suspend" data-text="Suspend tells the controller to suspend subsequent
@@ -591,13 +589,13 @@ events handling for this Provider.
 <div class="schema-constraint" title="pattern: ^([0-9]&#43;(\.[0-9]&#43;)?(ms|s|m))&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]&#43;(\.[0-9]&#43;)?(ms|s|m))&#43;$</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.type" data-path-key="|spec|type|" data-parent-path="spec" data-name="type" data-text="Type specifies which Provider implementation to use. enum: slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel">
+<div class="prop-leaf" data-prop-row data-path="spec.type" data-path-key="|spec|type|" data-parent-path="spec" data-name="type" data-text="Type specifies which Provider implementation to use. enum: slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel, zoom, incident.io">
   <span class="prop-name">type</span>
   <span class="type-badge">string</span> <span class="required-badge">required</span>
   <div class="leaf-desc">Type specifies which Provider implementation to use.<div class="leaf-constraints">
-<details class="schema-constraint schema-constraint-long" title="enum: slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel">
+<details class="schema-constraint schema-constraint-long" title="enum: slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel, zoom, incident.io">
   <summary><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value schema-constraint-preview">slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver,...</code></summary>
-  <code class="schema-constraint-value schema-constraint-full">slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel</code>
+  <code class="schema-constraint-value schema-constraint-full">slack, discord, msteams, rocket, generic, generic-hmac, github, gitlab, gitea, giteapullrequestcomment, bitbucketserver, bitbucket, azuredevops, googlechat, googlepubsub, webex, sentry, azureeventhub, telegram, lark, matrix, opsgenie, alertmanager, grafana, githubdispatch, githubpullrequestcomment, gitlabmergerequestcomment, pagerduty, datadog, nats, zulip, otel, zoom, incident.io</code>
 </details></div>
   </div>
 </div>

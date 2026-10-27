@@ -59,7 +59,10 @@
         "interval": {
           "description": "Interval at which the OCIRepository URL is checked for updates.\nThis interval is approximate and may be subject to jitter to ensure\nefficient use of resources.",
           "pattern": "^([0-9]+(\\.[0-9]+)?(ms|s|m|h))+$",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "layerSelector": {
           "additionalProperties": false,
@@ -90,7 +93,6 @@
           ]
         },
         "provider": {
-          "default": "generic",
           "description": "The provider used for authentication, can be 'aws', 'azure', 'gcp' or 'generic'.\nWhen not specified, defaults to 'generic'.",
           "enum": [
             "generic",
@@ -176,7 +178,7 @@
           ]
         },
         "serviceAccountName": {
-          "description": "ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate\nthe image pull if the service account has attached pull secrets. For more information:\nhttps://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account",
+          "description": "ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate\nthe image pull, either with the pull secrets attached to the service account or with\nan object identity.\nFor more information about object identity:\nhttps://fluxcd.io/flux/integrations/object-identity/\nFor more information about image pull secrets:\nhttps://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account",
           "type": [
             "string",
             "null"
@@ -190,7 +192,6 @@
           ]
         },
         "timeout": {
-          "default": "60s",
           "description": "The timeout for remote OCI Repository operations like pulling, defaults to 60s.",
           "pattern": "^([0-9]+(\\.[0-9]+)?(ms|s|m))+$",
           "type": [
@@ -201,7 +202,10 @@
         "url": {
           "description": "URL is a reference to an OCI artifact repository hosted\non a remote container registry.",
           "pattern": "^oci://.*$",
-          "type": "string"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "verify": {
           "additionalProperties": false,
@@ -286,10 +290,6 @@
           ]
         }
       },
-      "required": [
-        "interval",
-        "url"
-      ],
       "type": [
         "object",
         "null"
@@ -471,6 +471,13 @@
             "null"
           ]
         },
+        "sourceVerificationFingerprint": {
+          "description": "SourceVerificationFingerprint is the fingerprint of the verification\nmaterial used to verify the signature of the current Artifact. It is\nused to detect changes to the verification policy, such as a key\nrotation, that require the current revision to be verified again.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "url": {
           "description": "URL is the download link for the artifact output of the last OCI Repository sync.",
           "type": [
@@ -485,5 +492,15 @@
       ]
     }
   },
-  "type": "object"
+  "type": "object",
+  "x-kubernetes-validations": [
+    {
+      "message": "spec.url is required",
+      "rule": "has(self.spec) \u0026\u0026 has(self.spec.url)"
+    },
+    {
+      "message": "spec.interval is required",
+      "rule": "has(self.spec) \u0026\u0026 has(self.spec.interval)"
+    }
+  ]
 }

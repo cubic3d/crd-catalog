@@ -833,8 +833,7 @@ When used in combination with KustomizationSpec.ServiceAccountName,
 forces the controller to act on behalf of that Service Account at the
 target cluster.
 If the --default-service-account flag is set, its value will be used as
-a controller level fallback for when KustomizationSpec.ServiceAccountName
-is empty.">
+the default for KustomizationSpec.ServiceAccountName when it is empty.">
 <summary>
   <span class="prop-name">kubeConfig</span>
   <span class="type-badge">object</span>
@@ -844,8 +843,7 @@ When used in combination with KustomizationSpec.ServiceAccountName,
 forces the controller to act on behalf of that Service Account at the
 target cluster.
 If the --default-service-account flag is set, its value will be used as
-a controller level fallback for when KustomizationSpec.ServiceAccountName
-is empty.</div>
+the default for KustomizationSpec.ServiceAccountName when it is empty.</div>
   <div class="prop-children">
 <details class="prop" data-prop-row data-path="spec.kubeConfig.configMapRef" data-path-key="|spec|kubeConfig|configMapRef|" data-parent-path="spec.kubeConfig" data-name="configMapRef" data-text="ConfigMapRef holds an optional name of a ConfigMap that contains
 the following keys:
@@ -865,15 +863,15 @@ the following keys:
 - `ca.crt`: the optional PEM-encoded CA certificate for the
    Kubernetes API server. If not set, the controller will use the
    CA certificate from the cluster resource.
-- `audiences`: the optional audiences as a list of
-   line-break-separated strings for the Kubernetes ServiceAccount
-   token. Defaults to the `address` for the `generic` provider, or
-   to specific values for the other providers depending on the
-   provider.
 -  `serviceAccountName`: the optional name of the Kubernetes
    ServiceAccount in the same namespace that should be used
    for authentication. If not specified, the controller
    ServiceAccount will be used.
+- `audiences`: the optional audiences as a list of string separated by
+   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+   token. Defaults to the `address` for the `generic` provider, or
+   to specific values for the other providers depending on the
+   provider.
 
 Mutually exclusive with SecretRef.">
 <summary>
@@ -898,15 +896,15 @@ the following keys:
 - `ca.crt`: the optional PEM-encoded CA certificate for the
    Kubernetes API server. If not set, the controller will use the
    CA certificate from the cluster resource.
-- `audiences`: the optional audiences as a list of
-   line-break-separated strings for the Kubernetes ServiceAccount
-   token. Defaults to the `address` for the `generic` provider, or
-   to specific values for the other providers depending on the
-   provider.
 -  `serviceAccountName`: the optional name of the Kubernetes
    ServiceAccount in the same namespace that should be used
    for authentication. If not specified, the controller
    ServiceAccount will be used.
+- `audiences`: the optional audiences as a list of string separated by
+   commas and/or whitespaces/newlines for the Kubernetes ServiceAccount
+   token. Defaults to the `address` for the `generic` provider, or
+   to specific values for the other providers depending on the
+   provider.
 
 Mutually exclusive with SecretRef.</div>
   <div class="prop-children">

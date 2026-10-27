@@ -475,7 +475,7 @@ consult the documentation for your version to find out what those are.
 This interval is approximate and may be subject to jitter to ensure
 efficient use of resources. pattern: ^([0-9]&#43;(\.[0-9]&#43;)?(ms|s|m|h))&#43;$">
   <span class="prop-name">interval</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <span class="type-badge">string</span>
   <div class="leaf-desc">Interval at which the OCIRepository URL is checked for updates.
 This interval is approximate and may be subject to jitter to ensure
 efficient use of resources.<div class="leaf-constraints">
@@ -605,12 +605,20 @@ The secret must be of type kubernetes.io/dockerconfigjson.</div>
 </div>
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.serviceAccountName" data-path-key="|spec|serviceAccountName|" data-parent-path="spec" data-name="serviceAccountName" data-text="ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-the image pull if the service account has attached pull secrets. For more information:
+the image pull, either with the pull secrets attached to the service account or with
+an object identity.
+For more information about object identity:
+https://fluxcd.io/flux/integrations/object-identity/
+For more information about image pull secrets:
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account">
   <span class="prop-name">serviceAccountName</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">ServiceAccountName is the name of the Kubernetes ServiceAccount used to authenticate
-the image pull if the service account has attached pull secrets. For more information:
+the image pull, either with the pull secrets attached to the service account or with
+an object identity.
+For more information about object identity:
+https://fluxcd.io/flux/integrations/object-identity/
+For more information about image pull secrets:
 https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#add-imagepullsecrets-to-a-service-account
   </div>
 </div>
@@ -630,7 +638,7 @@ https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-accou
 <div class="prop-leaf" data-prop-row data-path="spec.url" data-path-key="|spec|url|" data-parent-path="spec" data-name="url" data-text="URL is a reference to an OCI artifact repository hosted
 on a remote container registry. pattern: ^oci://.*$">
   <span class="prop-name">url</span>
-  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <span class="type-badge">string</span>
   <div class="leaf-desc">URL is a reference to an OCI artifact repository hosted
 on a remote container registry.<div class="leaf-constraints">
 <div class="schema-constraint" title="pattern: ^oci://.*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^oci://.*$</code></div></div>
@@ -942,6 +950,18 @@ is persisted to storage as it is.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<div class="prop-leaf" data-prop-row data-path="status.sourceVerificationFingerprint" data-path-key="|status|sourceVerificationFingerprint|" data-parent-path="status" data-name="sourceVerificationFingerprint" data-text="SourceVerificationFingerprint is the fingerprint of the verification
+material used to verify the signature of the current Artifact. It is
+used to detect changes to the verification policy, such as a key
+rotation, that require the current revision to be verified again.">
+  <span class="prop-name">sourceVerificationFingerprint</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">SourceVerificationFingerprint is the fingerprint of the verification
+material used to verify the signature of the current Artifact. It is
+used to detect changes to the verification policy, such as a key
+rotation, that require the current revision to be verified again.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="status.url" data-path-key="|status|url|" data-parent-path="status" data-name="url" data-text="URL is the download link for the artifact output of the last OCI Repository sync.">
   <span class="prop-name">url</span>
   <span class="type-badge">string</span>
