@@ -907,24 +907,32 @@ The flux-operator reads the controller SPIFFE IDs from .status.spiffe.</div>
 <div class="prop-leaf" data-prop-row data-path="spec.spiffe.mtls.componentIDTemplate" data-path-key="|spec|spiffe|mtls|componentIDTemplate|" data-parent-path="spec.spiffe.mtls" data-name="componentIDTemplate" data-text="ComponentIDTemplate is the SPIFFE ID template for the Flux controllers.
 The &#39;{component}&#39; placeholder is replaced with the name of each
 installed component. A trailing slash indicates a SPIFFE ID prefix.
-The flux-operator ID is the SPIFFE ID of the operator&#39;s X.509-SVID,
-or this template with &#39;flux-operator&#39; when the operator has no
-Workload API source.
-The flux-operator ID is always added to notification-controller as an
-authorized notifier, and to source-controller and source-watcher as an
-authorized artifact client for the Web UI artifact downloads.
+The flux-operator ID is derived from this template with &#39;flux-operator&#39;
+as the component name, and is only authorized when the operator has a
+SPIFFE Workload API source. The template must resolve to the operator
+pod&#39;s actual SPIFFE ID.
+When the operator has a SPIFFE Workload API source, its ID is added to
+notification-controller as an authorized notifier. When the operator&#39;s
+embedded Web UI is enabled, it is also added to source-controller and
+source-watcher as an authorized artifact client for the Web UI artifact
+downloads. Enabling or disabling the embedded Web UI changes these
+controller arguments and rolls out the affected controllers.
 For a standalone Web UI, use ExtraArtifactClients and ExtraNotifiers. pattern: ^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$ maxLength: 2048">
   <span class="prop-name">componentIDTemplate</span>
   <span class="type-badge">string</span> <span class="required-badge">required</span>
   <div class="leaf-desc">ComponentIDTemplate is the SPIFFE ID template for the Flux controllers.
 The &#39;{component}&#39; placeholder is replaced with the name of each
 installed component. A trailing slash indicates a SPIFFE ID prefix.
-The flux-operator ID is the SPIFFE ID of the operator&#39;s X.509-SVID,
-or this template with &#39;flux-operator&#39; when the operator has no
-Workload API source.
-The flux-operator ID is always added to notification-controller as an
-authorized notifier, and to source-controller and source-watcher as an
-authorized artifact client for the Web UI artifact downloads.
+The flux-operator ID is derived from this template with &#39;flux-operator&#39;
+as the component name, and is only authorized when the operator has a
+SPIFFE Workload API source. The template must resolve to the operator
+pod&#39;s actual SPIFFE ID.
+When the operator has a SPIFFE Workload API source, its ID is added to
+notification-controller as an authorized notifier. When the operator&#39;s
+embedded Web UI is enabled, it is also added to source-controller and
+source-watcher as an authorized artifact client for the Web UI artifact
+downloads. Enabling or disabling the embedded Web UI changes these
+controller arguments and rolls out the affected controllers.
 For a standalone Web UI, use ExtraArtifactClients and ExtraNotifiers.<div class="leaf-constraints">
 <div class="schema-constraint" title="pattern: ^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^spiffe://[a-z0-9._-]{1,255}(?:/(?:[a-zA-Z0-9_-]|[.][a-zA-Z0-9_-]|[{]component[}])[a-zA-Z0-9._-]*(?:[{]component[}][a-zA-Z0-9._-]*)*)&#43;(?:/)?$</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 2048"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">2048</code></div></div>
