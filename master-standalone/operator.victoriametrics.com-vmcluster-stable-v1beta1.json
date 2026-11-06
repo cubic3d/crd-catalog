@@ -370,7 +370,6 @@
             "extraEnvs": {
               "description": "ExtraEnvs that will be passed to the application container",
               "items": {
-                "additionalProperties": false,
                 "description": "EnvVar represents an environment variable present in a Container.",
                 "properties": {
                   "name": {
@@ -1434,7 +1433,6 @@
             "extraEnvs": {
               "description": "ExtraEnvs that will be passed to the application container",
               "items": {
-                "additionalProperties": false,
                 "description": "EnvVar represents an environment variable present in a Container.",
                 "properties": {
                   "name": {
@@ -3011,7 +3009,6 @@
             "extraEnvs": {
               "description": "ExtraEnvs that will be passed to the application container",
               "items": {
-                "additionalProperties": false,
                 "description": "EnvVar represents an environment variable present in a Container.",
                 "properties": {
                   "name": {

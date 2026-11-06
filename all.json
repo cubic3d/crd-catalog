@@ -1,0 +1,5081 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Every schema published in this catalog. Each oneOf branch matches one apiVersion and kind exactly, then validates the document against that kind's schema.",
+  "oneOf": [
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "acme.cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Challenge"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "acme.cert-manager.io/challenge_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "acme.cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Order"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "acme.cert-manager.io/order_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Certificate"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cert-manager.io/certificate_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CertificateRequest"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cert-manager.io/certificaterequest_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterIssuer"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cert-manager.io/clusterissuer_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cert-manager.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Issuer"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cert-manager.io/issuer_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumCIDRGroup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumcidrgroup_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumCIDRGroup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumcidrgroup_v2alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumClusterwideNetworkPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumclusterwidenetworkpolicy_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumEndpoint"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumendpoint_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumExternalWorkload"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumexternalworkload_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumIdentity"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumidentity_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumL2AnnouncementPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliuml2announcementpolicy_v2alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumLoadBalancerIPPool"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumloadbalancerippool_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumLoadBalancerIPPool"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumloadbalancerippool_v2alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumLocalRedirectPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumlocalredirectpolicy_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumNetworkPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumnetworkpolicy_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumNode"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumnode_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumNodeConfig"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumnodeconfig_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumNodeConfig"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumnodeconfig_v2alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "cilium.io/v2alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CiliumPodIPPool"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "cilium.io/ciliumpodippool_v2alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "DlbDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/dlbdeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "DsaDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/dsadeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "FpgaDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/fpgadeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GpuDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/gpudeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "IaaDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/iaadeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "NpuDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/npudeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "QatDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/qatdeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "deviceplugin.intel.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SgxDevicePlugin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "deviceplugin.intel.com/sgxdeviceplugin_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "dragonflydb.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Dragonfly"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "dragonflydb.io/dragonfly_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterExternalSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/clusterexternalsecret_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterExternalSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/clusterexternalsecret_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterPushSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/clusterpushsecret_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterSecretStore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/clustersecretstore_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterSecretStore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/clustersecretstore_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ExternalSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/externalsecret_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ExternalSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/externalsecret_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "PushSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/pushsecret_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SecretStore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/secretstore_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "external-secrets.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SecretStore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "external-secrets.io/secretstore_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "externaldns.k8s.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "DNSEndpoint"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "externaldns.k8s.io/dnsendpoint_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "externaldns.k8s.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "DNSRecord"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "externaldns.k8s.io/dnsrecord_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fluxcd.controlplane.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "FluxInstance"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fluxcd.controlplane.io/fluxinstance_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fluxcd.controlplane.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "FluxReport"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fluxcd.controlplane.io/fluxreport_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fluxcd.controlplane.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ResourceSet"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fluxcd.controlplane.io/resourceset_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fluxcd.controlplane.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ResourceSetInputProvider"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fluxcd.controlplane.io/resourcesetinputprovider_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fpga.intel.com/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "AcceleratorFunction"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fpga.intel.com/acceleratorfunction_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "fpga.intel.com/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "FpgaRegion"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "fpga.intel.com/fpgaregion_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Backend"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/backend_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackendTrafficPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/backendtrafficpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClientTrafficPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "EnvoyExtensionPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/envoyextensionpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "EnvoyPatchPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "EnvoyProxy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/envoyproxy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HTTPRouteFilter"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/httproutefilter_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.envoyproxy.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SecurityPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.envoyproxy.io/securitypolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackendTLSPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/backendtlspolicy_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1alpha3"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackendTLSPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/backendtlspolicy_v1alpha3.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Gateway"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/gateway_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Gateway"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/gateway_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GatewayClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/gatewayclass_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GatewayClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/gatewayclass_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GRPCRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/grpcroute_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HTTPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/httproute_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HTTPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/httproute_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ListenerSet"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/listenerset_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ReferenceGrant"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/referencegrant_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ReferenceGrant"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/referencegrant_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TCPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/tcproute_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1alpha2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TCPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/tcproute_v1alpha2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TLSRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/tlsroute_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1alpha2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TLSRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/tlsroute_v1alpha2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1alpha3"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TLSRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/tlsroute_v1alpha3.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "UDPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/udproute_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.k8s.io/v1alpha2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "UDPRoute"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.k8s.io/udproute_v1alpha2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.x-k8s.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "XBackend"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.x-k8s.io/xbackend_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.x-k8s.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "XBackendTrafficPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.x-k8s.io/xbackendtrafficpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "gateway.networking.x-k8s.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "XMesh"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "gateway.networking.x-k8s.io/xmesh_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ACRAccessToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/acraccesstoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BeyondtrustWorkloadCredentialsDynamicSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/beyondtrustworkloadcredentialsdynamicsecret_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CloudsmithAccessToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/cloudsmithaccesstoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterGenerator"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/clustergenerator_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ECRAuthorizationToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/ecrauthorizationtoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Fake"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/fake_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GCRAccessToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/gcraccesstoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GeneratorState"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/generatorstate_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GithubAccessToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/githubaccesstoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GitlabDeployToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/gitlabdeploytoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Grafana"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/grafana_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "MFA"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/mfa_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Password"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/password_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "QuayAccessToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/quayaccesstoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SSHKey"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/sshkey_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "STSSessionToken"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/stssessiontoken_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "UUID"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/uuid_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VaultDynamicSecret"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/vaultdynamicsecret_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "generators.external-secrets.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Webhook"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "generators.external-secrets.io/webhook_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshot_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotclass_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotContent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotContent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "groupsnapshot.storage.k8s.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeGroupSnapshotContent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "groupsnapshot.storage.k8s.io/volumegroupsnapshotcontent_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "helm.toolkit.fluxcd.io/v2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HelmRelease"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "helm.toolkit.fluxcd.io/helmrelease_v2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImagePolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imagepolicy_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImagePolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imagepolicy_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImageRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imagerepository_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImageRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imagerepository_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImageUpdateAutomation"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imageupdateautomation_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "image.toolkit.fluxcd.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ImageUpdateAutomation"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "image.toolkit.fluxcd.io/imageupdateautomation_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "jaegertracing.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Jaeger"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "jaegertracing.io/jaeger_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "k8s.cni.cncf.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "NetworkAttachmentDefinition"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "k8s.cni.cncf.io/networkattachmentdefinition_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ClusterRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/clusterrepository_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Maintenance"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/maintenance_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Repository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/repository_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "RepositoryReplication"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/repositoryreplication_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Restore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/restore_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Snapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/snapshot_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SnapshotPolicy"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/snapshotpolicy_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SnapshotReplication"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/snapshotreplication_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kopiur.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SnapshotSchedule"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kopiur.home-operations.com/snapshotschedule_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "kustomize.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Kustomization"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "kustomize.toolkit.fluxcd.io/kustomization_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackingImage"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backingimage_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackingImageDataSource"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backingimagedatasource_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackingImageManager"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backingimagemanager_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Backup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backup_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackupBackingImage"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backupbackingimage_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackupTarget"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backuptarget_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "BackupVolume"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/backupvolume_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Engine"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/engine_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "EngineFrontend"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/enginefrontend_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "EngineImage"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/engineimage_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "InstanceManager"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/instancemanager_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "InstanceManagerUpgrade"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/instancemanagerupgrade_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "InstanceManagerUpgradeControl"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/instancemanagerupgradecontrol_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Node"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/node_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Orphan"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/orphan_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "RecurringJob"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/recurringjob_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Replica"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/replica_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Setting"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/setting_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Shard"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/shard_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ShardGroup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/shardgroup_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ShareManager"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/sharemanager_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Snapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/snapshot_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SnapshotGroup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/snapshotgroup_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SupportBundle"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/supportbundle_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SystemBackup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/systembackup_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "SystemRestore"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/systemrestore_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Volume"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/volume_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "longhorn.io/v1beta2"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeAttachment"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "longhorn.io/volumeattachment_v1beta2.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "nfd.k8s-sigs.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "NodeFeature"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "nfd.k8s-sigs.io/nodefeature_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "nfd.k8s-sigs.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "NodeFeatureGroup"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "nfd.k8s-sigs.io/nodefeaturegroup_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "nfd.k8s-sigs.io/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "NodeFeatureRule"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "nfd.k8s-sigs.io/nodefeaturerule_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "notification.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Alert"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "notification.toolkit.fluxcd.io/alert_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "notification.toolkit.fluxcd.io/v1beta3"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Alert"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "notification.toolkit.fluxcd.io/alert_v1beta3.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "notification.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Provider"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "notification.toolkit.fluxcd.io/provider_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "notification.toolkit.fluxcd.io/v1beta3"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Provider"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "notification.toolkit.fluxcd.io/provider_v1beta3.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "notification.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Receiver"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "notification.toolkit.fluxcd.io/receiver_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "onepassword.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "OnePasswordItem"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "onepassword.com/onepassworditem_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VLAgent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vlagent_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VLCluster"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vlcluster_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VLogs"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vlogs_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VLSingle"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vlsingle_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAgent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmagent_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAlert"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmalert_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAlertmanager"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmalertmanager_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAlertmanagerConfig"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmalertmanagerconfig_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAnomaly"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmanomaly_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMAuth"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmauth_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMCluster"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmcluster_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMNodeScrape"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmnodescrape_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMPodScrape"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmpodscrape_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMProbe"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmprobe_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMRule"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmrule_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMScrapeConfig"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmscrapeconfig_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMServiceScrape"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmservicescrape_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMSingle"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmsingle_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMStaticScrape"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmstaticscrape_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "operator.victoriametrics.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VMUser"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "operator.victoriametrics.com/vmuser_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "postgres-operator.crunchydata.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "CrunchyBridgeCluster"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "postgres-operator.crunchydata.com/crunchybridgecluster_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "postgres-operator.crunchydata.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "PGAdmin"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "postgres-operator.crunchydata.com/pgadmin_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "postgres-operator.crunchydata.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "PGUpgrade"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "postgres-operator.crunchydata.com/pgupgrade_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "postgres-operator.crunchydata.com/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "PostgresCluster"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "postgres-operator.crunchydata.com/postgrescluster_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "postgres-operator.crunchydata.com/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "PostgresCluster"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "postgres-operator.crunchydata.com/postgrescluster_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshot_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshot"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshot_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshotClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshotclass_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshotClass"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshotclass_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshotContent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshotcontent_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "snapshot.storage.k8s.io/v1beta1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "VolumeSnapshotContent"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "snapshot.storage.k8s.io/volumesnapshotcontent_v1beta1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Bucket"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/bucket_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ExternalArtifact"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/externalartifact_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "GitRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/gitrepository_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HelmChart"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/helmchart_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "HelmRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/helmrepository_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "source.toolkit.fluxcd.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "OCIRepository"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "source.toolkit.fluxcd.io/ocirepository_v1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "talos.dev/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "ServiceAccount"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "talos.dev/serviceaccount_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "tuppr.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "KubernetesUpgrade"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "tuppr.home-operations.com/kubernetesupgrade_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "tuppr.home-operations.com/v1alpha1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "TalosUpgrade"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "tuppr.home-operations.com/talosupgrade_v1alpha1.json"
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "properties": {
+            "apiVersion": {
+              "enum": [
+                "upgrade.cattle.io/v1"
+              ]
+            },
+            "kind": {
+              "enum": [
+                "Plan"
+              ]
+            }
+          },
+          "required": [
+            "apiVersion",
+            "kind"
+          ]
+        },
+        {
+          "$ref": "upgrade.cattle.io/plan_v1.json"
+        }
+      ]
+    }
+  ]
+}
