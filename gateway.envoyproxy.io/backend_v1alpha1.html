@@ -417,10 +417,12 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">Spec defines the desired state of Backend.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.appProtocols" data-path-key="|spec|appProtocols|" data-parent-path="spec" data-name="appProtocols" data-text="AppProtocols defines the application protocols to be supported when connecting to the backend.">
+<div class="prop-leaf" data-prop-row data-path="spec.appProtocols" data-path-key="|spec|appProtocols|" data-parent-path="spec" data-name="appProtocols" data-text="AppProtocols defines the application protocols to be supported when connecting to the backend.
+For a KubernetesService backend, this takes precedence over the appProtocol of the Service port.">
   <span class="prop-name">appProtocols</span>
   <span class="type-badge">[]string</span>
   <div class="leaf-desc">AppProtocols defines the application protocols to be supported when connecting to the backend.
+For a KubernetesService backend, this takes precedence over the appProtocol of the Service port.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.endpoints" data-path-key="|spec|endpoints|" data-parent-path="spec" data-name="endpoints" data-text="Endpoints defines the endpoints to be used when connecting to the backend. minItems: 1 maxItems: 256">
@@ -543,6 +545,43 @@ The overprovisioning factor is set to 1.4, meaning the fallback backends will on
 the health of the active backends falls below 72%.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.kubernetesService" data-path-key="|spec|kubernetesService|" data-parent-path="spec" data-name="kubernetesService" data-text="KubernetesService defines the Kubernetes Service to be used when connecting to the backend.
+It must be set when Type is KubernetesService, and must not be set otherwise.
+
+The endpoints of the Service are discovered from its EndpointSlices, exactly as they
+are for a Service backendRef, so the resulting cluster keeps pod-level load balancing,
+health checking, session persistence, endpoint draining and zone awareness.">
+<summary>
+  <span class="prop-name">kubernetesService</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">KubernetesService defines the Kubernetes Service to be used when connecting to the backend.
+It must be set when Type is KubernetesService, and must not be set otherwise.
+
+The endpoints of the Service are discovered from its EndpointSlices, exactly as they
+are for a Service backendRef, so the resulting cluster keeps pod-level load balancing,
+health checking, session persistence, endpoint draining and zone awareness.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.kubernetesService.name" data-path-key="|spec|kubernetesService|name|" data-parent-path="spec.kubernetesService" data-name="name" data-text="Name is the name of the Kubernetes Service. minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the name of the Kubernetes Service.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.kubernetesService.port" data-path-key="|spec|kubernetesService|port|" data-parent-path="spec.kubernetesService" data-name="port" data-text="Port is the port of the Kubernetes Service. format: int32 minimum: 1 maximum: 65535">
+  <span class="prop-name">port</span>
+  <span class="type-badge">integer</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Port is the port of the Kubernetes Service.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.tls" data-path-key="|spec|tls|" data-parent-path="spec" data-name="tls" data-text="TLS defines the TLS settings for the backend.
 If TLS is specified here and a BackendTLSPolicy is also configured for the backend, the final TLS settings will
 be a merge of both configurations. In case of overlapping fields, the values defined in the BackendTLSPolicy will
@@ -759,7 +798,11 @@ In builds using BoringSSL FIPS the default cipher list is:
 <details class="prop" data-prop-row data-path="spec.tls.clientCertificateRef" data-path-key="|spec|tls|clientCertificateRef|" data-parent-path="spec.tls" data-name="clientCertificateRef" data-text="ClientCertificateRef defines the reference to a Kubernetes Secret that contains
 the client certificate and private key for Envoy to use when connecting to
 backend services and external services, such as ExtAuth, ALS, OpenTelemetry, etc.
-This secret should be located within the same namespace as the Envoy proxy resource that references it.">
+The Secret must be in the same namespace as the EnvoyProxy or Backend resource
+that references it.
+Cross-namespace references are not supported, even with a ReferenceGrant.
+The ReferenceGrant requirement in the namespace field&#39;s description is inherited
+from the Gateway API SecretObjectReference type and does not apply to this field.">
 <summary>
   <span class="prop-name">clientCertificateRef</span>
   <span class="type-badge">object</span>
@@ -767,7 +810,11 @@ This secret should be located within the same namespace as the Envoy proxy resou
 <div class="prop-content"><div class="prop-desc">ClientCertificateRef defines the reference to a Kubernetes Secret that contains
 the client certificate and private key for Envoy to use when connecting to
 backend services and external services, such as ExtAuth, ALS, OpenTelemetry, etc.
-This secret should be located within the same namespace as the Envoy proxy resource that references it.</div>
+The Secret must be in the same namespace as the EnvoyProxy or Backend resource
+that references it.
+Cross-namespace references are not supported, even with a ReferenceGrant.
+The ReferenceGrant requirement in the namespace field&#39;s description is inherited
+from the Gateway API SecretObjectReference type and does not apply to this field.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.tls.clientCertificateRef.group" data-path-key="|spec|tls|clientCertificateRef|group|" data-parent-path="spec.tls.clientCertificateRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -949,11 +996,11 @@ CACertificateRefs or WellKnownCACertificates may be specified, not both.<div cla
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.type" data-path-key="|spec|type|" data-parent-path="spec" data-name="type" data-text="Type defines the type of the backend. Defaults to &#34;Endpoints&#34; enum: Endpoints, DynamicResolver">
+<div class="prop-leaf" data-prop-row data-path="spec.type" data-path-key="|spec|type|" data-parent-path="spec" data-name="type" data-text="Type defines the type of the backend. Defaults to &#34;Endpoints&#34; enum: Endpoints, DynamicResolver, KubernetesService">
   <span class="prop-name">type</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Type defines the type of the backend. Defaults to &#34;Endpoints&#34;<div class="leaf-constraints">
-<div class="schema-constraint" title="enum: Endpoints, DynamicResolver"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Endpoints, DynamicResolver</code></div></div>
+<div class="schema-constraint" title="enum: Endpoints, DynamicResolver, KubernetesService"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Endpoints, DynamicResolver, KubernetesService</code></div></div>
   </div>
 </div>
   </div>

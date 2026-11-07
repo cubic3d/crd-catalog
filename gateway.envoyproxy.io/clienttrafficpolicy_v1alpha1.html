@@ -606,6 +606,21 @@ If not specified, there is no limit.<div class="leaf-constraints">
 <div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.connection.connectionLimit.maxConnectionDurationJitter" data-path-key="|spec|connection|connectionLimit|maxConnectionDurationJitter|" data-parent-path="spec.connection.connectionLimit" data-name="maxConnectionDurationJitter" data-text="MaxConnectionDurationJitter adds a random extra amount of time to each connection&#39;s
+MaxConnectionDuration, up to this percentage of that duration. This keeps connections
+opened together from expiring at the same moment. Requires MaxConnectionDuration.
+If not specified, no jitter is added. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">maxConnectionDurationJitter</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MaxConnectionDurationJitter adds a random extra amount of time to each connection&#39;s
+MaxConnectionDuration, up to this percentage of that duration. This keeps connections
+opened together from expiring at the same moment. Requires MaxConnectionDuration.
+If not specified, no jitter is added.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.connection.connectionLimit.maxRequestsPerConnection" data-path-key="|spec|connection|connectionLimit|maxRequestsPerConnection|" data-parent-path="spec.connection.connectionLimit" data-name="maxRequestsPerConnection" data-text="MaxRequestsPerConnection defines the maximum number of requests allowed over a single connection.
 If not specified, there is no limit. Setting this parameter to 1 will effectively disable keep alive. format: int32">
   <span class="prop-name">maxRequestsPerConnection</span>
@@ -670,7 +685,7 @@ Client Address into the X-Forwarded-For header.
 Note Proxy Protocol must be present when this field is set, else the connection
 is closed.
 
-Deprecated: Use ProxyProtocol instead.">
+Deprecated: Use ProxyProtocol instead. This field will be removed in v1.11.">
   <span class="prop-name">enableProxyProtocol</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">EnableProxyProtocol interprets the ProxyProtocol header and adds the
@@ -678,7 +693,7 @@ Client Address into the X-Forwarded-For header.
 Note Proxy Protocol must be present when this field is set, else the connection
 is closed.
 
-Deprecated: Use ProxyProtocol instead.
+Deprecated: Use ProxyProtocol instead. This field will be removed in v1.11.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.grpc" data-path-key="|spec|grpc|" data-parent-path="spec" data-name="grpc" data-text="GRPC provides gRPC configuration on the listener.">
@@ -724,6 +739,14 @@ when rate limiting is enabled.">
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">DisableRateLimitHeaders configures Envoy Proxy to omit the &#34;X-RateLimit-&#34; response headers
 when rate limiting is enabled.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.disableRetryAfterHeader" data-path-key="|spec|headers|disableRetryAfterHeader|" data-parent-path="spec.headers" data-name="disableRetryAfterHeader" data-text="DisableRetryAfterHeader configures Envoy Proxy to omit the &#34;Retry-After&#34; response header
+on rate-limited 429 responses.">
+  <span class="prop-name">disableRetryAfterHeader</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableRetryAfterHeader configures Envoy Proxy to omit the &#34;Retry-After&#34; response header
+on rate-limited 429 responses.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.headers.earlyRequestHeaders" data-path-key="|spec|headers|earlyRequestHeaders|" data-parent-path="spec.headers" data-name="earlyRequestHeaders" data-text="EarlyRequestHeaders defines settings for early request header modification, before envoy performs
@@ -902,6 +925,167 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 <div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
   </div>
 </div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations" data-path-key="|spec|headers|earlyRequestHeaders|mutations|" data-parent-path="spec.headers.earlyRequestHeaders" data-name="mutations" data-text="Mutations is an ordered list of header operations that are applied in
+exactly the order specified. Use this field when the sequence of
+operations matters, for example setting a header and then appending to
+it, or removing a header and then re-adding it.
+
+Mutations are always applied FIRST, in list order. The Set, Add,
+AddIfAbsent, Remove and RemoveOnMatch fields below are then applied after
+the mutations, preserving their existing ordering (Add, then Set, then
+AddIfAbsent, then Remove, then RemoveOnMatch). maxItems: 64">
+<summary>
+  <span class="prop-name">mutations</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Mutations is an ordered list of header operations that are applied in
+exactly the order specified. Use this field when the sequence of
+operations matters, for example setting a header and then appending to
+it, or removing a header and then re-adding it.
+
+Mutations are always applied FIRST, in list order. The Set, Add,
+AddIfAbsent, Remove and RemoveOnMatch fields below are then applied after
+the mutations, preserving their existing ordering (Add, then Set, then
+AddIfAbsent, then Remove, then RemoveOnMatch).</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].remove" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|remove|" data-parent-path="spec.headers.earlyRequestHeaders.mutations" data-name="remove" data-text="Remove removes the named header if it exists. Header names are
+case-insensitive. minLength: 1">
+  <span class="prop-name">remove</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Remove removes the named header if it exists. Header names are
+case-insensitive.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].removeOnMatch" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|removeOnMatch|" data-parent-path="spec.headers.earlyRequestHeaders.mutations" data-name="removeOnMatch" data-text="RemoveOnMatch removes every header whose name matches the specified string
+matcher. Matching is performed on the header name (case-insensitive).">
+<summary>
+  <span class="prop-name">removeOnMatch</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">RemoveOnMatch removes every header whose name matches the specified string
+matcher. Matching is performed on the header name (case-insensitive).</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].removeOnMatch.type" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|removeOnMatch|type|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].removeOnMatch" data-name="type" data-text="Type specifies how to match against a string. enum: Exact, Prefix, Suffix, RegularExpression">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Type specifies how to match against a string.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Exact, Prefix, Suffix, RegularExpression"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Exact, Prefix, Suffix, RegularExpression</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].removeOnMatch.value" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|removeOnMatch|value|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].removeOnMatch" data-name="value" data-text="Value specifies the string value that the match must have. minLength: 1 maxLength: 1024">
+  <span class="prop-name">value</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Value specifies the string value that the match must have.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|" data-parent-path="spec.headers.earlyRequestHeaders.mutations" data-name="write" data-text="Write adds or modifies a header using the specified action.">
+<summary>
+  <span class="prop-name">write</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Write adds or modifies a header using the specified action.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write.action" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|action|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].write" data-name="action" data-text="Action controls how the header value is written when a header with the
+same name already exists. Defaults to Add. enum: Add, Set, AddIfAbsent, SetIfExists">
+  <span class="prop-name">action</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Action controls how the header value is written when a header with the
+same name already exists. Defaults to Add.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Add, Set, AddIfAbsent, SetIfExists"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Add, Set, AddIfAbsent, SetIfExists</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write.header" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|header|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].write" data-name="header" data-text="Header is the header name and value to write. The value may contain
+Envoy substitution format operators such as &#34;%REQ(x-foo)%&#34;, which are
+evaluated per request.
+See https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators">
+<summary>
+  <span class="prop-name">header</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Header is the header name and value to write. The value may contain
+Envoy substitution format operators such as &#34;%REQ(x-foo)%&#34;, which are
+evaluated per request.
+See https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write.header.name" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|header|name|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].write.header" data-name="name" data-text="Name is the name of the HTTP Header to be matched. Name matching MUST be
+case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+
+If multiple entries specify equivalent header names, the first entry with
+an equivalent name MUST be considered for a match. Subsequent entries
+with an equivalent header name MUST be ignored. Due to the
+case-insensitivity of header names, &#34;foo&#34; and &#34;Foo&#34; are considered
+equivalent. pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$ minLength: 1 maxLength: 256">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the name of the HTTP Header to be matched. Name matching MUST be
+case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+
+If multiple entries specify equivalent header names, the first entry with
+an equivalent name MUST be considered for a match. Subsequent entries
+with an equivalent header name MUST be ignored. Due to the
+case-insensitivity of header names, &#34;foo&#34; and &#34;Foo&#34; are considered
+equivalent.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 256"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">256</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write.header.value" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|header|value|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].write.header" data-name="value" data-text="Value is the value of HTTP Header to be matched.
+&lt;gateway:experimental:description&gt;
+Must consist of printable US-ASCII characters, optionally separated
+by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
+&lt;/gateway:experimental:description&gt;
+
+&lt;gateway:experimental:validation:Pattern=`^[!-~]&#43;([\t ]?[!-~]&#43;)*$`&gt; minLength: 1 maxLength: 4096">
+  <span class="prop-name">value</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Value is the value of HTTP Header to be matched.
+&lt;gateway:experimental:description&gt;
+Must consist of printable US-ASCII characters, optionally separated
+by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
+&lt;/gateway:experimental:description&gt;
+
+&lt;gateway:experimental:validation:Pattern=`^[!-~]&#43;([\t ]?[!-~]&#43;)*$`&gt;<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.earlyRequestHeaders.mutations[].write.keepEmptyValue" data-path-key="|spec|headers|earlyRequestHeaders|mutations[]|write|keepEmptyValue|" data-parent-path="spec.headers.earlyRequestHeaders.mutations[].write" data-name="keepEmptyValue" data-text="KeepEmptyValue controls whether the header is still written when its
+value is empty. This matters for values produced by substitution
+formatters, e.g. &#34;%REQ(x-foo)%&#34;, which may resolve to an empty string at
+request time. Envoy drops such headers by default; set this to true to
+keep them with an empty value.
+
+When unset, it defaults to true only if the configured value itself is
+the empty string, so a literal empty header is always written.">
+  <span class="prop-name">keepEmptyValue</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">KeepEmptyValue controls whether the header is still written when its
+value is empty. This matters for values produced by substitution
+formatters, e.g. &#34;%REQ(x-foo)%&#34;, which may resolve to an empty string at
+request time. Envoy drops such headers by default; set this to true to
+keep them with an empty value.
+
+When unset, it defaults to true only if the configured value itself is
+the empty string, so a literal empty header is always written.
+  </div>
+</div>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>
@@ -1273,6 +1457,167 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations" data-path-key="|spec|headers|lateResponseHeaders|mutations|" data-parent-path="spec.headers.lateResponseHeaders" data-name="mutations" data-text="Mutations is an ordered list of header operations that are applied in
+exactly the order specified. Use this field when the sequence of
+operations matters, for example setting a header and then appending to
+it, or removing a header and then re-adding it.
+
+Mutations are always applied FIRST, in list order. The Set, Add,
+AddIfAbsent, Remove and RemoveOnMatch fields below are then applied after
+the mutations, preserving their existing ordering (Add, then Set, then
+AddIfAbsent, then Remove, then RemoveOnMatch). maxItems: 64">
+<summary>
+  <span class="prop-name">mutations</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Mutations is an ordered list of header operations that are applied in
+exactly the order specified. Use this field when the sequence of
+operations matters, for example setting a header and then appending to
+it, or removing a header and then re-adding it.
+
+Mutations are always applied FIRST, in list order. The Set, Add,
+AddIfAbsent, Remove and RemoveOnMatch fields below are then applied after
+the mutations, preserving their existing ordering (Add, then Set, then
+AddIfAbsent, then Remove, then RemoveOnMatch).</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].remove" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|remove|" data-parent-path="spec.headers.lateResponseHeaders.mutations" data-name="remove" data-text="Remove removes the named header if it exists. Header names are
+case-insensitive. minLength: 1">
+  <span class="prop-name">remove</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Remove removes the named header if it exists. Header names are
+case-insensitive.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].removeOnMatch" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|removeOnMatch|" data-parent-path="spec.headers.lateResponseHeaders.mutations" data-name="removeOnMatch" data-text="RemoveOnMatch removes every header whose name matches the specified string
+matcher. Matching is performed on the header name (case-insensitive).">
+<summary>
+  <span class="prop-name">removeOnMatch</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">RemoveOnMatch removes every header whose name matches the specified string
+matcher. Matching is performed on the header name (case-insensitive).</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].removeOnMatch.type" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|removeOnMatch|type|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].removeOnMatch" data-name="type" data-text="Type specifies how to match against a string. enum: Exact, Prefix, Suffix, RegularExpression">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Type specifies how to match against a string.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Exact, Prefix, Suffix, RegularExpression"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Exact, Prefix, Suffix, RegularExpression</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].removeOnMatch.value" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|removeOnMatch|value|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].removeOnMatch" data-name="value" data-text="Value specifies the string value that the match must have. minLength: 1 maxLength: 1024">
+  <span class="prop-name">value</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Value specifies the string value that the match must have.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|" data-parent-path="spec.headers.lateResponseHeaders.mutations" data-name="write" data-text="Write adds or modifies a header using the specified action.">
+<summary>
+  <span class="prop-name">write</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Write adds or modifies a header using the specified action.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write.action" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|action|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].write" data-name="action" data-text="Action controls how the header value is written when a header with the
+same name already exists. Defaults to Add. enum: Add, Set, AddIfAbsent, SetIfExists">
+  <span class="prop-name">action</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Action controls how the header value is written when a header with the
+same name already exists. Defaults to Add.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Add, Set, AddIfAbsent, SetIfExists"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Add, Set, AddIfAbsent, SetIfExists</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write.header" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|header|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].write" data-name="header" data-text="Header is the header name and value to write. The value may contain
+Envoy substitution format operators such as &#34;%REQ(x-foo)%&#34;, which are
+evaluated per request.
+See https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators">
+<summary>
+  <span class="prop-name">header</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Header is the header name and value to write. The value may contain
+Envoy substitution format operators such as &#34;%REQ(x-foo)%&#34;, which are
+evaluated per request.
+See https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write.header.name" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|header|name|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].write.header" data-name="name" data-text="Name is the name of the HTTP Header to be matched. Name matching MUST be
+case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+
+If multiple entries specify equivalent header names, the first entry with
+an equivalent name MUST be considered for a match. Subsequent entries
+with an equivalent header name MUST be ignored. Due to the
+case-insensitivity of header names, &#34;foo&#34; and &#34;Foo&#34; are considered
+equivalent. pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$ minLength: 1 maxLength: 256">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the name of the HTTP Header to be matched. Name matching MUST be
+case-insensitive. (See https://tools.ietf.org/html/rfc7230#section-3.2).
+
+If multiple entries specify equivalent header names, the first entry with
+an equivalent name MUST be considered for a match. Subsequent entries
+with an equivalent header name MUST be ignored. Due to the
+case-insensitivity of header names, &#34;foo&#34; and &#34;Foo&#34; are considered
+equivalent.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 256"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">256</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write.header.value" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|header|value|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].write.header" data-name="value" data-text="Value is the value of HTTP Header to be matched.
+&lt;gateway:experimental:description&gt;
+Must consist of printable US-ASCII characters, optionally separated
+by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
+&lt;/gateway:experimental:description&gt;
+
+&lt;gateway:experimental:validation:Pattern=`^[!-~]&#43;([\t ]?[!-~]&#43;)*$`&gt; minLength: 1 maxLength: 4096">
+  <span class="prop-name">value</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Value is the value of HTTP Header to be matched.
+&lt;gateway:experimental:description&gt;
+Must consist of printable US-ASCII characters, optionally separated
+by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
+&lt;/gateway:experimental:description&gt;
+
+&lt;gateway:experimental:validation:Pattern=`^[!-~]&#43;([\t ]?[!-~]&#43;)*$`&gt;<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.mutations[].write.keepEmptyValue" data-path-key="|spec|headers|lateResponseHeaders|mutations[]|write|keepEmptyValue|" data-parent-path="spec.headers.lateResponseHeaders.mutations[].write" data-name="keepEmptyValue" data-text="KeepEmptyValue controls whether the header is still written when its
+value is empty. This matters for values produced by substitution
+formatters, e.g. &#34;%REQ(x-foo)%&#34;, which may resolve to an empty string at
+request time. Envoy drops such headers by default; set this to true to
+keep them with an empty value.
+
+When unset, it defaults to true only if the configured value itself is
+the empty string, so a literal empty header is always written.">
+  <span class="prop-name">keepEmptyValue</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">KeepEmptyValue controls whether the header is still written when its
+value is empty. This matters for values produced by substitution
+formatters, e.g. &#34;%REQ(x-foo)%&#34;, which may resolve to an empty string at
+request time. Envoy drops such headers by default; set this to true to
+keep them with an empty value.
+
+When unset, it defaults to true only if the configured value itself is
+the empty string, so a literal empty header is always written.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.headers.lateResponseHeaders.remove" data-path-key="|spec|headers|lateResponseHeaders|remove|" data-parent-path="spec.headers.lateResponseHeaders" data-name="remove" data-text="Remove the given header(s) from the HTTP request before the action. The
 value of Remove is a list of HTTP header names. Note that the header
 names are case-insensitive (see
@@ -1428,18 +1773,40 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
   </div>
 </div>
 </details>
+<div class="prop-leaf" data-prop-row data-path="spec.headers.maxRequestHeaderLimit" data-path-key="|spec|headers|maxRequestHeaderLimit|" data-parent-path="spec.headers" data-name="maxRequestHeaderLimit" data-text="MaxRequestHeaderLimit provides configuration for the maximum size of the
+request headers allowed for incoming connections, mapping to the Envoy
+`max_request_headers_kb` HTTP connection manager setting. Requests whose
+headers exceed this limit receive a 431 (Request Header Fields Too Large)
+response. The value is rounded up to the nearest KiB, must be at least 1Ki,
+and cannot exceed 8192Ki (the maximum Envoy supports).
+For example, 60Ki, 96Ki, 128Ki etc.
+Note that when the suffix is not provided, the value is interpreted as bytes.
+Default: 60Ki bytes.">
+  <span class="prop-name">maxRequestHeaderLimit</span>
+  <span class="type-badge">string | integer</span>
+  <div class="leaf-desc">MaxRequestHeaderLimit provides configuration for the maximum size of the
+request headers allowed for incoming connections, mapping to the Envoy
+`max_request_headers_kb` HTTP connection manager setting. Requests whose
+headers exceed this limit receive a 431 (Request Header Fields Too Large)
+response. The value is rounded up to the nearest KiB, must be at least 1Ki,
+and cannot exceed 8192Ki (the maximum Envoy supports).
+For example, 60Ki, 96Ki, 128Ki etc.
+Note that when the suffix is not provided, the value is interpreted as bytes.
+Default: 60Ki bytes.
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.headers.preserveXRequestID" data-path-key="|spec|headers|preserveXRequestID|" data-parent-path="spec.headers" data-name="preserveXRequestID" data-text="PreserveXRequestID configures Envoy to keep the X-Request-ID header if passed for a request that is edge
 (Edge request is the request from external clients to front Envoy) and not reset it, which is the current Envoy behaviour.
 Defaults to false and cannot be combined with RequestID.
 
-Deprecated: use RequestID=PreserveOrGenerate instead">
+Deprecated: use RequestID=PreserveOrGenerate instead. This field will be removed in v1.11.">
   <span class="prop-name">preserveXRequestID</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">PreserveXRequestID configures Envoy to keep the X-Request-ID header if passed for a request that is edge
 (Edge request is the request from external clients to front Envoy) and not reset it, which is the current Envoy behaviour.
 Defaults to false and cannot be combined with RequestID.
 
-Deprecated: use RequestID=PreserveOrGenerate instead
+Deprecated: use RequestID=PreserveOrGenerate instead. This field will be removed in v1.11.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.headers.requestID" data-path-key="|spec|headers|requestID|" data-parent-path="spec.headers" data-name="requestID" data-text="RequestID configures Envoy&#39;s behavior for handling the `X-Request-ID` header.
@@ -1493,7 +1860,7 @@ Hash(the SHA 256 digest of the current client certificate) and By(the Subject Al
 are always included if the client certificate is forwarded.
 
 This field is only applicable when the mode is set to `AppendForward` or
-`SanitizeSet` and the client connection is mTLS. maxItems: 5">
+`SanitizeSet` and the client connection is mTLS. maxItems: 6">
   <span class="prop-name">certDetailsToAdd</span>
   <span class="type-badge">[]string</span>
   <div class="leaf-desc">CertDetailsToAdd specifies the fields in the client certificate to be forwarded in the XFCC header.
@@ -1503,7 +1870,7 @@ are always included if the client certificate is forwarded.
 
 This field is only applicable when the mode is set to `AppendForward` or
 `SanitizeSet` and the client connection is mTLS.<div class="leaf-constraints">
-<div class="schema-constraint" title="maxItems: 5"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">5</code></div></div>
+<div class="schema-constraint" title="maxItems: 6"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">6</code></div></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.headers.xForwardedClientCert.mode" data-path-key="|spec|headers|xForwardedClientCert|mode|" data-parent-path="spec.headers.xForwardedClientCert" data-name="mode" data-text="Mode defines how XFCC header is handled by Envoy Proxy.
@@ -1560,18 +1927,40 @@ When set to true (disabled), Envoy uses its default drain behavior, closing the 
 Has no effect unless maxConnectionDuration is set.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.http1.enableTrailers" data-path-key="|spec|http1|enableTrailers|" data-parent-path="spec.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+<div class="prop-leaf" data-prop-row data-path="spec.http1.enableTrailers" data-path-key="|spec|http1|enableTrailers|" data-parent-path="spec.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+
+Note: this field currently configures both the client connection and the backend HTTP/1
+protocol settings. In a future release it will be restricted to the client connection only.
+Use BackendTrafficPolicy.http1.enableTrailers for backend settings.
+Enable the EnvoyGateway runtimeFlag ApplyClientTrafficPolicyHTTP1SettingsToClientsOnly
+to opt in to the new behavior now.">
   <span class="prop-name">enableTrailers</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+
+Note: this field currently configures both the client connection and the backend HTTP/1
+protocol settings. In a future release it will be restricted to the client connection only.
+Use BackendTrafficPolicy.http1.enableTrailers for backend settings.
+Enable the EnvoyGateway runtimeFlag ApplyClientTrafficPolicyHTTP1SettingsToClientsOnly
+to opt in to the new behavior now.
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec.http1.http10" data-path-key="|spec|http1|http10|" data-parent-path="spec.http1" data-name="http10" data-text="HTTP10 turns on support for HTTP/1.0 and HTTP/0.9 requests.">
+<details class="prop" data-prop-row data-path="spec.http1.http10" data-path-key="|spec|http1|http10|" data-parent-path="spec.http1" data-name="http10" data-text="HTTP10 turns on support for HTTP/1.0 and HTTP/0.9 requests.
+
+Note: this field currently forces explicit HTTP/1 for backend connections when other
+backend-relevant HTTP/1 fields like EnableTrailers and PreserveHeaderCase are absent.
+In a future release it will no longer force explicit HTTP/1 on backend connections.
+Use BackendTrafficPolicy.http1: {} to force HTTP/1 on a backend cluster explicitly.">
 <summary>
   <span class="prop-name">http10</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">HTTP10 turns on support for HTTP/1.0 and HTTP/0.9 requests.</div>
+<div class="prop-content"><div class="prop-desc">HTTP10 turns on support for HTTP/1.0 and HTTP/0.9 requests.
+
+Note: this field currently forces explicit HTTP/1 for backend connections when other
+backend-relevant HTTP/1 fields like EnableTrailers and PreserveHeaderCase are absent.
+In a future release it will no longer force explicit HTTP/1 on backend connections.
+Use BackendTrafficPolicy.http1: {} to force HTTP/1 on a backend cluster explicitly.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.http1.http10.useDefaultHost" data-path-key="|spec|http1|http10|useDefaultHost|" data-parent-path="spec.http1.http10" data-name="useDefaultHost" data-text="UseDefaultHost specifies whether a default Host header should be injected
 into HTTP/1.0 requests that do not include one.
@@ -1644,11 +2033,23 @@ Example: To ignore TLS upgrade requests (RFC 2817), use a Prefix match with valu
 </div>
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.http1.preserveHeaderCase" data-path-key="|spec|http1|preserveHeaderCase|" data-parent-path="spec.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
-By default, Envoy will lowercase all the headers.">
+By default, Envoy will lowercase all the headers.
+
+Note: this field currently configures both the client connection and the backend HTTP/1
+protocol settings. In a future release it will be restricted to the client connection only.
+Use BackendTrafficPolicy.http1.preserveHeaderCase for backend settings.
+Enable the EnvoyGateway runtimeFlag ApplyClientTrafficPolicyHTTP1SettingsToClientsOnly
+to opt in to the new behavior now.">
   <span class="prop-name">preserveHeaderCase</span>
   <span class="type-badge">boolean</span>
   <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
 By default, Envoy will lowercase all the headers.
+
+Note: this field currently configures both the client connection and the backend HTTP/1
+protocol settings. In a future release it will be restricted to the client connection only.
+Use BackendTrafficPolicy.http1.preserveHeaderCase for backend settings.
+Enable the EnvoyGateway runtimeFlag ApplyClientTrafficPolicyHTTP1SettingsToClientsOnly
+to opt in to the new behavior now.
   </div>
 </div>
   </div>
@@ -1745,12 +2146,27 @@ Default: TerminateConnection
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.http3" data-path-key="|spec|http3|" data-parent-path="spec" data-name="http3" data-text="HTTP3 provides HTTP/3 configuration on the listener.">
+<details class="prop" data-prop-row data-path="spec.http3" data-path-key="|spec|http3|" data-parent-path="spec" data-name="http3" data-text="HTTP3 provides HTTP/3 configuration on the listener.">
+<summary>
   <span class="prop-name">http3</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">HTTP3 provides HTTP/3 configuration on the listener.
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 provides HTTP/3 configuration on the listener.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.http3.advertisedPort" data-path-key="|spec|http3|advertisedPort|" data-parent-path="spec.http3" data-name="advertisedPort" data-text="AdvertisedPort specifies the port advertised to clients in the HTTP/3
+`alt-svc` response header. It does not change the listener or Service port.
+If unset, the Gateway listener port is advertised. format: int32">
+  <span class="prop-name">advertisedPort</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">AdvertisedPort specifies the port advertised to clients in the HTTP/3
+`alt-svc` response header. It does not change the listener or Service port.
+If unset, the Gateway listener port is advertised.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
   </div>
 </div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.path" data-path-key="|spec|path|" data-parent-path="spec" data-name="path" data-text="Path enables managing how the incoming path set by clients can be normalized.">
 <summary>
   <span class="prop-name">path</span>
@@ -1795,6 +2211,54 @@ the Proxy Protocol header will be interpreted and the Client Address
 will be added into the X-Forwarded-For header.
 If both EnableProxyProtocol and ProxyProtocol are set, ProxyProtocol takes precedence.</div>
   <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.proxyProtocol.forwardProtoConfig" data-path-key="|spec|proxyProtocol|forwardProtoConfig|" data-parent-path="spec.proxyProtocol" data-name="forwardProtoConfig" data-text="ForwardProtoConfig infers the x-forwarded-proto header from the PROXY protocol
+destination port. Only takes effect when PROXY protocol is enabled.
+
+This is useful when a Layer 4 load balancer (such as AWS NLB) terminates TLS and
+forwards traffic to Envoy over PROXY protocol, so that Envoy can set the correct
+scheme for the forwarded request.">
+<summary>
+  <span class="prop-name">forwardProtoConfig</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ForwardProtoConfig infers the x-forwarded-proto header from the PROXY protocol
+destination port. Only takes effect when PROXY protocol is enabled.
+
+This is useful when a Layer 4 load balancer (such as AWS NLB) terminates TLS and
+forwards traffic to Envoy over PROXY protocol, so that Envoy can set the correct
+scheme for the forwarded request.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.proxyProtocol.forwardProtoConfig.httpDestinationPorts" data-path-key="|spec|proxyProtocol|forwardProtoConfig|httpDestinationPorts|" data-parent-path="spec.proxyProtocol.forwardProtoConfig" data-name="httpDestinationPorts" data-text="HTTPDestinationPorts are the destination ports treated as HTTP.
+When the PROXY protocol destination port matches one of these, the
+x-forwarded-proto header is set to &#34;http&#34;.
+Common values: 80, 8080. minItems: 1 maxItems: 16">
+  <span class="prop-name">httpDestinationPorts</span>
+  <span class="type-badge">[]integer</span>
+  <div class="leaf-desc">HTTPDestinationPorts are the destination ports treated as HTTP.
+When the PROXY protocol destination port matches one of these, the
+x-forwarded-proto header is set to &#34;http&#34;.
+Common values: 80, 8080.<div class="leaf-constraints">
+<div class="schema-constraint" title="minItems: 1"><span class="schema-constraint-label">minItems:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.proxyProtocol.forwardProtoConfig.httpsDestinationPorts" data-path-key="|spec|proxyProtocol|forwardProtoConfig|httpsDestinationPorts|" data-parent-path="spec.proxyProtocol.forwardProtoConfig" data-name="httpsDestinationPorts" data-text="HTTPSDestinationPorts are the destination ports treated as HTTPS.
+When the PROXY protocol destination port matches one of these, the
+x-forwarded-proto header is set to &#34;https&#34;.
+Common values: 443, 8443. minItems: 1 maxItems: 16">
+  <span class="prop-name">httpsDestinationPorts</span>
+  <span class="type-badge">[]integer</span>
+  <div class="leaf-desc">HTTPSDestinationPorts are the destination ports treated as HTTPS.
+When the PROXY protocol destination port matches one of these, the
+x-forwarded-proto header is set to &#34;https&#34;.
+Common values: 443, 8443.<div class="leaf-constraints">
+<div class="schema-constraint" title="minItems: 1"><span class="schema-constraint-label">minItems:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.proxyProtocol.optional" data-path-key="|spec|proxyProtocol|optional|" data-parent-path="spec.proxyProtocol" data-name="optional" data-text="Optional allows requests without a Proxy Protocol header to be proxied.
 If set to true, the listener will accept requests without a Proxy Protocol header.
 If set to false, the listener will reject requests without a Proxy Protocol header.
@@ -1841,7 +2305,7 @@ For more information on security implications, see haproxy.org/download/2.1/doc/
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead">
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">targetRef</span>
   <span class="type-badge">object</span>
@@ -1850,7 +2314,7 @@ Deprecated: use targetRefs/targetSelectors instead">
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead</div>
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.targetRef.group" data-path-key="|spec|targetRef|group|" data-parent-path="spec.targetRef" data-name="group" data-text="Group is the group of the target resource. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
   <span class="prop-name">group</span>
@@ -2532,12 +2996,16 @@ Support: Core<div class="leaf-constraints">
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.tls.clientValidation.certificateHashes" data-path-key="|spec|tls|clientValidation|certificateHashes|" data-parent-path="spec.tls.clientValidation" data-name="certificateHashes" data-text="An optional list of hex-encoded SHA-256 hashes. If specified, Envoy will
 verify that the SHA-256 of the DER-encoded presented certificate matches
-one of the specified values.">
+one of the specified values.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.">
   <span class="prop-name">certificateHashes</span>
   <span class="type-badge">[]string</span>
   <div class="leaf-desc">An optional list of hex-encoded SHA-256 hashes. If specified, Envoy will
 verify that the SHA-256 of the DER-encoded presented certificate matches
 one of the specified values.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.tls.clientValidation.crl" data-path-key="|spec|tls|clientValidation|crl|" data-parent-path="spec.tls.clientValidation" data-name="crl" data-text="Crl specifies the crl configuration that can be used to validate the client initiating the TLS connection">
@@ -2657,24 +3125,32 @@ Deprecated: Use Mode instead.
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.tls.clientValidation.spkiHashes" data-path-key="|spec|tls|clientValidation|spkiHashes|" data-parent-path="spec.tls.clientValidation" data-name="spkiHashes" data-text="An optional list of base64-encoded SHA-256 hashes. If specified, Envoy will
 verify that the SHA-256 of the DER-encoded Subject Public Key Information
-(SPKI) of the presented certificate matches one of the specified values.">
+(SPKI) of the presented certificate matches one of the specified values.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.">
   <span class="prop-name">spkiHashes</span>
   <span class="type-badge">[]string</span>
   <div class="leaf-desc">An optional list of base64-encoded SHA-256 hashes. If specified, Envoy will
 verify that the SHA-256 of the DER-encoded Subject Public Key Information
 (SPKI) of the presented certificate matches one of the specified values.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.tls.clientValidation.subjectAltNames" data-path-key="|spec|tls|clientValidation|subjectAltNames|" data-parent-path="spec.tls.clientValidation" data-name="subjectAltNames" data-text="An optional list of Subject Alternative name matchers. If specified, Envoy
 will verify that the Subject Alternative Name of the presented certificate
-matches one of the specified matchers">
+matches one of the specified matchers.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.">
 <summary>
   <span class="prop-name">subjectAltNames</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">An optional list of Subject Alternative name matchers. If specified, Envoy
 will verify that the Subject Alternative Name of the presented certificate
-matches one of the specified matchers</div>
+matches one of the specified matchers.
+Setting this requires a client certificate, so it cannot be combined with
+mode VerifyIfGiven or the deprecated optional: true.</div>
   <div class="prop-children">
 <details class="prop" data-prop-row data-path="spec.tls.clientValidation.subjectAltNames.dnsNames" data-path-key="|spec|tls|clientValidation|subjectAltNames|dnsNames|" data-parent-path="spec.tls.clientValidation.subjectAltNames" data-name="dnsNames" data-text="DNS names matchers">
 <summary>

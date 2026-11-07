@@ -365,7 +365,7 @@ metadata:
     <div class="search-ghost" id="search-ghost" aria-hidden="true"><span class="search-ghost-prefix" id="search-ghost-prefix"></span><span class="search-ghost-suffix" id="search-ghost-suffix"></span></div>
     <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
   </div>
-  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.credentialInjection for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.backendPriority for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="toolbar">
   <div class="toolbar-left">
@@ -417,6 +417,45 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">Spec defines the desired state of HTTPRouteFilter.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backendPriority" data-path-key="|spec|backendPriority|" data-parent-path="spec" data-name="backendPriority" data-text="BackendPriority sets the Envoy locality priority of the endpoints belonging to the
+backendRef this filter is attached to, enabling priority-based failover between the
+backendRefs of a single route rule. 0 is the highest priority.
+
+Envoy sends traffic to the lowest priority value that has enough healthy endpoints,
+and only spills over to the next value as that health degrades. It is highly
+recommended to configure active or passive health checks so that failover can be
+detected when the higher priority backends become unhealthy.
+
+This overrides the priority derived from the referenced Backend&#39;s fallback field.
+For additional details, see
+https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/priority
+
+This filter is only valid when referenced from a backendRef&#39;s filters. Referencing it
+from a route rule&#39;s filters is rejected: a rule-level filter applies uniformly to every
+backendRef of the rule, and a uniform priority carries no failover meaning. format: int32 minimum: 0 maximum: 128">
+  <span class="prop-name">backendPriority</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">BackendPriority sets the Envoy locality priority of the endpoints belonging to the
+backendRef this filter is attached to, enabling priority-based failover between the
+backendRefs of a single route rule. 0 is the highest priority.
+
+Envoy sends traffic to the lowest priority value that has enough healthy endpoints,
+and only spills over to the next value as that health degrades. It is highly
+recommended to configure active or passive health checks so that failover can be
+detected when the higher priority backends become unhealthy.
+
+This overrides the priority derived from the referenced Backend&#39;s fallback field.
+For additional details, see
+https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/priority
+
+This filter is only valid when referenced from a backendRef&#39;s filters. Referencing it
+from a route rule&#39;s filters is rejected: a rule-level filter applies uniformly to every
+backendRef of the rule, and a uniform priority carries no failover meaning.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 128"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">128</code></div></div>
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.credentialInjection" data-path-key="|spec|credentialInjection|" data-parent-path="spec" data-name="credentialInjection" data-text="HTTPCredentialInjectionFilter defines the configuration to inject credentials into the request.
 This is useful when the backend service requires credentials in the request, and the original
 request does not contain them. The filter can inject credentials into the request before forwarding
@@ -859,6 +898,151 @@ Note: when this filter is referenced from a GRPCRoute, a 2xx status code
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.grpcJSONTranscoder" data-path-key="|spec|grpcJSONTranscoder|" data-parent-path="spec" data-name="grpcJSONTranscoder" data-text="GRPCJSONTranscoder converts a JSON/HTTP request to a gRPC request, and the gRPC
+response back to JSON.
+
+It can only be used in the rule filters of an HTTPRoute. It is not supported in a
+GRPCRoute or in the filters of a backendRef.">
+<summary>
+  <span class="prop-name">grpcJSONTranscoder</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">GRPCJSONTranscoder converts a JSON/HTTP request to a gRPC request, and the gRPC
+response back to JSON.
+
+It can only be used in the rule filters of an HTTPRoute. It is not supported in a
+GRPCRoute or in the filters of a backendRef.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.convertGRPCStatus" data-path-key="|spec|grpcJSONTranscoder|convertGRPCStatus|" data-parent-path="spec.grpcJSONTranscoder" data-name="convertGRPCStatus" data-text="ConvertGRPCStatus converts the gRPC status of an error response to the HTTP
+status code and a JSON body.">
+  <span class="prop-name">convertGRPCStatus</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">ConvertGRPCStatus converts the gRPC status of an error response to the HTTP
+status code and a JSON body.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.ignoreUnknownQueryParameters" data-path-key="|spec|grpcJSONTranscoder|ignoreUnknownQueryParameters|" data-parent-path="spec.grpcJSONTranscoder" data-name="ignoreUnknownQueryParameters" data-text="IgnoreUnknownQueryParameters ignores the query parameters that can&#39;t be mapped to
+a field of the gRPC request.
+
+If false, a request with such a parameter is not transcoded and is sent to the
+backend as is.">
+  <span class="prop-name">ignoreUnknownQueryParameters</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">IgnoreUnknownQueryParameters ignores the query parameters that can&#39;t be mapped to
+a field of the gRPC request.
+
+If false, a request with such a parameter is not transcoded and is sent to the
+backend as is.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.grpcJSONTranscoder.printOptions" data-path-key="|spec|grpcJSONTranscoder|printOptions|" data-parent-path="spec.grpcJSONTranscoder" data-name="printOptions" data-text="PrintOptions defines how the gRPC response is printed as JSON.">
+<summary>
+  <span class="prop-name">printOptions</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">PrintOptions defines how the gRPC response is printed as JSON.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.printOptions.addWhitespace" data-path-key="|spec|grpcJSONTranscoder|printOptions|addWhitespace|" data-parent-path="spec.grpcJSONTranscoder.printOptions" data-name="addWhitespace" data-text="AddWhitespace adds spaces, line breaks and indentation to the JSON output.">
+  <span class="prop-name">addWhitespace</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">AddWhitespace adds spaces, line breaks and indentation to the JSON output.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.printOptions.alwaysPrintPrimitiveFields" data-path-key="|spec|grpcJSONTranscoder|printOptions|alwaysPrintPrimitiveFields|" data-parent-path="spec.grpcJSONTranscoder.printOptions" data-name="alwaysPrintPrimitiveFields" data-text="AlwaysPrintPrimitiveFields prints the primitive fields even when they have
+default values.">
+  <span class="prop-name">alwaysPrintPrimitiveFields</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">AlwaysPrintPrimitiveFields prints the primitive fields even when they have
+default values.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.printOptions.preserveProtoFieldNames" data-path-key="|spec|grpcJSONTranscoder|printOptions|preserveProtoFieldNames|" data-parent-path="spec.grpcJSONTranscoder.printOptions" data-name="preserveProtoFieldNames" data-text="PreserveProtoFieldNames uses the field names in the proto file instead of
+lowerCamelCase names.">
+  <span class="prop-name">preserveProtoFieldNames</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveProtoFieldNames uses the field names in the proto file instead of
+lowerCamelCase names.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.grpcJSONTranscoder.protoDescriptor" data-path-key="|spec|grpcJSONTranscoder|protoDescriptor|" data-parent-path="spec.grpcJSONTranscoder" data-name="protoDescriptor" data-text="ProtoDescriptor defines where to find the protobuf descriptor set of the gRPC services.">
+<summary>
+  <span class="prop-name">protoDescriptor</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ProtoDescriptor defines where to find the protobuf descriptor set of the gRPC services.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef" data-path-key="|spec|grpcJSONTranscoder|protoDescriptor|valueRef|" data-parent-path="spec.grpcJSONTranscoder.protoDescriptor" data-name="valueRef" data-text="ValueRef references a ConfigMap in the same namespace that holds the descriptor set.
+
+The descriptor set is read from the `proto-descriptor` key, either in `binaryData`
+or in `data`, where it can be base64-encoded. If the ConfigMap has no `data` and only
+one `binaryData` entry, that entry is used.
+
+The descriptor set must include all the imported files. It can be generated with
+`protoc --include_imports --descriptor_set_out=...`.">
+<summary>
+  <span class="prop-name">valueRef</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ValueRef references a ConfigMap in the same namespace that holds the descriptor set.
+
+The descriptor set is read from the `proto-descriptor` key, either in `binaryData`
+or in `data`, where it can be base64-encoded. If the ConfigMap has no `data` and only
+one `binaryData` entry, that entry is used.
+
+The descriptor set must include all the imported files. It can be generated with
+`protoc --include_imports --descriptor_set_out=...`.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef.group" data-path-key="|spec|grpcJSONTranscoder|protoDescriptor|valueRef|group|" data-parent-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
+When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
+  <span class="prop-name">group</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
+When unspecified or empty string, core API group is inferred.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef.kind" data-path-key="|spec|grpcJSONTranscoder|protoDescriptor|valueRef|kind|" data-parent-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef" data-name="kind" data-text="Kind is kind of the referent. For example &#34;HTTPRoute&#34; or &#34;Service&#34;. pattern: ^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">kind</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Kind is kind of the referent. For example &#34;HTTPRoute&#34; or &#34;Service&#34;.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef.name" data-path-key="|spec|grpcJSONTranscoder|protoDescriptor|valueRef|name|" data-parent-path="spec.grpcJSONTranscoder.protoDescriptor.valueRef" data-name="name" data-text="Name is the name of the referent. minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the name of the referent.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.grpcJSONTranscoder.services" data-path-key="|spec|grpcJSONTranscoder|services|" data-parent-path="spec.grpcJSONTranscoder" data-name="services" data-text="Services defines the gRPC services to transcode.
+
+If not specified, all the services defined in the descriptor are transcoded,
+except the ones that come from imported files.">
+  <span class="prop-name">services</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">Services defines the gRPC services to transcode.
+
+If not specified, all the services defined in the descriptor are transcoded,
+except the ones that come from imported files.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.matches" data-path-key="|spec|matches|" data-parent-path="spec" data-name="matches" data-text="Matches defines additional matching criteria for the HTTPRoute rule.
 As with HTTPRouteRule.Matches, the rule is matched if any one match applies.
 When both HTTPRouteRule.Matches and HTTPRouteFilter.Matches are set, the
@@ -905,6 +1089,52 @@ All specified matchers must match.</div><div class="prop-constraints">
   <div class="leaf-desc">Value is the cookie value to be matched.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.requestMirror" data-path-key="|spec|requestMirror|" data-parent-path="spec" data-name="requestMirror" data-text="RequestMirror defines configuration for request mirroring modifiers.
+This configuration works together with the Gateway API RequestMirror filter
+on the attached HTTPRoute rule.">
+<summary>
+  <span class="prop-name">requestMirror</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">RequestMirror defines configuration for request mirroring modifiers.
+This configuration works together with the Gateway API RequestMirror filter
+on the attached HTTPRoute rule.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.requestMirror.hostname" data-path-key="|spec|requestMirror|hostname|" data-parent-path="spec.requestMirror" data-name="hostname" data-text="Hostname defines the configuration to rewrite the Host header for mirrored requests.">
+<summary>
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Hostname defines the configuration to rewrite the Host header for mirrored requests.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.requestMirror.hostname.literal" data-path-key="|spec|requestMirror|hostname|literal|" data-parent-path="spec.requestMirror.hostname" data-name="literal" data-text="Literal specifies a fixed hostname to rewrite the Host header to.
+Required when Type is &#34;Literal&#34;. Must be empty when Type is &#34;Backend&#34;.
+Note: gwapiv1.PreciseHostname already carries MinLength=1, MaxLength=253,
+and RFC 1123 pattern validation, which automatically flow into the generated CRD. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">literal</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Literal specifies a fixed hostname to rewrite the Host header to.
+Required when Type is &#34;Literal&#34;. Must be empty when Type is &#34;Backend&#34;.
+Note: gwapiv1.PreciseHostname already carries MinLength=1, MaxLength=253,
+and RFC 1123 pattern validation, which automatically flow into the generated CRD.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.requestMirror.hostname.type" data-path-key="|spec|requestMirror|hostname|type|" data-parent-path="spec.requestMirror.hostname" data-name="type" data-text="Type defines the type of hostname rewrite. enum: Backend, Literal">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of hostname rewrite.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Backend, Literal"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Backend, Literal</code></div></div>
   </div>
 </div>
   </div>
@@ -1099,7 +1329,7 @@ capture groups that adhere to syntax documented in https://github.com/google/re2
 </div>
 </details>
 </div>
-<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.credentialInjection for an exact path">No matches. Try .spec.credentialInjection for an exact path</p>
+<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.backendPriority for an exact path">No matches. Try .spec.backendPriority for an exact path</p>
 </main>
 <div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <footer>

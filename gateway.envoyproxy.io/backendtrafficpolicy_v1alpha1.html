@@ -794,27 +794,164 @@ the sum of active requests and active pending requests.</div>
 </details>
 <details class="prop" data-prop-row data-path="spec.compression" data-path-key="|spec|compression|" data-parent-path="spec" data-name="compression" data-text="The compression config for the http streams.
 
-Deprecated: Use Compressor instead.">
+Deprecated: Use Compressor instead. This field will be removed in v1.11. maxItems: 3">
 <summary>
   <span class="prop-name">compression</span>
   <span class="type-badge">[]object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">The compression config for the http streams.
 
-Deprecated: Use Compressor instead.</div>
+Deprecated: Use Compressor instead. This field will be removed in v1.11.</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 3"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">3</code></div></div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli" data-path-key="|spec|compression[]|brotli|" data-parent-path="spec.compression" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<details class="prop" data-prop-row data-path="spec.compression[].brotli" data-path-key="|spec|compression[]|brotli|" data-parent-path="spec.compression" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<summary>
   <span class="prop-name">brotli</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Brotli compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Brotli compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.chunkSize" data-path-key="|spec|compression[]|brotli|chunkSize|" data-parent-path="spec.compression[].brotli" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip" data-path-key="|spec|compression[]|gzip|" data-parent-path="spec.compression" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.disableLiteralContextModeling" data-path-key="|spec|compression[]|brotli|disableLiteralContextModeling|" data-parent-path="spec.compression[].brotli" data-name="disableLiteralContextModeling" data-text="DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.">
+  <span class="prop-name">disableLiteralContextModeling</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.encoderMode" data-path-key="|spec|compression[]|brotli|encoderMode|" data-parent-path="spec.compression[].brotli" data-name="encoderMode" data-text="EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default. enum: Default, Generic, Text, Font">
+  <span class="prop-name">encoderMode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Generic, Text, Font"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Generic, Text, Font</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.inputBlockBits" data-path-key="|spec|compression[]|brotli|inputBlockBits|" data-parent-path="spec.compression[].brotli" data-name="inputBlockBits" data-text="InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24. format: int32 minimum: 16 maximum: 24">
+  <span class="prop-name">inputBlockBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 16"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">16</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.quality" data-path-key="|spec|compression[]|brotli|quality|" data-parent-path="spec.compression[].brotli" data-name="quality" data-text="Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3. format: int32 minimum: 0 maximum: 11">
+  <span class="prop-name">quality</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 11"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">11</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].brotli.windowBits" data-path-key="|spec|compression[]|brotli|windowBits|" data-parent-path="spec.compression[].brotli" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18. format: int32 minimum: 10 maximum: 24">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 10"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">10</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.compression[].gzip" data-path-key="|spec|compression[]|gzip|" data-parent-path="spec.compression" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<summary>
   <span class="prop-name">gzip</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for GZIP compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for GZIP compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip.chunkSize" data-path-key="|spec|compression[]|gzip|chunkSize|" data-parent-path="spec.compression[].gzip" data-name="chunkSize" data-text="ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip.compressionLevel" data-path-key="|spec|compression[]|gzip|compressionLevel|" data-parent-path="spec.compression[].gzip" data-name="compressionLevel" data-text="CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip.compressionStrategy" data-path-key="|spec|compression[]|gzip|compressionStrategy|" data-parent-path="spec.compression[].gzip" data-name="compressionStrategy" data-text="CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default. enum: Default, Filtered, HuffmanOnly, RLE, Fixed">
+  <span class="prop-name">compressionStrategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Filtered, HuffmanOnly, RLE, Fixed"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Filtered, HuffmanOnly, RLE, Fixed</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip.memoryLevel" data-path-key="|spec|compression[]|gzip|memoryLevel|" data-parent-path="spec.compression[].gzip" data-name="memoryLevel" data-text="MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">memoryLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].gzip.windowBits" data-path-key="|spec|compression[]|gzip|windowBits|" data-parent-path="spec.compression[].gzip" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window. format: int32 minimum: 9 maximum: 15">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 9"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">9</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 15"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">15</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.compression[].minContentLength" data-path-key="|spec|compression[]|minContentLength|" data-parent-path="spec.compression" data-name="minContentLength" data-text="MinContentLength defines the minimum response size in bytes to apply compression.
 Responses smaller than this threshold will not be compressed.
 Must be at least 30 bytes as enforced by Envoy Proxy.
@@ -836,38 +973,224 @@ Default: 30 bytes
 <div class="schema-constraint" title="enum: Gzip, Brotli, Zstd"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Gzip, Brotli, Zstd</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.compression[].zstd" data-path-key="|spec|compression[]|zstd|" data-parent-path="spec.compression" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<details class="prop" data-prop-row data-path="spec.compression[].zstd" data-path-key="|spec|compression[]|zstd|" data-parent-path="spec.compression" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<summary>
   <span class="prop-name">zstd</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Zstd compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Zstd compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].zstd.chunkSize" data-path-key="|spec|compression[]|zstd|chunkSize|" data-parent-path="spec.compression[].zstd" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].zstd.compressionLevel" data-path-key="|spec|compression[]|zstd|compressionLevel|" data-parent-path="spec.compression[].zstd" data-name="compressionLevel" data-text="CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3. format: int32 minimum: 1 maximum: 22">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 22"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">22</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].zstd.enableChecksum" data-path-key="|spec|compression[]|zstd|enableChecksum|" data-parent-path="spec.compression[].zstd" data-name="enableChecksum" data-text="EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.">
+  <span class="prop-name">enableChecksum</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compression[].zstd.strategy" data-path-key="|spec|compression[]|zstd|strategy|" data-parent-path="spec.compression[].zstd" data-name="strategy" data-text="Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default. enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2">
+  <span class="prop-name">strategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2</code></div></div>
   </div>
 </div>
   </div>
 </div>
 </details>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.compressor" data-path-key="|spec|compressor|" data-parent-path="spec" data-name="compressor" data-text="The compressor config for the http streams.
 This provides more granular control over compression configuration.
-Order matters: The first compressor in the list is preferred when q-values in Accept-Encoding are equal.">
+Order matters: The first compressor in the list is preferred when q-values in Accept-Encoding are equal. maxItems: 3">
 <summary>
   <span class="prop-name">compressor</span>
   <span class="type-badge">[]object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">The compressor config for the http streams.
 This provides more granular control over compression configuration.
-Order matters: The first compressor in the list is preferred when q-values in Accept-Encoding are equal.</div>
+Order matters: The first compressor in the list is preferred when q-values in Accept-Encoding are equal.</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 3"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">3</code></div></div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli" data-path-key="|spec|compressor[]|brotli|" data-parent-path="spec.compressor" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<details class="prop" data-prop-row data-path="spec.compressor[].brotli" data-path-key="|spec|compressor[]|brotli|" data-parent-path="spec.compressor" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<summary>
   <span class="prop-name">brotli</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Brotli compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Brotli compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.chunkSize" data-path-key="|spec|compressor[]|brotli|chunkSize|" data-parent-path="spec.compressor[].brotli" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip" data-path-key="|spec|compressor[]|gzip|" data-parent-path="spec.compressor" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.disableLiteralContextModeling" data-path-key="|spec|compressor[]|brotli|disableLiteralContextModeling|" data-parent-path="spec.compressor[].brotli" data-name="disableLiteralContextModeling" data-text="DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.">
+  <span class="prop-name">disableLiteralContextModeling</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.encoderMode" data-path-key="|spec|compressor[]|brotli|encoderMode|" data-parent-path="spec.compressor[].brotli" data-name="encoderMode" data-text="EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default. enum: Default, Generic, Text, Font">
+  <span class="prop-name">encoderMode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Generic, Text, Font"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Generic, Text, Font</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.inputBlockBits" data-path-key="|spec|compressor[]|brotli|inputBlockBits|" data-parent-path="spec.compressor[].brotli" data-name="inputBlockBits" data-text="InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24. format: int32 minimum: 16 maximum: 24">
+  <span class="prop-name">inputBlockBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 16"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">16</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.quality" data-path-key="|spec|compressor[]|brotli|quality|" data-parent-path="spec.compressor[].brotli" data-name="quality" data-text="Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3. format: int32 minimum: 0 maximum: 11">
+  <span class="prop-name">quality</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 11"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">11</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].brotli.windowBits" data-path-key="|spec|compressor[]|brotli|windowBits|" data-parent-path="spec.compressor[].brotli" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18. format: int32 minimum: 10 maximum: 24">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 10"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">10</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.compressor[].gzip" data-path-key="|spec|compressor[]|gzip|" data-parent-path="spec.compressor" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<summary>
   <span class="prop-name">gzip</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for GZIP compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for GZIP compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip.chunkSize" data-path-key="|spec|compressor[]|gzip|chunkSize|" data-parent-path="spec.compressor[].gzip" data-name="chunkSize" data-text="ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip.compressionLevel" data-path-key="|spec|compressor[]|gzip|compressionLevel|" data-parent-path="spec.compressor[].gzip" data-name="compressionLevel" data-text="CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip.compressionStrategy" data-path-key="|spec|compressor[]|gzip|compressionStrategy|" data-parent-path="spec.compressor[].gzip" data-name="compressionStrategy" data-text="CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default. enum: Default, Filtered, HuffmanOnly, RLE, Fixed">
+  <span class="prop-name">compressionStrategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Filtered, HuffmanOnly, RLE, Fixed"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Filtered, HuffmanOnly, RLE, Fixed</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip.memoryLevel" data-path-key="|spec|compressor[]|gzip|memoryLevel|" data-parent-path="spec.compressor[].gzip" data-name="memoryLevel" data-text="MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">memoryLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].gzip.windowBits" data-path-key="|spec|compressor[]|gzip|windowBits|" data-parent-path="spec.compressor[].gzip" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window. format: int32 minimum: 9 maximum: 15">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 9"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">9</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 15"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">15</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.compressor[].minContentLength" data-path-key="|spec|compressor[]|minContentLength|" data-parent-path="spec.compressor" data-name="minContentLength" data-text="MinContentLength defines the minimum response size in bytes to apply compression.
 Responses smaller than this threshold will not be compressed.
 Must be at least 30 bytes as enforced by Envoy Proxy.
@@ -889,12 +1212,61 @@ Default: 30 bytes
 <div class="schema-constraint" title="enum: Gzip, Brotli, Zstd"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Gzip, Brotli, Zstd</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.compressor[].zstd" data-path-key="|spec|compressor[]|zstd|" data-parent-path="spec.compressor" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<details class="prop" data-prop-row data-path="spec.compressor[].zstd" data-path-key="|spec|compressor[]|zstd|" data-parent-path="spec.compressor" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<summary>
   <span class="prop-name">zstd</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Zstd compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Zstd compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].zstd.chunkSize" data-path-key="|spec|compressor[]|zstd|chunkSize|" data-parent-path="spec.compressor[].zstd" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].zstd.compressionLevel" data-path-key="|spec|compressor[]|zstd|compressionLevel|" data-parent-path="spec.compressor[].zstd" data-name="compressionLevel" data-text="CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3. format: int32 minimum: 1 maximum: 22">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 22"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">22</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].zstd.enableChecksum" data-path-key="|spec|compressor[]|zstd|enableChecksum|" data-parent-path="spec.compressor[].zstd" data-name="enableChecksum" data-text="EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.">
+  <span class="prop-name">enableChecksum</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.compressor[].zstd.strategy" data-path-key="|spec|compressor[]|zstd|strategy|" data-parent-path="spec.compressor[].zstd" data-name="strategy" data-text="Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default. enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2">
+  <span class="prop-name">strategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>
@@ -1118,6 +1490,20 @@ inject delays and abort requests to mimic failure scenarios such as service fail
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.healthCheck.active.disableConnectionReuse" data-path-key="|spec|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.healthCheck.active.grpc" data-path-key="|spec|healthCheck|active|grpc|" data-parent-path="spec.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -1127,6 +1513,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.healthCheck.active.grpc.hostname" data-path-key="|spec|healthCheck|active|grpc|hostname|" data-parent-path="spec.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.healthCheck.active.grpc.service" data-path-key="|spec|healthCheck|active|grpc|service|" data-parent-path="spec.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -1292,6 +1697,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.healthCheck.active.http.protocol" data-path-key="|spec|healthCheck|active|http|protocol|" data-parent-path="spec.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.healthCheck.active.http.requestBody" data-path-key="|spec|healthCheck|active|http|requestBody|" data-parent-path="spec.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -1584,6 +2022,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.http1" data-path-key="|spec|http1|" data-parent-path="spec" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.http1.enableTrailers" data-path-key="|spec|http1|enableTrailers|" data-parent-path="spec.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.http1.preserveHeaderCase" data-path-key="|spec|http1|preserveHeaderCase|" data-parent-path="spec.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.http2" data-path-key="|spec|http2|" data-parent-path="spec" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -1675,18 +2161,49 @@ Default: TerminateConnection
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.http3" data-path-key="|spec|http3|" data-parent-path="spec" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.http3.mode" data-path-key="|spec|http3|mode|" data-parent-path="spec.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.httpUpgrade" data-path-key="|spec|httpUpgrade|" data-parent-path="spec" data-name="httpUpgrade" data-text="HTTPUpgrade defines the configuration for HTTP protocol upgrades.
 If not specified, the default upgrade configuration (websocket) will be used.
-However, if requestBuffer is configured, the default upgrade configuration
-will be ignored.">
+However, if requestBuffer is configured with mode BufferAndLimit, the default
+upgrade configuration will be ignored.">
 <summary>
   <span class="prop-name">httpUpgrade</span>
   <span class="type-badge">[]object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">HTTPUpgrade defines the configuration for HTTP protocol upgrades.
 If not specified, the default upgrade configuration (websocket) will be used.
-However, if requestBuffer is configured, the default upgrade configuration
-will be ignored.</div>
+However, if requestBuffer is configured with mode BufferAndLimit, the default
+upgrade configuration will be ignored.</div>
   <div class="prop-children">
 <details class="prop" data-prop-row data-path="spec.httpUpgrade[].connect" data-path-key="|spec|httpUpgrade[]|connect|" data-parent-path="spec.httpUpgrade" data-name="connect" data-text="Connect specifies the configuration for the CONNECT config.
 This is allowed only when type is CONNECT.">
@@ -1906,14 +2423,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.loadBalancer.consistentHash.header" data-path-key="|spec|loadBalancer|consistentHash|header|" data-parent-path="spec.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.loadBalancer.consistentHash.header.name" data-path-key="|spec|loadBalancer|consistentHash|header|name|" data-parent-path="spec.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -2138,6 +2655,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -2223,7 +2758,8 @@ Zones not listed in the configuration receive a default weight of 1.
 configurations targeting a parent resource. When set, this configuration will be merged
 into the closest parent BackendTrafficPolicy in the route&#39;s attachment hierarchy (for
 example, one targeting a Gateway, Gateway listener, ListenerSet, or ListenerSet listener).
-Currently, this field can only be set when targeting xRoute resources.
+This field can only be set when targeting xRoute or backend (Service/ServiceImport/Backend)
+resources, and is required when targeting a backend.
 If unset, no merging occurs, and only the most specific configuration takes effect.">
   <span class="prop-name">mergeType</span>
   <span class="type-badge">string</span>
@@ -2231,7 +2767,8 @@ If unset, no merging occurs, and only the most specific configuration takes effe
 configurations targeting a parent resource. When set, this configuration will be merged
 into the closest parent BackendTrafficPolicy in the route&#39;s attachment hierarchy (for
 example, one targeting a Gateway, Gateway listener, ListenerSet, or ListenerSet listener).
-Currently, this field can only be set when targeting xRoute resources.
+This field can only be set when targeting xRoute or backend (Service/ServiceImport/Backend)
+resources, and is required when targeting a backend.
 If unset, no merging occurs, and only the most specific configuration takes effect.
   </div>
 </div>
@@ -3325,43 +3862,102 @@ Deprecated: Use Global and/or Local fields directly instead. Both can be specifi
   </div>
 </div>
 </details>
-<details class="prop" data-prop-row data-path="spec.requestBuffer" data-path-key="|spec|requestBuffer|" data-parent-path="spec" data-name="requestBuffer" data-text="RequestBuffer allows the gateway to buffer and fully receive each request from a client before continuing to send the request
-upstream to the backends. This can be helpful to shield your backend servers from slow clients, and also to enforce a maximum size per request
-as any requests larger than the buffer size will be rejected.
+<details class="prop" data-prop-row data-path="spec.requestBuffer" data-path-key="|spec|requestBuffer|" data-parent-path="spec" data-name="requestBuffer" data-text="RequestBuffer configures how much of a request body Envoy is allowed to buffer for a route,
+and whether the gateway fully buffers each request before forwarding it upstream.
 
-This can have a negative performance impact so should only be enabled when necessary.
+A request whose buffered body exceeds the configured limit is rejected with HTTP 413 Content Too
+Large. How much of a request is buffered, and therefore whether the limit acts as a maximum request
+body size, depends on the mode: see the mode field.
 
-When enabling this option, you should also configure your connection buffer size to account for these request buffers. There will also be an
-increase in memory usage for Envoy that should be accounted for in your deployment settings.
-
-Request buffering is incompatible with streaming APIs and protocol upgrades such as gRPC streaming and WebSocket. Do not enable this option
-on routes that need those protocols, because requests can hang instead of being forwarded upstream.">
+Buffering increases memory usage for Envoy that should be accounted for in your deployment settings.">
 <summary>
   <span class="prop-name">requestBuffer</span>
   <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">RequestBuffer allows the gateway to buffer and fully receive each request from a client before continuing to send the request
-upstream to the backends. This can be helpful to shield your backend servers from slow clients, and also to enforce a maximum size per request
-as any requests larger than the buffer size will be rejected.
+<div class="prop-content"><div class="prop-desc">RequestBuffer configures how much of a request body Envoy is allowed to buffer for a route,
+and whether the gateway fully buffers each request before forwarding it upstream.
 
-This can have a negative performance impact so should only be enabled when necessary.
+A request whose buffered body exceeds the configured limit is rejected with HTTP 413 Content Too
+Large. How much of a request is buffered, and therefore whether the limit acts as a maximum request
+body size, depends on the mode: see the mode field.
 
-When enabling this option, you should also configure your connection buffer size to account for these request buffers. There will also be an
-increase in memory usage for Envoy that should be accounted for in your deployment settings.
-
-Request buffering is incompatible with streaming APIs and protocol upgrades such as gRPC streaming and WebSocket. Do not enable this option
-on routes that need those protocols, because requests can hang instead of being forwarded upstream.</div>
+Buffering increases memory usage for Envoy that should be accounted for in your deployment settings.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.requestBuffer.limit" data-path-key="|spec|requestBuffer|limit|" data-parent-path="spec.requestBuffer" data-name="limit" data-text="Limit specifies the maximum allowed size in bytes for each incoming request buffer.
-If exceeded, the request will be rejected with HTTP 413 Content Too Large.
+<div class="prop-leaf" data-prop-row data-path="spec.requestBuffer.limit" data-path-key="|spec|requestBuffer|limit|" data-parent-path="spec.requestBuffer" data-name="limit" data-text="Limit specifies the maximum size in bytes that Envoy may buffer for an incoming request body.
+If a request&#39;s buffered body exceeds this limit, the request is rejected with HTTP 413 Content
+Too Large.
+
+In BufferAndLimit mode the entire body is always buffered, so this acts as a maximum request body size.
+In LimitOnly mode only what a filter later in the chain actually buffers counts against the limit,
+so a streamed request that nothing buffers can exceed it and still be forwarded upstream.
 
 Accepts values in resource.Quantity format (e.g., &#34;10Mi&#34;, &#34;500Ki&#34;).">
   <span class="prop-name">limit</span>
   <span class="type-badge">string | integer</span>
-  <div class="leaf-desc">Limit specifies the maximum allowed size in bytes for each incoming request buffer.
-If exceeded, the request will be rejected with HTTP 413 Content Too Large.
+  <div class="leaf-desc">Limit specifies the maximum size in bytes that Envoy may buffer for an incoming request body.
+If a request&#39;s buffered body exceeds this limit, the request is rejected with HTTP 413 Content
+Too Large.
+
+In BufferAndLimit mode the entire body is always buffered, so this acts as a maximum request body size.
+In LimitOnly mode only what a filter later in the chain actually buffers counts against the limit,
+so a streamed request that nothing buffers can exceed it and still be forwarded upstream.
 
 Accepts values in resource.Quantity format (e.g., &#34;10Mi&#34;, &#34;500Ki&#34;).
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.requestBuffer.mode" data-path-key="|spec|requestBuffer|mode|" data-parent-path="spec.requestBuffer" data-name="mode" data-text="Mode determines how Limit is enforced. Defaults to BufferAndLimit.
+
+Limit applies in both modes: it is always set as the request body buffer limit for the route. Mode
+only controls whether the gateway additionally buffers the whole request body itself, which is what
+makes Limit a guaranteed maximum request body size.
+
+BufferAndLimit makes the gateway receive each request from the client in full before it starts sending
+the request upstream to the backends. This can be helpful to shield your backend servers from slow
+clients, and Limit acts as a maximum request body size for the route.
+Buffering whole request bodies costs memory and adds latency, so this mode should only be used when
+necessary. It is also incompatible with streaming APIs and protocol upgrades such as gRPC streaming
+and WebSocket: HTTP upgrades are disabled on routes using this mode, and a request whose body is
+never completed is never forwarded upstream. Do not use this mode on routes that need those
+protocols.
+
+LimitOnly only raises how much of a request body the gateway is allowed to buffer, without buffering
+requests itself. Use this mode when something later in the request path (ext_proc, Lua, Wasm, ...)
+buffers the request body and the default limit is too small. Unlike BufferAndLimit, this mode is
+compatible with streaming APIs and protocol upgrades, because the gateway does not wait for the whole
+request body before forwarding it upstream.
+
+In both modes, Limit applies to an individual request body and is separate from the connection buffer
+limits configured by ClientTrafficPolicy and BackendTrafficPolicy, which control per-connection
+read/write buffering and back pressure. There is no need to raise the connection buffer limits for
+Limit to take effect. enum: BufferAndLimit, LimitOnly">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines how Limit is enforced. Defaults to BufferAndLimit.
+
+Limit applies in both modes: it is always set as the request body buffer limit for the route. Mode
+only controls whether the gateway additionally buffers the whole request body itself, which is what
+makes Limit a guaranteed maximum request body size.
+
+BufferAndLimit makes the gateway receive each request from the client in full before it starts sending
+the request upstream to the backends. This can be helpful to shield your backend servers from slow
+clients, and Limit acts as a maximum request body size for the route.
+Buffering whole request bodies costs memory and adds latency, so this mode should only be used when
+necessary. It is also incompatible with streaming APIs and protocol upgrades such as gRPC streaming
+and WebSocket: HTTP upgrades are disabled on routes using this mode, and a request whose body is
+never completed is never forwarded upstream. Do not use this mode on routes that need those
+protocols.
+
+LimitOnly only raises how much of a request body the gateway is allowed to buffer, without buffering
+requests itself. Use this mode when something later in the request path (ext_proc, Lua, Wasm, ...)
+buffers the request body and the default limit is too small. Unlike BufferAndLimit, this mode is
+compatible with streaming APIs and protocol upgrades, because the gateway does not wait for the whole
+request body before forwarding it upstream.
+
+In both modes, Limit applies to an individual request body and is separate from the connection buffer
+limits configured by ClientTrafficPolicy and BackendTrafficPolicy, which control per-connection
+read/write buffering and back pressure. There is no need to raise the connection buffer limits for
+Limit to take effect.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: BufferAndLimit, LimitOnly"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">BufferAndLimit, LimitOnly</code></div></div>
   </div>
 </div>
   </div>
@@ -3383,6 +3979,60 @@ If multiple configurations are specified, the first one to match wins.</div>
 </summary>
 <div class="prop-content"><div class="prop-desc">Match configuration.</div>
   <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.responseOverride[].match.requestHeaders" data-path-key="|spec|responseOverride[]|match|requestHeaders|" data-parent-path="spec.responseOverride[].match" data-name="requestHeaders" data-text="Request headers to match on. The match evaluates to true if all matches are successful.
+Note that the request headers are not available for all Envoy-generated responses,
+in which case a request header match never evaluates to true. minItems: 1 maxItems: 16">
+<summary>
+  <span class="prop-name">requestHeaders</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Request headers to match on. The match evaluates to true if all matches are successful.
+Note that the request headers are not available for all Envoy-generated responses,
+in which case a request header match never evaluates to true.</div><div class="prop-constraints">
+<div class="schema-constraint" title="minItems: 1"><span class="schema-constraint-label">minItems:</span> <code class="schema-constraint-value">1</code></div></div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.responseOverride[].match.requestHeaders[].name" data-path-key="|spec|responseOverride[]|match|requestHeaders[]|name|" data-parent-path="spec.responseOverride[].match.requestHeaders" data-name="name" data-text="Name of the HTTP header.
+The header name is case-insensitive.
+For example, &#34;Foo&#34; and &#34;foo&#34; are considered the same header. pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$ minLength: 1 maxLength: 256">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the HTTP header.
+The header name is case-insensitive.
+For example, &#34;Foo&#34; and &#34;foo&#34; are considered the same header.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[A-Za-z0-9!#$%&amp;&#39;*&#43;\-.^_\x60|~]&#43;$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 256"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">256</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.responseOverride[].match.requestHeaders[].value" data-path-key="|spec|responseOverride[]|match|requestHeaders[]|value|" data-parent-path="spec.responseOverride[].match.requestHeaders" data-name="value" data-text="Value within the HTTP header to match against.">
+<summary>
+  <span class="prop-name">value</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Value within the HTTP header to match against.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.responseOverride[].match.requestHeaders[].value.type" data-path-key="|spec|responseOverride[]|match|requestHeaders[]|value|type|" data-parent-path="spec.responseOverride[].match.requestHeaders[].value" data-name="type" data-text="Type specifies how to match against a string. enum: Exact, Prefix, Suffix, RegularExpression">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Type specifies how to match against a string.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Exact, Prefix, Suffix, RegularExpression"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Exact, Prefix, Suffix, RegularExpression</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.responseOverride[].match.requestHeaders[].value.value" data-path-key="|spec|responseOverride[]|match|requestHeaders[]|value|value|" data-parent-path="spec.responseOverride[].match.requestHeaders[].value" data-name="value" data-text="Value specifies the string value that the match must have. minLength: 1 maxLength: 1024">
+  <span class="prop-name">value</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Value specifies the string value that the match must have.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.responseOverride[].match.responseHeaders" data-path-key="|spec|responseOverride[]|match|responseHeaders|" data-parent-path="spec.responseOverride[].match" data-name="responseHeaders" data-text="Response headers to match on. The match evaluates to true if all matches are successful. minItems: 1 maxItems: 16">
 <summary>
   <span class="prop-name">responseHeaders</span>
@@ -3939,11 +4589,13 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 </div>
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.responseOverride[].response.statusCode" data-path-key="|spec|responseOverride[]|response|statusCode|" data-parent-path="spec.responseOverride[].response" data-name="statusCode" data-text="Status Code of the Custom Response
-If unset, does not override the status of response.">
+If unset, does not override the status of response. minimum: 200 maximum: 599">
   <span class="prop-name">statusCode</span>
   <span class="type-badge">integer</span>
   <div class="leaf-desc">Status Code of the Custom Response
-If unset, does not override the status of response.
+If unset, does not override the status of response.<div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 200"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">200</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 599"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">599</code></div></div>
   </div>
 </div>
   </div>
@@ -4087,7 +4739,7 @@ If not specified, the EnvoyProxy-level setting is used.
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead">
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">targetRef</span>
   <span class="type-badge">object</span>
@@ -4096,7 +4748,7 @@ Deprecated: use targetRefs/targetSelectors instead">
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead</div>
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.targetRef.group" data-path-key="|spec|targetRef|group|" data-parent-path="spec.targetRef" data-name="group" data-text="Group is the group of the target resource. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
   <span class="prop-name">group</span>
@@ -4455,7 +5107,7 @@ The supported operators for this pattern are:
 %ROUTE_NAMESPACE%: namespace of Gateway API xRoute resource
 %ROUTE_KIND%: kind of Gateway API xRoute resource
 Example: %ROUTE_KIND%/%ROUTE_NAMESPACE%/%ROUTE_NAME% =&gt; httproute/my-ns/my-route
-Disabled by default.">
+Disabled by default. maxLength: 1024">
   <span class="prop-name">routeStatName</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">RouteStatName defines the value of the Route stat_prefix, determining how the route stats are named.
@@ -4465,7 +5117,8 @@ The supported operators for this pattern are:
 %ROUTE_NAMESPACE%: namespace of Gateway API xRoute resource
 %ROUTE_KIND%: kind of Gateway API xRoute resource
 Example: %ROUTE_KIND%/%ROUTE_NAMESPACE%/%ROUTE_NAME% =&gt; httproute/my-ns/my-route
-Disabled by default.
+Disabled by default.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
   </div>
 </div>
   </div>

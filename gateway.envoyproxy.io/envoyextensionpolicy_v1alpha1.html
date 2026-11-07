@@ -365,7 +365,7 @@ metadata:
     <div class="search-ghost" id="search-ghost" aria-hidden="true"><span class="search-ghost-prefix" id="search-ghost-prefix"></span><span class="search-ghost-suffix" id="search-ghost-suffix"></span></div>
     <button type="button" class="search-clear" id="search-clear" aria-label="Clear search" title="Clear search" hidden></button>
   </div>
-  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.dynamicModule for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="search-status" id="search-status" data-empty-message="Tip: use .spec.backends for path-only search" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="toolbar">
   <div class="toolbar-left">
@@ -417,6 +417,1831 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">Spec defines the desired state of EnvoyExtensionPolicy.</div>
   <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends" data-path-key="|spec|backends|" data-parent-path="spec" data-name="backends" data-text="Backends declares HTTP callout dependencies for Lua, Wasm and dynamic modules.
+Requires extensionApis.enableExtensionBackends to be set to true in the
+EnvoyGateway configuration.
+Each name is an alias in this policy. Extensions read the generated cluster
+name from route metadata during a request. Initialization and independent
+background callbacks have no request route. Asynchronous callbacks can use
+bindings resolved for their request.
+When merging policies, a nonempty list replaces the parent&#39;s list.
+Inherited references keep the namespace of the policy that declared them. maxItems: 16">
+<summary>
+  <span class="prop-name">backends</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Backends declares HTTP callout dependencies for Lua, Wasm and dynamic modules.
+Requires extensionApis.enableExtensionBackends to be set to true in the
+EnvoyGateway configuration.
+Each name is an alias in this policy. Extensions read the generated cluster
+name from route metadata during a request. Initialization and independent
+background callbacks have no request route. Asynchronous callbacks can use
+bindings resolved for their request.
+When merging policies, a nonempty list replaces the parent&#39;s list.
+Inherited references keep the namespace of the policy that declared them.</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendRef" data-path-key="|spec|backends[]|backendRef|" data-parent-path="spec.backends" data-name="backendRef" data-text="BackendRef references the backend for HTTP callouts. References to another
+namespace require a ReferenceGrant allowing the policy that declares this binding.">
+<summary>
+  <span class="prop-name">backendRef</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">BackendRef references the backend for HTTP callouts. References to another
+namespace require a ReferenceGrant allowing the policy that declares this binding.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendRef.group" data-path-key="|spec|backends[]|backendRef|group|" data-parent-path="spec.backends[].backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
+When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
+  <span class="prop-name">group</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
+When unspecified or empty string, core API group is inferred.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendRef.kind" data-path-key="|spec|backends[]|backendRef|kind|" data-parent-path="spec.backends[].backendRef" data-name="kind" data-text="Kind is the Kubernetes resource kind of the referent. For example
+&#34;Service&#34;.
+
+Defaults to &#34;Service&#34; when not specified.
+
+ExternalName services can refer to CNAME DNS records that may live
+outside of the cluster and as such are difficult to reason about in
+terms of conformance. They also may not be safe to forward to (see
+CVE-2021-25740 for more information). Implementations SHOULD NOT
+support ExternalName Services.
+
+Support: Core (Services with a type other than ExternalName)
+
+Support: Implementation-specific (Services with type ExternalName) pattern: ^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">kind</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Kind is the Kubernetes resource kind of the referent. For example
+&#34;Service&#34;.
+
+Defaults to &#34;Service&#34; when not specified.
+
+ExternalName services can refer to CNAME DNS records that may live
+outside of the cluster and as such are difficult to reason about in
+terms of conformance. They also may not be safe to forward to (see
+CVE-2021-25740 for more information). Implementations SHOULD NOT
+support ExternalName Services.
+
+Support: Core (Services with a type other than ExternalName)
+
+Support: Implementation-specific (Services with type ExternalName)<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-zA-Z]([-a-zA-Z0-9]*[a-zA-Z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendRef.name" data-path-key="|spec|backends[]|backendRef|name|" data-parent-path="spec.backends[].backendRef" data-name="name" data-text="Name is the name of the referent. minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the name of the referent.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendRef.namespace" data-path-key="|spec|backends[]|backendRef|namespace|" data-parent-path="spec.backends[].backendRef" data-name="namespace" data-text="Namespace is the namespace of the backend. When unspecified, the local
+namespace is inferred.
+
+Note that when a namespace different than the local namespace is specified,
+a ReferenceGrant object is required in the referent namespace to allow that
+namespace&#39;s owner to accept the reference. See the ReferenceGrant
+documentation for details.
+
+Support: Core pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Namespace is the namespace of the backend. When unspecified, the local
+namespace is inferred.
+
+Note that when a namespace different than the local namespace is specified,
+a ReferenceGrant object is required in the referent namespace to allow that
+namespace&#39;s owner to accept the reference. See the ReferenceGrant
+documentation for details.
+
+Support: Core<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendRef.port" data-path-key="|spec|backends[]|backendRef|port|" data-parent-path="spec.backends[].backendRef" data-name="port" data-text="Port specifies the destination port number to use for this resource.
+Port is required when the referent is a Kubernetes Service. In this
+case, the port number is the service port number, not the target port.
+For other resources, destination port might be derived from the referent
+resource or this field. format: int32 minimum: 1 maximum: 65535">
+  <span class="prop-name">port</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Port specifies the destination port number to use for this resource.
+Port is required when the referent is a Kubernetes Service. In this
+case, the port number is the service port number, not the target port.
+For other resources, destination port might be derived from the referent
+resource or this field.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings" data-path-key="|spec|backends[]|backendSettings|" data-parent-path="spec.backends" data-name="backendSettings" data-text="BackendSettings configures connections and traffic for this binding&#39;s cluster.
+Request timeouts and retries are controlled by the extension&#39;s callout API.
+RequestTimeout and StreamIdleTimeout are not supported here.
+DynamicModule load balancing is not supported here.
+HTTP3 is not supported for extension backends.">
+<summary>
+  <span class="prop-name">backendSettings</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">BackendSettings configures connections and traffic for this binding&#39;s cluster.
+Request timeouts and retries are controlled by the extension&#39;s callout API.
+RequestTimeout and StreamIdleTimeout are not supported here.
+DynamicModule load balancing is not supported here.
+HTTP3 is not supported for extension backends.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|" data-parent-path="spec.backends[].backendSettings" data-name="circuitBreaker" data-text="Circuit Breaker settings for the upstream connections and requests.
+If not set, circuit breakers will be enabled with the default thresholds">
+<summary>
+  <span class="prop-name">circuitBreaker</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Circuit Breaker settings for the upstream connections and requests.
+If not set, circuit breakers will be enabled with the default thresholds</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.maxConnections" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|maxConnections|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="maxConnections" data-text="The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxConnections</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The maximum number of connections that Envoy will establish to the referenced backend defined within a xRoute rule.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.maxParallelRequests" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|maxParallelRequests|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="maxParallelRequests" data-text="The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxParallelRequests</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The maximum number of parallel requests that Envoy will make to the referenced backend defined within a xRoute rule.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.maxParallelRetries" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|maxParallelRetries|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="maxParallelRetries" data-text="The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxParallelRetries</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The maximum number of parallel retries that Envoy will make to the referenced backend defined within a xRoute rule.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.maxPendingRequests" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|maxPendingRequests|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="maxPendingRequests" data-text="The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxPendingRequests</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The maximum number of pending requests that Envoy will queue to the referenced backend defined within a xRoute rule.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.maxRequestsPerConnection" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|maxRequestsPerConnection|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="maxRequestsPerConnection" data-text="The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+Default: unlimited. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxRequestsPerConnection</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The maximum number of requests that Envoy will make over a single connection to the referenced backend defined within a xRoute rule.
+Default: unlimited.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.perEndpoint" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|perEndpoint|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="perEndpoint" data-text="PerEndpoint defines Circuit Breakers that will apply per-endpoint for an upstream cluster">
+<summary>
+  <span class="prop-name">perEndpoint</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">PerEndpoint defines Circuit Breakers that will apply per-endpoint for an upstream cluster</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.perEndpoint.maxConnections" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|perEndpoint|maxConnections|" data-parent-path="spec.backends[].backendSettings.circuitBreaker.perEndpoint" data-name="maxConnections" data-text="MaxConnections configures the maximum number of connections that Envoy will establish per-endpoint to the referenced backend defined within a xRoute rule. format: int64 minimum: 0 maximum: 4.294967295e&#43;09">
+  <span class="prop-name">maxConnections</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MaxConnections configures the maximum number of connections that Envoy will establish per-endpoint to the referenced backend defined within a xRoute rule.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 4.294967295e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">4.294967295e&#43;09</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.retryBudget" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|retryBudget|" data-parent-path="spec.backends[].backendSettings.circuitBreaker" data-name="retryBudget" data-text="RetryBudget provides settings for retry budget, which limits the number of retries in a given percentage.
+RetryBudget take precedence over maxParallelRetries.">
+<summary>
+  <span class="prop-name">retryBudget</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">RetryBudget provides settings for retry budget, which limits the number of retries in a given percentage.
+RetryBudget take precedence over maxParallelRetries.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.minRetryConcurrency" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|retryBudget|minRetryConcurrency|" data-parent-path="spec.backends[].backendSettings.circuitBreaker.retryBudget" data-name="minRetryConcurrency" data-text="MinRetryConcurrency specifies the minimum retry concurrency allowed for the retry budget.
+For example, a budget of 20% with a minimum retry concurrency of 3
+will allow 5 active retries while there are 25 active requests.
+If there are 2 active requests, there are still 3 active retries
+allowed because of the minimum retry concurrency.
+Defaults to 3. format: int32">
+  <span class="prop-name">minRetryConcurrency</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MinRetryConcurrency specifies the minimum retry concurrency allowed for the retry budget.
+For example, a budget of 20% with a minimum retry concurrency of 3
+will allow 5 active retries while there are 25 active requests.
+If there are 2 active requests, there are still 3 active retries
+allowed because of the minimum retry concurrency.
+Defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.percent" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|retryBudget|percent|" data-parent-path="spec.backends[].backendSettings.circuitBreaker.retryBudget" data-name="percent" data-text="Percent specifies the limit on concurrent retries as a percentage [0, 100] of
+the sum of active requests and active pending requests.">
+<summary>
+  <span class="prop-name">percent</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Percent specifies the limit on concurrent retries as a percentage [0, 100] of
+the sum of active requests and active pending requests.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.percent.denominator" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|retryBudget|percent|denominator|" data-parent-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.percent" data-name="denominator" data-text="format: int32 minimum: 1">
+  <span class="prop-name">denominator</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc"><div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.percent.numerator" data-path-key="|spec|backends[]|backendSettings|circuitBreaker|retryBudget|percent|numerator|" data-parent-path="spec.backends[].backendSettings.circuitBreaker.retryBudget.percent" data-name="numerator" data-text="format: int32 minimum: 0">
+  <span class="prop-name">numerator</span>
+  <span class="type-badge">integer</span> <span class="required-badge">required</span>
+  <div class="leaf-desc"><div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.connection" data-path-key="|spec|backends[]|backendSettings|connection|" data-parent-path="spec.backends[].backendSettings" data-name="connection" data-text="Connection includes backend connection settings.">
+<summary>
+  <span class="prop-name">connection</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Connection includes backend connection settings.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.connection.bufferLimit" data-path-key="|spec|backends[]|backendSettings|connection|bufferLimit|" data-parent-path="spec.backends[].backendSettings.connection" data-name="bufferLimit" data-text="BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it&#39;s in user space.
+If unspecified, an implementation defined default is applied (32768 bytes).
+For example, 20Mi, 1Gi, 256Ki etc.
+Note: that when the suffix is not provided, the value is interpreted as bytes.">
+  <span class="prop-name">bufferLimit</span>
+  <span class="type-badge">string | integer</span>
+  <div class="leaf-desc">BufferLimit Soft limit on size of the cluster’s connections read and write buffers.
+BufferLimit applies to connection streaming (maybe non-streaming) channel between processes, it&#39;s in user space.
+If unspecified, an implementation defined default is applied (32768 bytes).
+For example, 20Mi, 1Gi, 256Ki etc.
+Note: that when the suffix is not provided, the value is interpreted as bytes.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.connection.preconnect" data-path-key="|spec|backends[]|backendSettings|connection|preconnect|" data-parent-path="spec.backends[].backendSettings.connection" data-name="preconnect" data-text="Preconnect configures proactive upstream connections to reduce latency by establishing
+connections before they’re needed and avoiding connection establishment overhead.
+
+If unset, Envoy will fetch connections as needed to serve in-flight requests.">
+<summary>
+  <span class="prop-name">preconnect</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Preconnect configures proactive upstream connections to reduce latency by establishing
+connections before they’re needed and avoiding connection establishment overhead.
+
+If unset, Envoy will fetch connections as needed to serve in-flight requests.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.connection.preconnect.perEndpointPercent" data-path-key="|spec|backends[]|backendSettings|connection|preconnect|perEndpointPercent|" data-parent-path="spec.backends[].backendSettings.connection.preconnect" data-name="perEndpointPercent" data-text="PerEndpointPercent configures how many additional connections to maintain per
+upstream endpoint, useful for high-QPS or latency sensitive services. Expressed as a
+percentage of the connections required by active streams
+(e.g. 100 = preconnect disabled, 105 = 1.05x connections per-endpoint, 200 = 2.00×).
+
+Allowed value range is between 100-300. When both PerEndpointPercent and
+PredictivePercent are set, Envoy ensures both are satisfied (max of the two). format: int32 minimum: 100 maximum: 300">
+  <span class="prop-name">perEndpointPercent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">PerEndpointPercent configures how many additional connections to maintain per
+upstream endpoint, useful for high-QPS or latency sensitive services. Expressed as a
+percentage of the connections required by active streams
+(e.g. 100 = preconnect disabled, 105 = 1.05x connections per-endpoint, 200 = 2.00×).
+
+Allowed value range is between 100-300. When both PerEndpointPercent and
+PredictivePercent are set, Envoy ensures both are satisfied (max of the two).<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 100"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">100</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 300"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">300</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.connection.preconnect.predictivePercent" data-path-key="|spec|backends[]|backendSettings|connection|preconnect|predictivePercent|" data-parent-path="spec.backends[].backendSettings.connection.preconnect" data-name="predictivePercent" data-text="PredictivePercent configures how many additional connections to maintain
+across the cluster by anticipating which upstream endpoint the load balancer
+will select next, useful for low-QPS services. Relies on deterministic
+loadbalancing and is only supported with Random or RoundRobin.
+Expressed as a percentage of the connections required by active streams
+(e.g. 100 = 1.0 (no preconnect), 105 = 1.05× connections across the cluster, 200 = 2.00×).
+
+Minimum allowed value is 100. When both PerEndpointPercent and PredictivePercent are
+set Envoy ensures both are satisfied per host (max of the two). format: int32 minimum: 100">
+  <span class="prop-name">predictivePercent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">PredictivePercent configures how many additional connections to maintain
+across the cluster by anticipating which upstream endpoint the load balancer
+will select next, useful for low-QPS services. Relies on deterministic
+loadbalancing and is only supported with Random or RoundRobin.
+Expressed as a percentage of the connections required by active streams
+(e.g. 100 = 1.0 (no preconnect), 105 = 1.05× connections across the cluster, 200 = 2.00×).
+
+Minimum allowed value is 100. When both PerEndpointPercent and PredictivePercent are
+set Envoy ensures both are satisfied per host (max of the two).<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 100"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.connection.socketBufferLimit" data-path-key="|spec|backends[]|backendSettings|connection|socketBufferLimit|" data-parent-path="spec.backends[].backendSettings.connection" data-name="socketBufferLimit" data-text="SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+to backend.
+SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it&#39;s in kernel space.
+For example, 20Mi, 1Gi, 256Ki etc.
+Note that when the suffix is not provided, the value is interpreted as bytes.">
+  <span class="prop-name">socketBufferLimit</span>
+  <span class="type-badge">string | integer</span>
+  <div class="leaf-desc">SocketBufferLimit provides configuration for the maximum buffer size in bytes for each socket
+to backend.
+SocketBufferLimit applies to socket streaming channel between TCP/IP stacks, it&#39;s in kernel space.
+For example, 20Mi, 1Gi, 256Ki etc.
+Note that when the suffix is not provided, the value is interpreted as bytes.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.dns" data-path-key="|spec|backends[]|backendSettings|dns|" data-parent-path="spec.backends[].backendSettings" data-name="dns" data-text="DNS includes dns resolution settings.">
+<summary>
+  <span class="prop-name">dns</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">DNS includes dns resolution settings.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.dns.dnsRefreshRate" data-path-key="|spec|backends[]|backendSettings|dns|dnsRefreshRate|" data-parent-path="spec.backends[].backendSettings.dns" data-name="dnsRefreshRate" data-text="DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+Defaults to 30 seconds. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">dnsRefreshRate</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">DNSRefreshRate specifies the rate at which DNS records should be refreshed.
+Defaults to 30 seconds.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.dns.lookupFamily" data-path-key="|spec|backends[]|backendSettings|dns|lookupFamily|" data-parent-path="spec.backends[].backendSettings.dns" data-name="lookupFamily" data-text="LookupFamily determines how Envoy would resolve DNS for Routes where the backend is specified as a fully qualified domain name (FQDN).
+If set, this configuration overrides other defaults. enum: IPv4, IPv6, IPv4Preferred, IPv6Preferred, IPv4AndIPv6">
+  <span class="prop-name">lookupFamily</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">LookupFamily determines how Envoy would resolve DNS for Routes where the backend is specified as a fully qualified domain name (FQDN).
+If set, this configuration overrides other defaults.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: IPv4, IPv6, IPv4Preferred, IPv6Preferred, IPv4AndIPv6"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">IPv4, IPv6, IPv4Preferred, IPv6Preferred, IPv4AndIPv6</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.dns.respectDnsTtl" data-path-key="|spec|backends[]|backendSettings|dns|respectDnsTtl|" data-parent-path="spec.backends[].backendSettings.dns" data-name="respectDnsTtl" data-text="RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+Defaults to true.">
+  <span class="prop-name">respectDnsTtl</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">RespectDNSTTL indicates whether the DNS Time-To-Live (TTL) should be respected.
+If the value is set to true, the DNS refresh rate will be set to the resource record’s TTL.
+Defaults to true.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck" data-path-key="|spec|backends[]|backendSettings|healthCheck|" data-parent-path="spec.backends[].backendSettings" data-name="healthCheck" data-text="HealthCheck allows gateway to perform active health checking on backends.">
+<summary>
+  <span class="prop-name">healthCheck</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HealthCheck allows gateway to perform active health checking on backends.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|" data-parent-path="spec.backends[].backendSettings.healthCheck" data-name="active" data-text="Active health check configuration">
+<summary>
+  <span class="prop-name">active</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Active health check configuration</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.grpc" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
+It&#39;s optional, and can only be used if the specified type is GRPC.">
+<summary>
+  <span class="prop-name">grpc</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
+It&#39;s optional, and can only be used if the specified type is GRPC.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
+If this is not specified, then the health check request applies to the entire
+server and not to a specific service.">
+  <span class="prop-name">service</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Service to send in the health check request.
+If this is not specified, then the health check request applies to the entire
+server and not to a specific service.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="healthCheckLog" data-text="HealthCheckLog defines health check event logging configuration for this cluster.
+When set, HC probe outcomes are logged to the configured sinks.
+Takes precedence over the gateway-level EnvoyProxy.spec.telemetry.healthCheckLog.">
+<summary>
+  <span class="prop-name">healthCheckLog</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HealthCheckLog defines health check event logging configuration for this cluster.
+When set, HC probe outcomes are logged to the configured sinks.
+Takes precedence over the gateway-level EnvoyProxy.spec.telemetry.healthCheckLog.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.matches" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|matches|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog" data-name="matches" data-text="Matches defines which health check probe outcomes produce a log entry.
+When omitted or empty, all events are logged.
+
+Each value must be unique. Multiple values are ORed. If any failure type is
+specified then a success type must also be specified, and vice versa. maxItems: 4">
+  <span class="prop-name">matches</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">Matches defines which health check probe outcomes produce a log entry.
+When omitted or empty, all events are logged.
+
+Each value must be unique. Multiple values are ORed. If any failure type is
+specified then a success type must also be specified, and vice versa.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 4"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">4</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|sinks|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog" data-name="sinks" data-text="Sinks defines where health check events are written.
+When omitted, events are written to /dev/stdout. maxItems: 1">
+<summary>
+  <span class="prop-name">sinks</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Sinks defines where health check events are written.
+When omitted, events are written to /dev/stdout.</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 1"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">1</code></div></div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks[].file" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|sinks[]|file|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks" data-name="file" data-text="File defines the file sink configuration.
+Required when type is File.">
+<summary>
+  <span class="prop-name">file</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">File defines the file sink configuration.
+Required when type is File.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks[].file.path" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|sinks[]|file|path|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks[].file" data-name="path" data-text="Path specifies the file path for health check event output.
+Use /dev/stdout to write to standard output. minLength: 1">
+  <span class="prop-name">path</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Path specifies the file path for health check event output.
+Use /dev/stdout to write to standard output.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks[].type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthCheckLog|sinks[]|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.healthCheckLog.sinks" data-name="type" data-text="Type defines the type of sink. enum: File">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of sink.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: File"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">File</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.healthyThreshold" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|healthyThreshold|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="healthyThreshold" data-text="HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy. format: int32 minimum: 1">
+  <span class="prop-name">healthyThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">HealthyThreshold defines the number of healthy health checks required before a backend host is marked healthy.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="http" data-text="HTTP defines the configuration of http health checker.
+It&#39;s required while the health checker type is HTTP.">
+<summary>
+  <span class="prop-name">http</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP defines the configuration of http health checker.
+It&#39;s required while the health checker type is HTTP.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|expectedResponse|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="expectedResponse" data-text="ExpectedResponse defines a list of HTTP expected responses to match.">
+<summary>
+  <span class="prop-name">expectedResponse</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ExpectedResponse defines a list of HTTP expected responses to match.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse.binary" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|expectedResponse|binary|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse" data-name="binary" data-text="Binary payload base64 encoded. format: byte">
+  <span class="prop-name">binary</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Binary payload base64 encoded.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: byte"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">byte</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse.text" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|expectedResponse|text|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse" data-name="text" data-text="Text payload in plain text.">
+  <span class="prop-name">text</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Text payload in plain text.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse.type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|expectedResponse|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.expectedResponse" data-name="type" data-text="Type defines the type of the payload.">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of the payload.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.expectedStatuses" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|expectedStatuses|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="expectedStatuses" data-text="ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+Defaults to 200 only">
+  <span class="prop-name">expectedStatuses</span>
+  <span class="type-badge">[]integer</span>
+  <div class="leaf-desc">ExpectedStatuses defines a list of HTTP response statuses considered healthy.
+Defaults to 200 only
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.hostname" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|hostname|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="hostname" data-text="Hostname defines the HTTP Host header used for active HTTP health checks.
+Host selection uses this order: this field, the associated Backend endpoint
+hostname if available, then the effective Route hostname. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the HTTP Host header used for active HTTP health checks.
+Host selection uses this order: this field, the associated Backend endpoint
+hostname if available, then the effective Route hostname.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.method" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|method|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="method" data-text="Method defines the HTTP method used for health checking.
+Defaults to GET maxLength: 16">
+  <span class="prop-name">method</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Method defines the HTTP method used for health checking.
+Defaults to GET<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 16"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">16</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.path" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|path|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="path" data-text="Path defines the HTTP path that will be requested during health checking. minLength: 1 maxLength: 1024">
+  <span class="prop-name">path</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
+<summary>
+  <span class="prop-name">requestBody</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">RequestBody defines the HTTP request body payload sent during health checking.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody.binary" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|requestBody|binary|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody" data-name="binary" data-text="Binary payload base64 encoded. format: byte">
+  <span class="prop-name">binary</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Binary payload base64 encoded.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: byte"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">byte</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody.text" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|requestBody|text|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody" data-name="text" data-text="Text payload in plain text.">
+  <span class="prop-name">text</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Text payload in plain text.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody.type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|requestBody|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http.requestBody" data-name="type" data-text="Type defines the type of the payload.">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of the payload.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.http.retriableStatuses" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|http|retriableStatuses|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.http" data-name="retriableStatuses" data-text="RetriableStatuses defines a list of HTTP response statuses considered retriable.
+Responses matching these statuses count towards the unhealthy threshold but
+do not result in the host being considered immediately unhealthy.
+The expected statuses take precedence for any range overlaps with this field.">
+  <span class="prop-name">retriableStatuses</span>
+  <span class="type-badge">[]integer</span>
+  <div class="leaf-desc">RetriableStatuses defines a list of HTTP response statuses considered retriable.
+Responses matching these statuses count towards the unhealthy threshold but
+do not result in the host being considered immediately unhealthy.
+The expected statuses take precedence for any range overlaps with this field.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.initialJitter" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|initialJitter|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="initialJitter" data-text="InitialJitter defines the maximum time Envoy will wait before the first health check.
+Envoy will randomly select a value between 0 and the initial jitter value. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">initialJitter</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">InitialJitter defines the maximum time Envoy will wait before the first health check.
+Envoy will randomly select a value between 0 and the initial jitter value.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.interval" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|interval|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="interval" data-text="Interval defines the time between active health checks. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">interval</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Interval defines the time between active health checks.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.overrides" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|overrides|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="overrides" data-text="Overrides defines the configuration of the overriding health check settings for all endpoints
+in the backend cluster. This allows customization of port and other settings that may differ
+from the main service configuration.">
+<summary>
+  <span class="prop-name">overrides</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Overrides defines the configuration of the overriding health check settings for all endpoints
+in the backend cluster. This allows customization of port and other settings that may differ
+from the main service configuration.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.overrides.port" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|overrides|port|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.overrides" data-name="port" data-text="Port overrides the health check port.
+If not set, the endpoint&#39;s serving port is used for health checks.
+This is useful when health checks are served on a different port than
+the main service port (e.g., port 443 for service, port 9090 for health checks). format: int32 minimum: 1 maximum: 65535">
+  <span class="prop-name">port</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Port overrides the health check port.
+If not set, the endpoint&#39;s serving port is used for health checks.
+This is useful when health checks are served on a different port than
+the main service port (e.g., port 443 for service, port 9090 for health checks).<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="tcp" data-text="TCP defines the configuration of tcp health checker.
+It&#39;s required while the health checker type is TCP.">
+<summary>
+  <span class="prop-name">tcp</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">TCP defines the configuration of tcp health checker.
+It&#39;s required while the health checker type is TCP.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|receive|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp" data-name="receive" data-text="Receive defines the expected response payload.">
+<summary>
+  <span class="prop-name">receive</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Receive defines the expected response payload.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive.binary" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|receive|binary|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive" data-name="binary" data-text="Binary payload base64 encoded. format: byte">
+  <span class="prop-name">binary</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Binary payload base64 encoded.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: byte"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">byte</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive.text" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|receive|text|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive" data-name="text" data-text="Text payload in plain text.">
+  <span class="prop-name">text</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Text payload in plain text.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive.type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|receive|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.receive" data-name="type" data-text="Type defines the type of the payload.">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of the payload.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.send" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|send|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp" data-name="send" data-text="Send defines the request payload.">
+<summary>
+  <span class="prop-name">send</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Send defines the request payload.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.send.binary" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|send|binary|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.send" data-name="binary" data-text="Binary payload base64 encoded. format: byte">
+  <span class="prop-name">binary</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Binary payload base64 encoded.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: byte"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">byte</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.send.text" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|send|text|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.send" data-name="text" data-text="Text payload in plain text.">
+  <span class="prop-name">text</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Text payload in plain text.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.tcp.send.type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|tcp|send|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active.tcp.send" data-name="type" data-text="Type defines the type of the payload.">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of the payload.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.timeout" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|timeout|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="timeout" data-text="Timeout defines the time to wait for a health check response. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">timeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Timeout defines the time to wait for a health check response.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.type" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|type|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="type" data-text="Type defines the type of health checker.">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type defines the type of health checker.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.active.unhealthyThreshold" data-path-key="|spec|backends[]|backendSettings|healthCheck|active|unhealthyThreshold|" data-parent-path="spec.backends[].backendSettings.healthCheck.active" data-name="unhealthyThreshold" data-text="UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy.
+Without RetriableStatuses configured, any health check failure results in the host being immediately
+considered unhealthy. When RetriableStatuses is set, health checks returning those statuses are retried
+up to this threshold before the host is marked unhealthy. format: int32 minimum: 1">
+  <span class="prop-name">unhealthyThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">UnhealthyThreshold defines the number of unhealthy health checks required before a backend host is marked unhealthy.
+Without RetriableStatuses configured, any health check failure results in the host being immediately
+considered unhealthy. When RetriableStatuses is set, health checks returning those statuses are retried
+up to this threshold before the host is marked unhealthy.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.panicThreshold" data-path-key="|spec|backends[]|backendSettings|healthCheck|panicThreshold|" data-parent-path="spec.backends[].backendSettings.healthCheck" data-name="panicThreshold" data-text="When number of unhealthy endpoints for a backend reaches this threshold
+Envoy will disregard health status and balance across all endpoints.
+It&#39;s designed to prevent a situation in which host failures cascade throughout the cluster
+as load increases. If not set, the default value is 50%. To disable panic mode, set value to `0`. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">panicThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">When number of unhealthy endpoints for a backend reaches this threshold
+Envoy will disregard health status and balance across all endpoints.
+It&#39;s designed to prevent a situation in which host failures cascade throughout the cluster
+as load increases. If not set, the default value is 50%. To disable panic mode, set value to `0`.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|" data-parent-path="spec.backends[].backendSettings.healthCheck" data-name="passive" data-text="Passive passive check configuration">
+<summary>
+  <span class="prop-name">passive</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Passive passive check configuration</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.alwaysEjectOneEndpoint" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|alwaysEjectOneEndpoint|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="alwaysEjectOneEndpoint" data-text="AlwaysEjectOneEndpoint defines whether at least one host should be ejected,
+regardless of MaxEjectionPercent.">
+  <span class="prop-name">alwaysEjectOneEndpoint</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">AlwaysEjectOneEndpoint defines whether at least one host should be ejected,
+regardless of MaxEjectionPercent.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.baseEjectionTime" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|baseEjectionTime|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="baseEjectionTime" data-text="BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">baseEjectionTime</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">BaseEjectionTime defines the base duration for which a host will be ejected on consecutive failures.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.consecutive5XxErrors" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|consecutive5XxErrors|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="consecutive5XxErrors" data-text="Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection. format: int32">
+  <span class="prop-name">consecutive5XxErrors</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Consecutive5xxErrors sets the number of consecutive 5xx errors triggering ejection.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.consecutiveGatewayErrors" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|consecutiveGatewayErrors|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="consecutiveGatewayErrors" data-text="ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection. format: int32">
+  <span class="prop-name">consecutiveGatewayErrors</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ConsecutiveGatewayErrors sets the number of consecutive gateway errors triggering ejection.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.consecutiveLocalOriginFailures" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|consecutiveLocalOriginFailures|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="consecutiveLocalOriginFailures" data-text="ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+Parameter takes effect only when split_external_local_origin_errors is set to true. format: int32">
+  <span class="prop-name">consecutiveLocalOriginFailures</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ConsecutiveLocalOriginFailures sets the number of consecutive local origin failures triggering ejection.
+Parameter takes effect only when split_external_local_origin_errors is set to true.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.failurePercentageThreshold" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|failurePercentageThreshold|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="failurePercentageThreshold" data-text="FailurePercentageThreshold sets the failure percentage threshold for outlier detection.
+If the failure percentage of a given host is greater than or equal to this value, it will be ejected.
+Defaults to 85. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">failurePercentageThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">FailurePercentageThreshold sets the failure percentage threshold for outlier detection.
+If the failure percentage of a given host is greater than or equal to this value, it will be ejected.
+Defaults to 85.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.interval" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|interval|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="interval" data-text="Interval defines the time between passive health checks. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">interval</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Interval defines the time between passive health checks.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.maxEjectionPercent" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|maxEjectionPercent|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="maxEjectionPercent" data-text="MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">maxEjectionPercent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MaxEjectionPercent sets the maximum percentage of hosts in a cluster that can be ejected.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.healthCheck.passive.splitExternalLocalOriginErrors" data-path-key="|spec|backends[]|backendSettings|healthCheck|passive|splitExternalLocalOriginErrors|" data-parent-path="spec.backends[].backendSettings.healthCheck.passive" data-name="splitExternalLocalOriginErrors" data-text="SplitExternalLocalOriginErrors enables splitting of errors between external and local origin.">
+  <span class="prop-name">splitExternalLocalOriginErrors</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">SplitExternalLocalOriginErrors enables splitting of errors between external and local origin.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.http1" data-path-key="|spec|backends[]|backendSettings|http1|" data-parent-path="spec.backends[].backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http1.enableTrailers" data-path-key="|spec|backends[]|backendSettings|http1|enableTrailers|" data-parent-path="spec.backends[].backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http1.preserveHeaderCase" data-path-key="|spec|backends[]|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.backends[].backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.http2" data-path-key="|spec|backends[]|backendSettings|http2|" data-parent-path="spec.backends[].backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
+<summary>
+  <span class="prop-name">http2</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP2 provides HTTP/2 configuration for backend connections.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.http2.connectionKeepalive" data-path-key="|spec|backends[]|backendSettings|http2|connectionKeepalive|" data-parent-path="spec.backends[].backendSettings.http2" data-name="connectionKeepalive" data-text="ConnectionKeepalive configures HTTP/2 connection keepalive using PING frames.">
+<summary>
+  <span class="prop-name">connectionKeepalive</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ConnectionKeepalive configures HTTP/2 connection keepalive using PING frames.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.connectionKeepalive.idleInterval" data-path-key="|spec|backends[]|backendSettings|http2|connectionKeepalive|idleInterval|" data-parent-path="spec.backends[].backendSettings.http2.connectionKeepalive" data-name="idleInterval" data-text="IdleInterval specifies how long a connection must be idle before a PING is sent. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">idleInterval</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">IdleInterval specifies how long a connection must be idle before a PING is sent.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.connectionKeepalive.interval" data-path-key="|spec|backends[]|backendSettings|http2|connectionKeepalive|interval|" data-parent-path="spec.backends[].backendSettings.http2.connectionKeepalive" data-name="interval" data-text="Interval specifies how often to send HTTP/2 PING frames to keep the connection alive. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">interval</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Interval specifies how often to send HTTP/2 PING frames to keep the connection alive.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.connectionKeepalive.intervalJitter" data-path-key="|spec|backends[]|backendSettings|http2|connectionKeepalive|intervalJitter|" data-parent-path="spec.backends[].backendSettings.http2.connectionKeepalive" data-name="intervalJitter" data-text="IntervalJitter specifies a random jitter percentage added to each interval.
+Defaults to 15% if not specified. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">intervalJitter</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">IntervalJitter specifies a random jitter percentage added to each interval.
+Defaults to 15% if not specified.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.connectionKeepalive.timeout" data-path-key="|spec|backends[]|backendSettings|http2|connectionKeepalive|timeout|" data-parent-path="spec.backends[].backendSettings.http2.connectionKeepalive" data-name="timeout" data-text="Timeout specifies how long to wait for a PING response before considering the connection dead. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">timeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Timeout specifies how long to wait for a PING response before considering the connection dead.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.initialConnectionWindowSize" data-path-key="|spec|backends[]|backendSettings|http2|initialConnectionWindowSize|" data-parent-path="spec.backends[].backendSettings.http2" data-name="initialConnectionWindowSize" data-text="InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+If not set, the default value is 1 MiB.">
+  <span class="prop-name">initialConnectionWindowSize</span>
+  <span class="type-badge">string | integer</span>
+  <div class="leaf-desc">InitialConnectionWindowSize sets the initial window size for HTTP/2 connections.
+If not set, the default value is 1 MiB.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.initialStreamWindowSize" data-path-key="|spec|backends[]|backendSettings|http2|initialStreamWindowSize|" data-parent-path="spec.backends[].backendSettings.http2" data-name="initialStreamWindowSize" data-text="InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+If not set, the default value is 64 KiB(64*1024).">
+  <span class="prop-name">initialStreamWindowSize</span>
+  <span class="type-badge">string | integer</span>
+  <div class="leaf-desc">InitialStreamWindowSize sets the initial window size for HTTP/2 streams.
+If not set, the default value is 64 KiB(64*1024).
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.maxConcurrentStreams" data-path-key="|spec|backends[]|backendSettings|http2|maxConcurrentStreams|" data-parent-path="spec.backends[].backendSettings.http2" data-name="maxConcurrentStreams" data-text="MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+If not set, the default value is 100. format: int32 minimum: 1 maximum: 2.147483647e&#43;09">
+  <span class="prop-name">maxConcurrentStreams</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MaxConcurrentStreams sets the maximum number of concurrent streams allowed per connection.
+If not set, the default value is 100.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 2.147483647e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">2.147483647e&#43;09</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http2.onInvalidMessage" data-path-key="|spec|backends[]|backendSettings|http2|onInvalidMessage|" data-parent-path="spec.backends[].backendSettings.http2" data-name="onInvalidMessage" data-text="OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
+https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+Default: TerminateConnection">
+  <span class="prop-name">onInvalidMessage</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">OnInvalidMessage determines if Envoy will terminate the connection or just the offending stream in the event of HTTP messaging error
+It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
+https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
+Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.http3" data-path-key="|spec|backends[]|backendSettings|http3|" data-parent-path="spec.backends[].backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.http3.mode" data-path-key="|spec|backends[]|backendSettings|http3|mode|" data-parent-path="spec.backends[].backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer" data-path-key="|spec|backends[]|backendSettings|loadBalancer|" data-parent-path="spec.backends[].backendSettings" data-name="loadBalancer" data-text="LoadBalancer policy to apply when routing traffic from the gateway to
+the backend endpoints. Defaults to `LeastRequest`.">
+<summary>
+  <span class="prop-name">loadBalancer</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">LoadBalancer policy to apply when routing traffic from the gateway to
+the backend endpoints. Defaults to `LeastRequest`.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="backendUtilization" data-text="BackendUtilization defines the configuration when the load balancer type is
+set to BackendUtilization.">
+<summary>
+  <span class="prop-name">backendUtilization</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">BackendUtilization defines the configuration when the load balancer type is
+set to BackendUtilization.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.blackoutPeriod" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|blackoutPeriod|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="blackoutPeriod" data-text="A given endpoint must report load metrics continuously for at least this long before the endpoint weight will be used.
+Default is 10s. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">blackoutPeriod</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">A given endpoint must report load metrics continuously for at least this long before the endpoint weight will be used.
+Default is 10s.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.errorUtilizationPenaltyPercent" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|errorUtilizationPenaltyPercent|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="errorUtilizationPenaltyPercent" data-text="ErrorUtilizationPenaltyPercent adjusts endpoint weights based on the error rate (eps/qps).
+This is expressed as a percentage-based integer where 100 represents 1.0, 150 represents 1.5, etc.
+
+For example:
+- 100 =&gt; 1.0x
+- 120 =&gt; 1.2x
+- 200 =&gt; 2.0x
+
+Must be non-negative. format: int32 minimum: 0">
+  <span class="prop-name">errorUtilizationPenaltyPercent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ErrorUtilizationPenaltyPercent adjusts endpoint weights based on the error rate (eps/qps).
+This is expressed as a percentage-based integer where 100 represents 1.0, 150 represents 1.5, etc.
+
+For example:
+- 100 =&gt; 1.0x
+- 120 =&gt; 1.2x
+- 200 =&gt; 2.0x
+
+Must be non-negative.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.keepResponseHeaders" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|keepResponseHeaders|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="keepResponseHeaders" data-text="KeepResponseHeaders keeps the ORCA load report headers/trailers before sending the response to the client.
+Defaults to false.">
+  <span class="prop-name">keepResponseHeaders</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">KeepResponseHeaders keeps the ORCA load report headers/trailers before sending the response to the client.
+Defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.metricNamesForComputingUtilization" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|metricNamesForComputingUtilization|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="metricNamesForComputingUtilization" data-text="Metric names used to compute utilization if application_utilization is not set.
+For map fields in ORCA proto, use the form &#34;&lt;map_field&gt;.&lt;key&gt;&#34;, e.g., &#34;named_metrics.foo&#34;.">
+  <span class="prop-name">metricNamesForComputingUtilization</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">Metric names used to compute utilization if application_utilization is not set.
+For map fields in ORCA proto, use the form &#34;&lt;map_field&gt;.&lt;key&gt;&#34;, e.g., &#34;named_metrics.foo&#34;.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|outOfBand|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="outOfBand" data-text="OutOfBand enables out-of-band ORCA load reporting. When set, Envoy opens a
+server-streaming gRPC connection to each endpoint&#39;s
+xds.service.orca.v3.OpenRcaService/StreamCoreMetrics and pulls load
+reports periodically, instead of relying on in-band ORCA metrics
+carried in response headers/trailers.
+
+The backend must implement OpenRcaService for this to take effect.">
+<summary>
+  <span class="prop-name">outOfBand</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">OutOfBand enables out-of-band ORCA load reporting. When set, Envoy opens a
+server-streaming gRPC connection to each endpoint&#39;s
+xds.service.orca.v3.OpenRcaService/StreamCoreMetrics and pulls load
+reports periodically, instead of relying on in-band ORCA metrics
+carried in response headers/trailers.
+
+The backend must implement OpenRcaService for this to take effect.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand.authority" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|outOfBand|authority|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand" data-name="authority" data-text="Authority overrides the :authority header on the OutOfBand gRPC stream.
+If unset, Envoy uses the endpoint hostname, then the dialed address, then
+the cluster name. pattern: ^[^\x00\n\r]*$ minLength: 1 maxLength: 259">
+  <span class="prop-name">authority</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Authority overrides the :authority header on the OutOfBand gRPC stream.
+If unset, Envoy uses the endpoint hostname, then the dialed address, then
+the cluster name.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[^\x00\n\r]*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[^\x00\n\r]*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 259"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">259</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand.port" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|outOfBand|port|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand" data-name="port" data-text="Port overrides the port used for the OutOfBand reporting connection, e.g. to
+reach a separate reporting sidecar. Defaults to the endpoint&#39;s port. format: int32 minimum: 1 maximum: 65535">
+  <span class="prop-name">port</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Port overrides the port used for the OutOfBand reporting connection, e.g. to
+reach a separate reporting sidecar. Defaults to the endpoint&#39;s port.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand.reportingPeriod" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|outOfBand|reportingPeriod|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.outOfBand" data-name="reportingPeriod" data-text="ReportingPeriod is how often Envoy requests load reports from the server.
+Must be greater than 0. Defaults to 10s. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">reportingPeriod</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">ReportingPeriod is how often Envoy requests load reports from the server.
+Must be greater than 0. Defaults to 10s.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.weightExpirationPeriod" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|weightExpirationPeriod|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="weightExpirationPeriod" data-text="If a given endpoint has not reported load metrics in this long, stop using the reported weight. Defaults to 3m. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">weightExpirationPeriod</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">If a given endpoint has not reported load metrics in this long, stop using the reported weight. Defaults to 3m.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.backendUtilization.weightUpdatePeriod" data-path-key="|spec|backends[]|backendSettings|loadBalancer|backendUtilization|weightUpdatePeriod|" data-parent-path="spec.backends[].backendSettings.loadBalancer.backendUtilization" data-name="weightUpdatePeriod" data-text="How often endpoint weights are recalculated. Values less than 100ms are capped at 100ms. Default 1s. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">weightUpdatePeriod</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">How often endpoint weights are recalculated. Values less than 100ms are capped at 100ms. Default 1s.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="consistentHash" data-text="ConsistentHash defines the configuration when the load balancer type is
+set to ConsistentHash">
+<summary>
+  <span class="prop-name">consistentHash</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ConsistentHash defines the configuration when the load balancer type is
+set to ConsistentHash</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|cookie|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="cookie" data-text="Cookie configures the cookie hash policy when the consistent hash type is set to Cookie.">
+<summary>
+  <span class="prop-name">cookie</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Cookie configures the cookie hash policy when the consistent hash type is set to Cookie.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie.attributes" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|cookie|attributes|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie" data-name="attributes" data-text="Additional Attributes to set for the generated cookie.">
+  <span class="prop-name">attributes</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">Additional Attributes to set for the generated cookie.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie.name" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|cookie|name|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie" data-name="name" data-text="Name of the cookie to hash.
+If this cookie does not exist in the request, Envoy will generate a cookie and set
+the TTL on the response back to the client based on Layer 4
+attributes of the backend endpoint, to ensure that these future requests
+go to the same backend endpoint. Make sure to set the TTL field for this case.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the cookie to hash.
+If this cookie does not exist in the request, Envoy will generate a cookie and set
+the TTL on the response back to the client based on Layer 4
+attributes of the backend endpoint, to ensure that these future requests
+go to the same backend endpoint. Make sure to set the TTL field for this case.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie.ttl" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|cookie|ttl|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.cookie" data-name="ttl" data-text="TTL of the generated cookie if the cookie is not present. This value sets the
+Max-Age attribute value. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">ttl</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">TTL of the generated cookie if the cookie is not present. This value sets the
+Max-Age attribute value.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
+
+Deprecated: use Headers instead. This field will be removed in v1.11.">
+<summary>
+  <span class="prop-name">header</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
+
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the header to hash.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.headers" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|headers|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="headers" data-text="Headers configures the header hash policy for each header, when the consistent hash type is set to Headers.">
+<summary>
+  <span class="prop-name">headers</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Headers configures the header hash policy for each header, when the consistent hash type is set to Headers.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.headers[].name" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|headers[]|name|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.headers" data-name="name" data-text="Name of the header to hash.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the header to hash.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.queryParams" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|queryParams|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="queryParams" data-text="QueryParams configures the query parameter hash policy when the consistent hash type is set to QueryParams.">
+<summary>
+  <span class="prop-name">queryParams</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">QueryParams configures the query parameter hash policy when the consistent hash type is set to QueryParams.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.queryParams[].name" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|queryParams[]|name|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash.queryParams" data-name="name" data-text="Name of the query param to hash.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the query param to hash.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.tableSize" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|tableSize|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="tableSize" data-text="The table size for consistent hashing, must be prime number limited to 5000011. format: int64 minimum: 2 maximum: 5.000011e&#43;06">
+  <span class="prop-name">tableSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The table size for consistent hashing, must be prime number limited to 5000011.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 2"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">2</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 5.000011e&#43;06"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">5.000011e&#43;06</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.consistentHash.type" data-path-key="|spec|backends[]|backendSettings|loadBalancer|consistentHash|type|" data-parent-path="spec.backends[].backendSettings.loadBalancer.consistentHash" data-name="type" data-text="ConsistentHashType defines the type of input to hash on. Valid Type values are
+&#34;SourceIP&#34;,
+&#34;Header&#34;,
+&#34;Headers&#34;,
+&#34;Cookie&#34;.
+&#34;QueryParams&#34;. enum: SourceIP, Header, Headers, Cookie, QueryParams">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">ConsistentHashType defines the type of input to hash on. Valid Type values are
+&#34;SourceIP&#34;,
+&#34;Header&#34;,
+&#34;Headers&#34;,
+&#34;Cookie&#34;.
+&#34;QueryParams&#34;.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: SourceIP, Header, Headers, Cookie, QueryParams"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">SourceIP, Header, Headers, Cookie, QueryParams</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.dynamicModule" data-path-key="|spec|backends[]|backendSettings|loadBalancer|dynamicModule|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="dynamicModule" data-text="DynamicModule defines the configuration when the load balancer type is
+set to DynamicModule. The referenced module must be registered in the
+EnvoyProxy resource&#39;s dynamicModules allowlist.">
+<summary>
+  <span class="prop-name">dynamicModule</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">DynamicModule defines the configuration when the load balancer type is
+set to DynamicModule. The referenced module must be registered in the
+EnvoyProxy resource&#39;s dynamicModules allowlist.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.dynamicModule.config" data-path-key="|spec|backends[]|backendSettings|loadBalancer|dynamicModule|config|" data-parent-path="spec.backends[].backendSettings.loadBalancer.dynamicModule" data-name="config" data-text="Config is optional configuration for the module&#39;s load balancer
+implementation. This is serialized and passed to the module&#39;s
+initialization function.">
+  <span class="prop-name">config</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">Config is optional configuration for the module&#39;s load balancer
+implementation. This is serialized and passed to the module&#39;s
+initialization function.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.dynamicModule.lbPolicyName" data-path-key="|spec|backends[]|backendSettings|loadBalancer|dynamicModule|lbPolicyName|" data-parent-path="spec.backends[].backendSettings.loadBalancer.dynamicModule" data-name="lbPolicyName" data-text="LBPolicyName identifies a specific load balancer implementation within
+the dynamic module. A single shared library can contain multiple LB
+policy implementations. This value is passed to the module&#39;s
+initialization function to select the appropriate implementation. minLength: 1 maxLength: 253">
+  <span class="prop-name">lbPolicyName</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">LBPolicyName identifies a specific load balancer implementation within
+the dynamic module. A single shared library can contain multiple LB
+policy implementations. This value is passed to the module&#39;s
+initialization function to select the appropriate implementation.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.dynamicModule.name" data-path-key="|spec|backends[]|backendSettings|loadBalancer|dynamicModule|name|" data-parent-path="spec.backends[].backendSettings.loadBalancer.dynamicModule" data-name="name" data-text="Name references a dynamic module registered in the EnvoyProxy resource&#39;s
+dynamicModules list. The referenced module must exist in the registry;
+otherwise, the policy will be rejected. pattern: ^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$ minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name references a dynamic module registered in the EnvoyProxy resource&#39;s
+dynamicModules list. The referenced module must exist in the registry;
+otherwise, the policy will be rejected.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.endpointOverride" data-path-key="|spec|backends[]|backendSettings|loadBalancer|endpointOverride|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="endpointOverride" data-text="EndpointOverride defines the configuration for endpoint override.
+When specified, the load balancer will attempt to route requests to endpoints
+based on the override information extracted from request headers or metadata.
+ If the override endpoints are not available, the configured load balancer policy will be used as fallback.">
+<summary>
+  <span class="prop-name">endpointOverride</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">EndpointOverride defines the configuration for endpoint override.
+When specified, the load balancer will attempt to route requests to endpoints
+based on the override information extracted from request headers or metadata.
+ If the override endpoints are not available, the configured load balancer policy will be used as fallback.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.endpointOverride.extractFrom" data-path-key="|spec|backends[]|backendSettings|loadBalancer|endpointOverride|extractFrom|" data-parent-path="spec.backends[].backendSettings.loadBalancer.endpointOverride" data-name="extractFrom" data-text="ExtractFrom defines the sources to extract endpoint override information from. minItems: 1 maxItems: 10">
+<summary>
+  <span class="prop-name">extractFrom</span>
+  <span class="type-badge">[]object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ExtractFrom defines the sources to extract endpoint override information from.</div><div class="prop-constraints">
+<div class="schema-constraint" title="minItems: 1"><span class="schema-constraint-label">minItems:</span> <code class="schema-constraint-value">1</code></div></div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 10"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">10</code></div></div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.endpointOverride.extractFrom[].header" data-path-key="|spec|backends[]|backendSettings|loadBalancer|endpointOverride|extractFrom[]|header|" data-parent-path="spec.backends[].backendSettings.loadBalancer.endpointOverride.extractFrom" data-name="header" data-text="Header defines the header to get the override endpoint addresses.
+The header value must specify at least one endpoint in `IP:Port` format or multiple endpoints in `IP:Port,IP:Port,...` format.
+For example `10.0.0.5:8080` or `[2600:4040:5204::1574:24ae]:80`.
+The IPv6 address is enclosed in square brackets.">
+  <span class="prop-name">header</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Header defines the header to get the override endpoint addresses.
+The header value must specify at least one endpoint in `IP:Port` format or multiple endpoints in `IP:Port,IP:Port,...` format.
+For example `10.0.0.5:8080` or `[2600:4040:5204::1574:24ae]:80`.
+The IPv6 address is enclosed in square brackets.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.slowStart" data-path-key="|spec|backends[]|backendSettings|loadBalancer|slowStart|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="slowStart" data-text="SlowStart defines the configuration related to the slow start load balancer policy.
+If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+Supported for RoundRobin, LeastRequest, and BackendUtilization load balancers.">
+<summary>
+  <span class="prop-name">slowStart</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">SlowStart defines the configuration related to the slow start load balancer policy.
+If set, during slow start window, traffic sent to the newly added hosts will gradually increase.
+Supported for RoundRobin, LeastRequest, and BackendUtilization load balancers.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.slowStart.window" data-path-key="|spec|backends[]|backendSettings|loadBalancer|slowStart|window|" data-parent-path="spec.backends[].backendSettings.loadBalancer.slowStart" data-name="window" data-text="Window defines the duration of the warm up period for newly added host.
+During slow start window, traffic sent to the newly added hosts will gradually increase.
+Currently only supports linear growth of traffic. For additional details,
+see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">window</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Window defines the duration of the warm up period for newly added host.
+During slow start window, traffic sent to the newly added hosts will gradually increase.
+Currently only supports linear growth of traffic. For additional details,
+see https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/cluster/v3/cluster.proto#config-cluster-v3-cluster-slowstartconfig<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.type" data-path-key="|spec|backends[]|backendSettings|loadBalancer|type|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="type" data-text="Type decides the type of Load Balancer policy.
+Valid LoadBalancerType values are
+&#34;ConsistentHash&#34;,
+&#34;LeastRequest&#34;,
+&#34;Random&#34;,
+&#34;RoundRobin&#34;,
+&#34;BackendUtilization&#34;,
+&#34;DynamicModule&#34;. enum: ConsistentHash, LeastRequest, Random, RoundRobin, BackendUtilization, DynamicModule">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Type decides the type of Load Balancer policy.
+Valid LoadBalancerType values are
+&#34;ConsistentHash&#34;,
+&#34;LeastRequest&#34;,
+&#34;Random&#34;,
+&#34;RoundRobin&#34;,
+&#34;BackendUtilization&#34;,
+&#34;DynamicModule&#34;.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: ConsistentHash, LeastRequest, Random, RoundRobin, BackendUtilization, DynamicModule"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">ConsistentHash, LeastRequest, Random, RoundRobin, BackendUtilization, DynamicModule</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|" data-parent-path="spec.backends[].backendSettings.loadBalancer" data-name="zoneAware" data-text="ZoneAware defines the configuration related to the distribution of requests between locality zones.">
+<summary>
+  <span class="prop-name">zoneAware</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ZoneAware defines the configuration related to the distribution of requests between locality zones.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware" data-name="preferLocal" data-text="PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.">
+<summary>
+  <span class="prop-name">preferLocal</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
+which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
+<summary>
+  <span class="prop-name">force</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
+which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.force.minEndpointsInZoneThreshold" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|force|minEndpointsInZoneThreshold|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.force" data-name="minEndpointsInZoneThreshold" data-text="MinEndpointsInZoneThreshold is the minimum number of upstream endpoints in the local zone required to honor the forceLocalZone
+override. This is useful for protecting zones with fewer endpoints. format: int32">
+  <span class="prop-name">minEndpointsInZoneThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MinEndpointsInZoneThreshold is the minimum number of upstream endpoints in the local zone required to honor the forceLocalZone
+override. This is useful for protecting zones with fewer endpoints.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.minEndpointsThreshold" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|minEndpointsThreshold|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="minEndpointsThreshold" data-text="MinEndpointsThreshold is the minimum number of total upstream endpoints across all zones required to enable zone-aware routing. format: int64">
+  <span class="prop-name">minEndpointsThreshold</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MinEndpointsThreshold is the minimum number of total upstream endpoints across all zones required to enable zone-aware routing.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal.percentageEnabled" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|preferLocal|percentageEnabled|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="percentageEnabled" data-text="Configures percentage of requests that will be considered for zone aware routing if zone aware routing is configured. If not specified, Envoy defaults to 100%. format: int32 minimum: 0 maximum: 100">
+  <span class="prop-name">percentageEnabled</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Configures percentage of requests that will be considered for zone aware routing if zone aware routing is configured. If not specified, Envoy defaults to 100%.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 100"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">100</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.weightedZones" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|weightedZones|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware" data-name="weightedZones" data-text="WeightedZones configures weight-based traffic distribution across locality zones.
+Traffic is distributed proportionally based on the sum of all zone weights.">
+<summary>
+  <span class="prop-name">weightedZones</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">WeightedZones configures weight-based traffic distribution across locality zones.
+Traffic is distributed proportionally based on the sum of all zone weights.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.weightedZones[].weight" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|weightedZones[]|weight|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.weightedZones" data-name="weight" data-text="Weight defines the weight for this locality.
+Higher values receive more traffic. The actual traffic distribution
+is proportional to this value relative to other localities. format: int32">
+  <span class="prop-name">weight</span>
+  <span class="type-badge">integer</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Weight defines the weight for this locality.
+Higher values receive more traffic. The actual traffic distribution
+is proportional to this value relative to other localities.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.loadBalancer.zoneAware.weightedZones[].zone" data-path-key="|spec|backends[]|backendSettings|loadBalancer|zoneAware|weightedZones[]|zone|" data-parent-path="spec.backends[].backendSettings.loadBalancer.zoneAware.weightedZones" data-name="zone" data-text="Zone specifies the topology zone this weight applies to.
+The value should match the topology.kubernetes.io/zone label
+of the nodes where endpoints are running.
+Zones not listed in the configuration receive a default weight of 1.">
+  <span class="prop-name">zone</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Zone specifies the topology zone this weight applies to.
+The value should match the topology.kubernetes.io/zone label
+of the nodes where endpoints are running.
+Zones not listed in the configuration receive a default weight of 1.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.proxyProtocol" data-path-key="|spec|backends[]|backendSettings|proxyProtocol|" data-parent-path="spec.backends[].backendSettings" data-name="proxyProtocol" data-text="ProxyProtocol enables the Proxy Protocol when communicating with the backend.">
+<summary>
+  <span class="prop-name">proxyProtocol</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">ProxyProtocol enables the Proxy Protocol when communicating with the backend.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.proxyProtocol.version" data-path-key="|spec|backends[]|backendSettings|proxyProtocol|version|" data-parent-path="spec.backends[].backendSettings.proxyProtocol" data-name="version" data-text="Version of ProxyProtocol
+Valid ProxyProtocolVersion values are
+&#34;V1&#34;
+&#34;V2&#34; enum: V1, V2">
+  <span class="prop-name">version</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Version of ProxyProtocol
+Valid ProxyProtocolVersion values are
+&#34;V1&#34;
+&#34;V2&#34;<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: V1, V2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">V1, V2</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.tcpKeepalive" data-path-key="|spec|backends[]|backendSettings|tcpKeepalive|" data-parent-path="spec.backends[].backendSettings" data-name="tcpKeepalive" data-text="TcpKeepalive settings associated with the upstream client connection.
+Disabled by default.">
+<summary>
+  <span class="prop-name">tcpKeepalive</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">TcpKeepalive settings associated with the upstream client connection.
+Disabled by default.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.tcpKeepalive.idleTime" data-path-key="|spec|backends[]|backendSettings|tcpKeepalive|idleTime|" data-parent-path="spec.backends[].backendSettings.tcpKeepalive" data-name="idleTime" data-text="The duration a connection needs to be idle before keep-alive
+probes start being sent.
+The duration format is
+Defaults to `7200s`. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">idleTime</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The duration a connection needs to be idle before keep-alive
+probes start being sent.
+The duration format is
+Defaults to `7200s`.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.tcpKeepalive.interval" data-path-key="|spec|backends[]|backendSettings|tcpKeepalive|interval|" data-parent-path="spec.backends[].backendSettings.tcpKeepalive" data-name="interval" data-text="The duration between keep-alive probes.
+Defaults to `75s`. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">interval</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The duration between keep-alive probes.
+Defaults to `75s`.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.tcpKeepalive.probes" data-path-key="|spec|backends[]|backendSettings|tcpKeepalive|probes|" data-parent-path="spec.backends[].backendSettings.tcpKeepalive" data-name="probes" data-text="The total number of unacknowledged probes to send before deciding
+the connection is dead.
+Defaults to 9. format: int32">
+  <span class="prop-name">probes</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">The total number of unacknowledged probes to send before deciding
+the connection is dead.
+Defaults to 9.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.timeout" data-path-key="|spec|backends[]|backendSettings|timeout|" data-parent-path="spec.backends[].backendSettings" data-name="timeout" data-text="Timeout settings for the backend connections.">
+<summary>
+  <span class="prop-name">timeout</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Timeout settings for the backend connections.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.timeout.http" data-path-key="|spec|backends[]|backendSettings|timeout|http|" data-parent-path="spec.backends[].backendSettings.timeout" data-name="http" data-text="Timeout settings for HTTP.">
+<summary>
+  <span class="prop-name">http</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Timeout settings for HTTP.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.http.connectionIdleTimeout" data-path-key="|spec|backends[]|backendSettings|timeout|http|connectionIdleTimeout|" data-parent-path="spec.backends[].backendSettings.timeout.http" data-name="connectionIdleTimeout" data-text="The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+Default: 1 hour. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">connectionIdleTimeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The idle timeout for an HTTP connection. Idle time is defined as a period in which there are no active requests in the connection.
+Default: 1 hour.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.http.maxConnectionDuration" data-path-key="|spec|backends[]|backendSettings|timeout|http|maxConnectionDuration|" data-parent-path="spec.backends[].backendSettings.timeout.http" data-name="maxConnectionDuration" data-text="The maximum duration of an HTTP connection.
+Default: unlimited. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">maxConnectionDuration</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The maximum duration of an HTTP connection.
+Default: unlimited.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.http.maxStreamDuration" data-path-key="|spec|backends[]|backendSettings|timeout|http|maxStreamDuration|" data-parent-path="spec.backends[].backendSettings.timeout.http" data-name="maxStreamDuration" data-text="MaxStreamDuration is the maximum duration for a stream to complete. This timeout measures the time
+from when the request is sent until the response stream is fully consumed and does not apply to
+non-streaming requests.
+When set to &#34;0s&#34;, no max duration is applied and streams can run indefinitely. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">maxStreamDuration</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">MaxStreamDuration is the maximum duration for a stream to complete. This timeout measures the time
+from when the request is sent until the response stream is fully consumed and does not apply to
+non-streaming requests.
+When set to &#34;0s&#34;, no max duration is applied and streams can run indefinitely.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.http.requestTimeout" data-path-key="|spec|backends[]|backendSettings|timeout|http|requestTimeout|" data-parent-path="spec.backends[].backendSettings.timeout.http" data-name="requestTimeout" data-text="RequestTimeout is the time until which entire response is received from the upstream. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">requestTimeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">RequestTimeout is the time until which entire response is received from the upstream.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.http.streamIdleTimeout" data-path-key="|spec|backends[]|backendSettings|timeout|http|streamIdleTimeout|" data-parent-path="spec.backends[].backendSettings.timeout.http" data-name="streamIdleTimeout" data-text=" The stream idle timeout defines the amount of time a stream can exist without any upstream or downstream activity.
+ If not specified, StreamIdleTimeout is inherited from the listener-level setting, which can be configured via ClientTrafficPolicy. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">streamIdleTimeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc"> The stream idle timeout defines the amount of time a stream can exist without any upstream or downstream activity.
+ If not specified, StreamIdleTimeout is inherited from the listener-level setting, which can be configured via ClientTrafficPolicy.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.backends[].backendSettings.timeout.tcp" data-path-key="|spec|backends[]|backendSettings|timeout|tcp|" data-parent-path="spec.backends[].backendSettings.timeout" data-name="tcp" data-text="Timeout settings for TCP.">
+<summary>
+  <span class="prop-name">tcp</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Timeout settings for TCP.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].backendSettings.timeout.tcp.connectTimeout" data-path-key="|spec|backends[]|backendSettings|timeout|tcp|connectTimeout|" data-parent-path="spec.backends[].backendSettings.timeout.tcp" data-name="connectTimeout" data-text="The timeout for network connection establishment, including TCP and TLS handshakes.
+Default: 10 seconds. pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$">
+  <span class="prop-name">connectTimeout</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The timeout for network connection establishment, including TCP and TLS handshakes.
+Default: 10 seconds.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^([0-9]{1,5}(h|m|s|ms)){1,4}$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]{1,5}(h|m|s|ms)){1,4}$</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.backends[].name" data-path-key="|spec|backends[]|name|" data-parent-path="spec.backends" data-name="name" data-text="Name is the alias used by extensions. It must be a lowercase DNS label
+and unique within this policy. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$ minLength: 1 maxLength: 63">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the alias used by extensions. It must be a lowercase DNS label
+and unique within this policy.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 63"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">63</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.dynamicModule" data-path-key="|spec|dynamicModule|" data-parent-path="spec" data-name="dynamicModule" data-text="DynamicModule is an ordered list of dynamic module HTTP filters
 that should be added to the envoy filter chain.
 Each module must be registered in the EnvoyProxy resource&#39;s dynamicModules
@@ -499,7 +2324,7 @@ that should be added to the envoy filter chain</div><div class="prop-constraints
 <details class="prop" data-prop-row data-path="spec.extProc[].backendRef" data-path-key="|spec|extProc[]|backendRef|" data-parent-path="spec.extProc" data-name="backendRef" data-text="BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">backendRef</span>
   <span class="type-badge">object</span>
@@ -507,7 +2332,7 @@ Deprecated: Use BackendRefs instead.">
 <div class="prop-content"><div class="prop-desc">BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.</div>
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendRef.group" data-path-key="|spec|extProc[]|backendRef|group|" data-parent-path="spec.extProc[].backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -1059,6 +2884,20 @@ Defaults to true.
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.grpc" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -1068,6 +2907,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -1233,6 +3091,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|extProc[]|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.extProc[].backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -1525,6 +3416,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.http1" data-path-key="|spec|extProc[]|backendSettings|http1|" data-parent-path="spec.extProc[].backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.http1.enableTrailers" data-path-key="|spec|extProc[]|backendSettings|http1|enableTrailers|" data-parent-path="spec.extProc[].backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.http1.preserveHeaderCase" data-path-key="|spec|extProc[]|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.extProc[].backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.http2" data-path-key="|spec|extProc[]|backendSettings|http2|" data-parent-path="spec.extProc[].backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -1611,6 +3550,37 @@ Default: TerminateConnection">
 It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
 https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
 Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.http3" data-path-key="|spec|extProc[]|backendSettings|http3|" data-parent-path="spec.extProc[].backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.http3.mode" data-path-key="|spec|extProc[]|backendSettings|http3|mode|" data-parent-path="spec.extProc[].backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
   </div>
 </div>
   </div>
@@ -1805,14 +3775,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|extProc[]|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.extProc[].backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|extProc[]|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.extProc[].backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -2037,6 +4007,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.extProc[].backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|extProc[]|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.extProc[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.extProc[].backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|extProc[]|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.extProc[].backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -2662,7 +4650,7 @@ If unset, no merging occurs, and only the most specific configuration takes effe
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead">
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">targetRef</span>
   <span class="type-badge">object</span>
@@ -2671,7 +4659,7 @@ Deprecated: use targetRefs/targetSelectors instead">
 This policy and the TargetRef MUST be in the same namespace for this
 Policy to have effect
 
-Deprecated: use targetRefs/targetSelectors instead</div>
+Deprecated: use targetRefs/targetSelectors instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.targetRef.group" data-path-key="|spec|targetRef|group|" data-parent-path="spec.targetRef" data-name="group" data-text="Group is the group of the target resource. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
   <span class="prop-name">group</span>
@@ -2974,12 +4962,14 @@ Order matters, as the extensions will be loaded in the order they are
 defined in this list.</div><div class="prop-constraints">
 <div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
   <div class="prop-children">
-<details class="prop" data-prop-row data-path="spec.wasm[].code" data-path-key="|spec|wasm[]|code|" data-parent-path="spec.wasm" data-name="code" data-text="Code is the Wasm code for the extension.">
+<details class="prop" data-prop-row data-path="spec.wasm[].code" data-path-key="|spec|wasm[]|code|" data-parent-path="spec.wasm" data-name="code" data-text="Code is the Wasm code for the extension.
+When omitted, Name must match a module in EnvoyProxy.spec.wasmModules.">
 <summary>
   <span class="prop-name">code</span>
-  <span class="type-badge">object</span> <span class="required-badge">required</span>
+  <span class="type-badge">object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">Code is the Wasm code for the extension.</div>
+<div class="prop-content"><div class="prop-desc">Code is the Wasm code for the extension.
+When omitted, Name must match a module in EnvoyProxy.spec.wasmModules.</div>
   <div class="prop-children">
 <details class="prop" data-prop-row data-path="spec.wasm[].code.http" data-path-key="|spec|wasm[]|code|http|" data-parent-path="spec.wasm[].code" data-name="http" data-text="HTTP is the HTTP URL containing the Wasm code.
 
@@ -3365,13 +5355,20 @@ If set to true, the Wasm extension will also be bypassed if the configuration is
 <div class="prop-leaf" data-prop-row data-path="spec.wasm[].name" data-path-key="|spec|wasm[]|name|" data-parent-path="spec.wasm" data-name="name" data-text="Name is a unique name for this Wasm extension. It is used to identify the
 Wasm extension if multiple extensions are handled by the same vm_id and root_id.
 It&#39;s also used for logging/debugging.
-If not specified, EG will generate a unique name for the Wasm extension.">
+If not specified, EG will generate a unique name for the Wasm extension.
+
+When Code is omitted, Name is required and must match a module registered
+in EnvoyProxy.spec.wasmModules. maxLength: 253">
   <span class="prop-name">name</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Name is a unique name for this Wasm extension. It is used to identify the
 Wasm extension if multiple extensions are handled by the same vm_id and root_id.
 It&#39;s also used for logging/debugging.
 If not specified, EG will generate a unique name for the Wasm extension.
+
+When Code is omitted, Name is required and must match a module registered
+in EnvoyProxy.spec.wasmModules.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.wasm[].rootID" data-path-key="|spec|wasm[]|rootID|" data-parent-path="spec.wasm" data-name="rootID" data-text="RootID is a unique ID for a set of extensions in a VM which will share a
@@ -3386,6 +5383,31 @@ RootContext and Contexts if applicable (e.g., an Wasm HttpFilter and an Wasm Acc
 If left blank, all extensions with a blank root_id with the same vm_id will share Context(s).
 
 Note: RootID must match the root_id parameter used to register the Context in the Wasm code.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.wasm[].vmSharingScope" data-path-key="|spec|wasm[]|vmSharingScope|" data-parent-path="spec.wasm" data-name="vmSharingScope" data-text="VMSharingScope defines the scope within which this extension may share a Wasm VM.
+If Policy or unset, each policy&#39;s Wasm entry uses its own VM ID. The same
+entry may reuse its VM across routes; different entries do not share a VM.
+If Namespace, this extension may share a VM with other extensions that specify
+Namespace in the same EnvoyExtensionPolicy namespace. Envoy determines VM
+compatibility using the Wasm code and VM configuration, including environment
+variables. Each Envoy worker has its own VM.
+
+Sharing a VM shares module-level state and VM failures. Plugin names and root
+IDs are not changed; matching plugin identities may also share a root context. enum: Policy, Namespace">
+  <span class="prop-name">vmSharingScope</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">VMSharingScope defines the scope within which this extension may share a Wasm VM.
+If Policy or unset, each policy&#39;s Wasm entry uses its own VM ID. The same
+entry may reuse its VM across routes; different entries do not share a VM.
+If Namespace, this extension may share a VM with other extensions that specify
+Namespace in the same EnvoyExtensionPolicy namespace. Envoy determines VM
+compatibility using the Wasm code and VM configuration, including environment
+variables. Each Envoy worker has its own VM.
+
+Sharing a VM shares module-level state and VM failures. Plugin names and root
+IDs are not changed; matching plugin identities may also share a root context.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Policy, Namespace"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Policy, Namespace</code></div></div>
   </div>
 </div>
   </div>
@@ -3877,7 +5899,7 @@ longer necessary.<div class="leaf-constraints">
 </div>
 </details>
 </div>
-<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.dynamicModule for an exact path">No matches. Try .spec.dynamicModule for an exact path</p>
+<p class="no-results" id="no-results" data-no-results-message="No matches. Try .spec.backends for an exact path">No matches. Try .spec.backends for an exact path</p>
 </main>
 <div class="copied-toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 <footer>

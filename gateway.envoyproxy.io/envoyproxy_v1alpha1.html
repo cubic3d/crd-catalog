@@ -555,7 +555,11 @@ In builds using BoringSSL FIPS the default cipher list is:
 <details class="prop" data-prop-row data-path="spec.backendTLS.clientCertificateRef" data-path-key="|spec|backendTLS|clientCertificateRef|" data-parent-path="spec.backendTLS" data-name="clientCertificateRef" data-text="ClientCertificateRef defines the reference to a Kubernetes Secret that contains
 the client certificate and private key for Envoy to use when connecting to
 backend services and external services, such as ExtAuth, ALS, OpenTelemetry, etc.
-This secret should be located within the same namespace as the Envoy proxy resource that references it.">
+The Secret must be in the same namespace as the EnvoyProxy or Backend resource
+that references it.
+Cross-namespace references are not supported, even with a ReferenceGrant.
+The ReferenceGrant requirement in the namespace field&#39;s description is inherited
+from the Gateway API SecretObjectReference type and does not apply to this field.">
 <summary>
   <span class="prop-name">clientCertificateRef</span>
   <span class="type-badge">object</span>
@@ -563,7 +567,11 @@ This secret should be located within the same namespace as the Envoy proxy resou
 <div class="prop-content"><div class="prop-desc">ClientCertificateRef defines the reference to a Kubernetes Secret that contains
 the client certificate and private key for Envoy to use when connecting to
 backend services and external services, such as ExtAuth, ALS, OpenTelemetry, etc.
-This secret should be located within the same namespace as the Envoy proxy resource that references it.</div>
+The Secret must be in the same namespace as the EnvoyProxy or Backend resource
+that references it.
+Cross-namespace references are not supported, even with a ReferenceGrant.
+The ReferenceGrant requirement in the namespace field&#39;s description is inherited
+from the Gateway API SecretObjectReference type and does not apply to this field.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.backendTLS.clientCertificateRef.group" data-path-key="|spec|backendTLS|clientCertificateRef|group|" data-parent-path="spec.backendTLS.clientCertificateRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -877,10 +885,11 @@ by absolute path.">
 <div class="prop-content"><div class="prop-desc">Local specifies a module loaded from the proxy&#39;s local filesystem
 by absolute path.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.dynamicModules[].source.local.path" data-path-key="|spec|dynamicModules[]|source|local|path|" data-parent-path="spec.dynamicModules[].source.local" data-name="path" data-text="Path is the absolute filesystem path to the dynamic module shared library (.so file). minLength: 1 maxLength: 4096">
+<div class="prop-leaf" data-prop-row data-path="spec.dynamicModules[].source.local.path" data-path-key="|spec|dynamicModules[]|source|local|path|" data-parent-path="spec.dynamicModules[].source.local" data-name="path" data-text="Path is the absolute filesystem path to the dynamic module shared library (.so file). pattern: ^/.* minLength: 1 maxLength: 4096">
   <span class="prop-name">path</span>
   <span class="type-badge">string</span> <span class="required-badge">required</span>
   <div class="leaf-desc">Path is the absolute filesystem path to the dynamic module shared library (.so file).<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^/.*"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^/.*</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
   </div>
@@ -990,6 +999,8 @@ Default filter order is:
 
 - envoy.filters.http.grpc_web
 
+- envoy.filters.http.grpc_json_transcoder
+
 - envoy.filters.http.grpc_stats
 
 - envoy.filters.http.credential_injector
@@ -997,6 +1008,8 @@ Default filter order is:
 - envoy.filters.http.compressor
 
 - envoy.filters.http.dynamic_forward_proxy
+
+- envoy.filters.http.alternate_protocols_cache
 
 - envoy.filters.http.router
 
@@ -1054,6 +1067,8 @@ Default filter order is:
 
 - envoy.filters.http.grpc_web
 
+- envoy.filters.http.grpc_json_transcoder
+
 - envoy.filters.http.grpc_stats
 
 - envoy.filters.http.credential_injector
@@ -1062,41 +1077,43 @@ Default filter order is:
 
 - envoy.filters.http.dynamic_forward_proxy
 
+- envoy.filters.http.alternate_protocols_cache
+
 - envoy.filters.http.router
 
 Note: &#34;envoy.filters.http.router&#34; cannot be reordered, it&#39;s always the last filter in the chain.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.filterOrder[].after" data-path-key="|spec|filterOrder[]|after|" data-parent-path="spec.filterOrder" data-name="after" data-text="After defines the filter that should come after the filter.
-Only one of Before or After must be set. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+Only one of Before or After must be set. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <span class="prop-name">after</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">After defines the filter that should come after the filter.
 Only one of Before or After must be set.<div class="leaf-constraints">
-<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <summary><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value schema-constraint-preview">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, ...</code></summary>
-  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy</code>
+  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache</code>
 </details></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.filterOrder[].before" data-path-key="|spec|filterOrder[]|before|" data-parent-path="spec.filterOrder" data-name="before" data-text="Before defines the filter that should come before the filter.
-Only one of Before or After must be set. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+Only one of Before or After must be set. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <span class="prop-name">before</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Before defines the filter that should come before the filter.
 Only one of Before or After must be set.<div class="leaf-constraints">
-<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <summary><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value schema-constraint-preview">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, ...</code></summary>
-  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy</code>
+  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache</code>
 </details></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.filterOrder[].name" data-path-key="|spec|filterOrder[]|name|" data-parent-path="spec.filterOrder" data-name="name" data-text="Name of the filter. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+<div class="prop-leaf" data-prop-row data-path="spec.filterOrder[].name" data-path-key="|spec|filterOrder[]|name|" data-parent-path="spec.filterOrder" data-name="name" data-text="Name of the filter. enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <span class="prop-name">name</span>
   <span class="type-badge">string</span> <span class="required-badge">required</span>
   <div class="leaf-desc">Name of the filter.<div class="leaf-constraints">
-<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy">
+<details class="schema-constraint schema-constraint-long" title="enum: envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache">
   <summary><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value schema-constraint-preview">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, ...</code></summary>
-  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy</code>
+  <code class="schema-constraint-value schema-constraint-full">envoy.filters.http.custom_response, envoy.filters.http.health_check, envoy.filters.http.fault, envoy.filters.http.cors, envoy.filters.http.csrf, envoy.filters.http.header_mutation, envoy.filters.http.ext_authz, envoy.filters.http.api_key_auth, envoy.filters.http.basic_auth, envoy.filters.http.oauth2, envoy.filters.http.jwt_authn, envoy.filters.http.stateful_session, envoy.filters.http.buffer, envoy.filters.http.lua, envoy.filters.http.ext_proc, envoy.filters.http.wasm, envoy.filters.http.dynamic_modules, envoy.filters.http.geoip, envoy.filters.http.rbac, envoy.filters.http.local_ratelimit, envoy.filters.http.ratelimit, envoy.filters.http.bandwidth_limit, envoy.filters.http.grpc_web, envoy.filters.http.grpc_json_transcoder, envoy.filters.http.grpc_stats, envoy.filters.http.credential_injector, envoy.filters.http.compressor, envoy.filters.http.dynamic_forward_proxy, envoy.filters.http.alternate_protocols_cache</code>
 </details></div>
   </div>
 </div>
@@ -1281,7 +1298,7 @@ other aspects of the Envoy proxy configuration.
 If not specified, the system will operate as follows:
 - It defaults to IPv4 only.
 - IPv6 and dual-stack environments are not supported in this default configuration.
-Note: To enable IPv6 or dual-stack functionality, explicit configuration is required. enum: IPv4, IPv6, DualStack">
+Note: To enable IPv6 or dual-stack functionality, explicit configuration is required. enum: IPv4, IPv6, DualStack, PreferDualStack">
   <span class="prop-name">ipFamily</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">IPFamily specifies the IP family for the EnvoyProxy fleet.
@@ -1291,7 +1308,7 @@ If not specified, the system will operate as follows:
 - It defaults to IPv4 only.
 - IPv6 and dual-stack environments are not supported in this default configuration.
 Note: To enable IPv6 or dual-stack functionality, explicit configuration is required.<div class="leaf-constraints">
-<div class="schema-constraint" title="enum: IPv4, IPv6, DualStack"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">IPv4, IPv6, DualStack</code></div></div>
+<div class="schema-constraint" title="enum: IPv4, IPv6, DualStack, PreferDualStack"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">IPv4, IPv6, DualStack, PreferDualStack</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.logging" data-path-key="|spec|logging|" data-parent-path="spec" data-name="logging" data-text="Logging defines logging parameters for managed proxies.">
@@ -1312,12 +1329,99 @@ and the log level is the value. If unspecified, defaults to &#34;default: warn&#
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.luaValidation" data-path-key="|spec|luaValidation|" data-parent-path="spec" data-name="luaValidation" data-text="LuaValidation determines strictness of the Lua script validation for Lua EnvoyExtensionPolicies
+<details class="prop" data-prop-row data-path="spec.lua" data-path-key="|spec|lua|" data-parent-path="spec" data-name="lua" data-text="Lua configures how Lua scripts from EnvoyExtensionPolicy resources are
+validated in the gateway controller. It selects the validation mode and, for the Strict
+mode, defines the filesystem paths and environment variables the scripts are permitted to
+access during validation.">
+<summary>
+  <span class="prop-name">lua</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Lua configures how Lua scripts from EnvoyExtensionPolicy resources are
+validated in the gateway controller. It selects the validation mode and, for the Strict
+mode, defines the filesystem paths and environment variables the scripts are permitted to
+access during validation.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.lua.strictValidation" data-path-key="|spec|lua|strictValidation|" data-parent-path="spec.lua" data-name="strictValidation" data-text="StrictValidation configures the security sandbox that the Strict validation mode executes Lua
+scripts in, defining the filesystem paths and environment variables the scripts are permitted
+to access during validation.
+
+It has no effect for the InsecureSyntax or Disabled modes, which do not execute the security
+sandbox.">
+<summary>
+  <span class="prop-name">strictValidation</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">StrictValidation configures the security sandbox that the Strict validation mode executes Lua
+scripts in, defining the filesystem paths and environment variables the scripts are permitted
+to access during validation.
+
+It has no effect for the InsecureSyntax or Disabled modes, which do not execute the security
+sandbox.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.lua.strictValidation.allowedEnvVars" data-path-key="|spec|lua|strictValidation|allowedEnvVars|" data-parent-path="spec.lua.strictValidation" data-name="allowedEnvVars" data-text="AllowedEnvVars is the list of environment variable names that Lua scripts are permitted to
+access during validation (via os.getenv, os.setenv). Matching is exact and case-sensitive.
+When empty, access to all environment variables is denied. Blank or whitespace-only entries
+are rejected. maxItems: 64">
+  <span class="prop-name">allowedEnvVars</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">AllowedEnvVars is the list of environment variable names that Lua scripts are permitted to
+access during validation (via os.getenv, os.setenv). Matching is exact and case-sensitive.
+When empty, access to all environment variables is denied. Blank or whitespace-only entries
+are rejected.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.lua.strictValidation.allowedPaths" data-path-key="|spec|lua|strictValidation|allowedPaths|" data-parent-path="spec.lua.strictValidation" data-name="allowedPaths" data-text="AllowedPaths is the list of filesystem path prefixes that Lua scripts are permitted to
+access during validation (via io.open, io.input, io.output, io.lines, os.remove, os.rename).
+A path is allowed when it equals an entry or is contained within an entry&#39;s subtree
+(e.g. &#34;/tmp&#34; allows &#34;/tmp/file.txt&#34;). Paths are normalized (separators collapsed, made
+absolute) before matching, and any &#34;.&#34; or &#34;..&#34; traversal segment is always rejected.
+When empty, all filesystem access is denied. Blank or whitespace-only entries are rejected,
+as they would otherwise match every path and disable the sandbox. The filesystem root (&#34;/&#34;)
+is likewise rejected, as it would allow access to the entire filesystem and defeat the sandbox.
+Note that a built-in set of sensitive paths is always denied, even if they are added to the
+allowed paths here: /etc, /proc, /sys, /certs, /var/run/secrets, and /run/secrets. maxItems: 64">
+  <span class="prop-name">allowedPaths</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">AllowedPaths is the list of filesystem path prefixes that Lua scripts are permitted to
+access during validation (via io.open, io.input, io.output, io.lines, os.remove, os.rename).
+A path is allowed when it equals an entry or is contained within an entry&#39;s subtree
+(e.g. &#34;/tmp&#34; allows &#34;/tmp/file.txt&#34;). Paths are normalized (separators collapsed, made
+absolute) before matching, and any &#34;.&#34; or &#34;..&#34; traversal segment is always rejected.
+When empty, all filesystem access is denied. Blank or whitespace-only entries are rejected,
+as they would otherwise match every path and disable the sandbox. The filesystem root (&#34;/&#34;)
+is likewise rejected, as it would allow access to the entire filesystem and defeat the sandbox.
+Note that a built-in set of sensitive paths is always denied, even if they are added to the
+allowed paths here: /etc, /proc, /sys, /certs, /var/run/secrets, and /run/secrets.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.lua.validationType" data-path-key="|spec|lua|validationType|" data-parent-path="spec.lua" data-name="validationType" data-text="ValidationType determines the strictness of the Lua script validation.
 Default: Strict enum: Strict, InsecureSyntax, Disabled">
+  <span class="prop-name">validationType</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">ValidationType determines the strictness of the Lua script validation.
+Default: Strict<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Strict, InsecureSyntax, Disabled"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Strict, InsecureSyntax, Disabled</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.luaValidation" data-path-key="|spec|luaValidation|" data-parent-path="spec" data-name="luaValidation" data-text="LuaValidation determines strictness of the Lua script validation for Lua EnvoyExtensionPolicies
+Default: Strict
+
+Deprecated: Use Lua.ValidationType instead. This field will be removed in a future release. enum: Strict, InsecureSyntax, Disabled">
   <span class="prop-name">luaValidation</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">LuaValidation determines strictness of the Lua script validation for Lua EnvoyExtensionPolicies
-Default: Strict<div class="leaf-constraints">
+Default: Strict
+
+Deprecated: Use Lua.ValidationType instead. This field will be removed in a future release.<div class="leaf-constraints">
 <div class="schema-constraint" title="enum: Strict, InsecureSyntax, Disabled"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Strict, InsecureSyntax, Disabled</code></div></div>
   </div>
 </div>
@@ -1325,6 +1429,12 @@ Default: Strict<div class="leaf-constraints">
 share a single Envoy cluster instead of Envoy Gateway generating one cluster per route
 rule. This reduces xDS size, active health-check traffic, and stats cardinality, and
 improves upstream connection pooling.
+
+Only a route&#39;s own backendRefs (HTTPRoute, GRPCRoute, TLSRoute, TCPRoute, UDPRoute) are
+considered. A backend used any other way, such as a RequestMirror filter or an external
+service of a SecurityPolicy or EnvoyExtensionPolicy, is never merged. A BackendTrafficPolicy
+that targets a backend only reports status for Gateways where the backend is used as a route
+backendRef.
 
 Disabled when unset; specifying this field at all (even without further configuration)
 enables it. Mutually exclusive with MergeGateways.">
@@ -1336,6 +1446,12 @@ enables it. Mutually exclusive with MergeGateways.">
 share a single Envoy cluster instead of Envoy Gateway generating one cluster per route
 rule. This reduces xDS size, active health-check traffic, and stats cardinality, and
 improves upstream connection pooling.
+
+Only a route&#39;s own backendRefs (HTTPRoute, GRPCRoute, TLSRoute, TCPRoute, UDPRoute) are
+considered. A backend used any other way, such as a RequestMirror filter or an external
+service of a SecurityPolicy or EnvoyExtensionPolicy, is never merged. A BackendTrafficPolicy
+that targets a backend only reports status for Gateways where the backend is used as a route
+backendRef.
 
 Disabled when unset; specifying this field at all (even without further configuration)
 enables it. Mutually exclusive with MergeGateways.</div>
@@ -16794,14 +16910,15 @@ providers such as GCP.
 firewall rules on the platform providers load balancer. This is not guaranteed to be working as
 it happens outside of kubernetes and has to be supported and handled by the platform provider.
 This field may only be set for services with type LoadBalancer and will be cleared if the type
-is changed to any other type.">
+is changed to any other type. maxItems: 64">
   <span class="prop-name">loadBalancerSourceRanges</span>
   <span class="type-badge">[]string</span>
   <div class="leaf-desc">LoadBalancerSourceRanges defines a list of allowed IP addresses which will be configured as
 firewall rules on the platform providers load balancer. This is not guaranteed to be working as
 it happens outside of kubernetes and has to be supported and handled by the platform provider.
 This field may only be set for services with type LoadBalancer and will be cleared if the type
-is changed to any other type.
+is changed to any other type.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 64"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">64</code></div></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.provider.kubernetes.envoyService.name" data-path-key="|spec|provider|kubernetes|envoyService|name|" data-parent-path="spec.provider.kubernetes.envoyService" data-name="name" data-text="Name of the service.
@@ -17054,7 +17171,7 @@ Invalid [CEL](https://www.envoyproxy.io/docs/envoy/latest/xds/type/v3/cel.proto.
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendRef" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendRef|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als" data-name="backendRef" data-text="BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">backendRef</span>
   <span class="type-badge">object</span>
@@ -17062,7 +17179,7 @@ Deprecated: Use BackendRefs instead.">
 <div class="prop-content"><div class="prop-desc">BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.</div>
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendRef.group" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendRef|group|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -17614,6 +17731,20 @@ Defaults to true.
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.grpc" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -17623,6 +17754,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -17788,6 +17938,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -18080,6 +18263,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http1" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http1|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http1.enableTrailers" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http1|enableTrailers|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http1.preserveHeaderCase" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http2" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http2|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -18166,6 +18397,37 @@ Default: TerminateConnection">
 It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
 https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
 Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http3" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http3|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http3.mode" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|http3|mode|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
   </div>
 </div>
   </div>
@@ -18360,14 +18622,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -18592,6 +18854,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|als|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].als.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -19012,7 +19292,7 @@ to differentiate between different access logs coming from the same Envoy.<div c
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendRef" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendRef|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry" data-name="backendRef" data-text="BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">backendRef</span>
   <span class="type-badge">object</span>
@@ -19020,7 +19300,7 @@ Deprecated: Use BackendRefs instead.">
 <div class="prop-content"><div class="prop-desc">BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.</div>
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendRef.group" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendRef|group|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -19572,6 +19852,20 @@ Defaults to true.
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -19581,6 +19875,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -19746,6 +20059,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -20038,6 +20384,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http1" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http1|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http1.enableTrailers" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http1|enableTrailers|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http1.preserveHeaderCase" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http2" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http2|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -20124,6 +20518,37 @@ Default: TerminateConnection">
 It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
 https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
 Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http3" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http3|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http3.mode" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|http3|mode|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
   </div>
 </div>
   </div>
@@ -20318,14 +20743,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -20550,6 +20975,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -20953,22 +21396,22 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.host" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|host|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry" data-name="host" data-text="Host define the extension service hostname.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
   <span class="prop-name">host</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Host define the extension service hostname.
 
-Deprecated: Use BackendRefs instead.
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry.port" data-path-key="|spec|telemetry|accessLog|settings[]|sinks[]|openTelemetry|port|" data-parent-path="spec.telemetry.accessLog.settings[].sinks[].openTelemetry" data-name="port" data-text="Port defines the port the extension service is exposed on.
 
-Deprecated: Use BackendRefs instead. format: int32 minimum: 0">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11. format: int32 minimum: 0">
   <span class="prop-name">port</span>
   <span class="type-badge">integer</span>
   <div class="leaf-desc">Port defines the port the extension service is exposed on.
 
-Deprecated: Use BackendRefs instead.<div class="leaf-constraints">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
@@ -21111,7 +21554,7 @@ The supported operators for this pattern are:
 `%BACKEND_REFS%`: names of all backends referenced in `&lt;NAMESPACE&gt;/&lt;NAME&gt;|&lt;NAMESPACE&gt;/&lt;NAME&gt;|...` format
 Only xDS Clusters created for HTTPRoute and GRPCRoute are currently supported.
 Default: `%ROUTE_KIND%/%ROUTE_NAMESPACE%/%ROUTE_NAME%/rule/%ROUTE_RULE_NUMBER%`
-Example: `httproute/my-ns/my-route/rule/0`">
+Example: `httproute/my-ns/my-route/rule/0` maxLength: 1024">
   <span class="prop-name">clusterStatName</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">ClusterStatName defines the value of cluster alt_stat_name, determining how cluster stats are named.
@@ -21125,7 +21568,20 @@ The supported operators for this pattern are:
 `%BACKEND_REFS%`: names of all backends referenced in `&lt;NAMESPACE&gt;/&lt;NAME&gt;|&lt;NAMESPACE&gt;/&lt;NAME&gt;|...` format
 Only xDS Clusters created for HTTPRoute and GRPCRoute are currently supported.
 Default: `%ROUTE_KIND%/%ROUTE_NAMESPACE%/%ROUTE_NAME%/rule/%ROUTE_RULE_NUMBER%`
-Example: `httproute/my-ns/my-route/rule/0`
+Example: `httproute/my-ns/my-route/rule/0`<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.enableCircuitBreakerRemainingStats" data-path-key="|spec|telemetry|metrics|enableCircuitBreakerRemainingStats|" data-parent-path="spec.telemetry.metrics" data-name="enableCircuitBreakerRemainingStats" data-text="EnableCircuitBreakerRemainingStats enables Envoy&#39;s circuit breaker `remaining_*` gauges,
+which expose the number of resources remaining before each circuit breaker opens.
+Enabling this adds 5 additional gauges per cluster, see:
+https://www.envoyproxy.io/docs/envoy/latest/configuration/upstream/cluster_manager/cluster_stats#circuit-breakers-statistics">
+  <span class="prop-name">enableCircuitBreakerRemainingStats</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableCircuitBreakerRemainingStats enables Envoy&#39;s circuit breaker `remaining_*` gauges,
+which expose the number of resources remaining before each circuit breaker opens.
+Enabling this adds 5 additional gauges per cluster, see:
+https://www.envoyproxy.io/docs/envoy/latest/configuration/upstream/cluster_manager/cluster_stats#circuit-breakers-statistics
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.enableGRPCStats" data-path-key="|spec|telemetry|metrics|enableGRPCStats|" data-parent-path="spec.telemetry.metrics" data-name="enableGRPCStats" data-text="EnableGRPCStats enables the gRPC stats filter on listeners.
@@ -21211,18 +21667,154 @@ https://github.com/envoyproxy/envoy/issues/14610</div>
 </summary>
 <div class="prop-content"><div class="prop-desc">Configure the compression on Prometheus endpoint. Compression is useful in situations when bandwidth is scarce and large payloads can be effectively compressed at the expense of higher CPU load.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<details class="prop" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="brotli" data-text="The configuration for Brotli compressor.">
+<summary>
   <span class="prop-name">brotli</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Brotli compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Brotli compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.chunkSize" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|chunkSize|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.disableLiteralContextModeling" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|disableLiteralContextModeling|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="disableLiteralContextModeling" data-text="DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.">
+  <span class="prop-name">disableLiteralContextModeling</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableLiteralContextModeling disables the &#34;literal context modeling&#34; format
+feature. This flag is a &#34;decoding-speed vs compression ratio&#34; trade-off.
+If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.encoderMode" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|encoderMode|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="encoderMode" data-text="EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default. enum: Default, Generic, Text, Font">
+  <span class="prop-name">encoderMode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">EncoderMode tunes the encoder for a specific input.
+If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Generic, Text, Font"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Generic, Text, Font</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.inputBlockBits" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|inputBlockBits|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="inputBlockBits" data-text="InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24. format: int32 minimum: 16 maximum: 24">
+  <span class="prop-name">inputBlockBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">InputBlockBits represents the base two logarithm of the compressor&#39;s input block
+size, from 16 to 24. Larger input block results in better compression at the
+expense of memory usage. If not set, defaults to 24.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 16"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">16</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.quality" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|quality|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="quality" data-text="Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3. format: int32 minimum: 0 maximum: 11">
+  <span class="prop-name">quality</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Quality controls the main compression speed-density lever, from 0 to 11.
+The higher the quality, the slower the compression. If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 11"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">11</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.brotli.windowBits" data-path-key="|spec|telemetry|metrics|prometheus|compression|brotli|windowBits|" data-parent-path="spec.telemetry.metrics.prometheus.compression.brotli" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18. format: int32 minimum: 10 maximum: 24">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 10 to 24. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 18.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 10"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">10</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 24"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">24</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="gzip" data-text="The configuration for GZIP compressor.">
+<summary>
   <span class="prop-name">gzip</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for GZIP compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for GZIP compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip.chunkSize" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|chunkSize|" data-parent-path="spec.telemetry.metrics.prometheus.compression.gzip" data-name="chunkSize" data-text="ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of zlib&#39;s next output buffer, from 4096 to 65536.
+If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip.compressionLevel" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|compressionLevel|" data-parent-path="spec.telemetry.metrics.prometheus.compression.gzip" data-name="compressionLevel" data-text="CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the zlib compression level, from 1 (fastest compression,
+lowest compression ratio) to 9 (slowest compression, best compression ratio).
+If not set, Envoy uses the zlib default level, which is equivalent to level 6.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip.compressionStrategy" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|compressionStrategy|" data-parent-path="spec.telemetry.metrics.prometheus.compression.gzip" data-name="compressionStrategy" data-text="CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default. enum: Default, Filtered, HuffmanOnly, RLE, Fixed">
+  <span class="prop-name">compressionStrategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">CompressionStrategy selects the zlib compression strategy, which is directly
+related to the characteristics of the content. Most of the time &#34;Default&#34; is
+the best choice. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Filtered, HuffmanOnly, RLE, Fixed"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Filtered, HuffmanOnly, RLE, Fixed</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip.memoryLevel" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|memoryLevel|" data-parent-path="spec.telemetry.metrics.prometheus.compression.gzip" data-name="memoryLevel" data-text="MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5. format: int32 minimum: 1 maximum: 9">
+  <span class="prop-name">memoryLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">MemoryLevel controls the amount of internal memory used by zlib, from 1 to 9.
+Higher values use more memory, but are faster and produce better compression
+results. If not set, defaults to 5.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 9"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">9</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.gzip.windowBits" data-path-key="|spec|telemetry|metrics|prometheus|compression|gzip|windowBits|" data-parent-path="spec.telemetry.metrics.prometheus.compression.gzip" data-name="windowBits" data-text="WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window. format: int32 minimum: 9 maximum: 15">
+  <span class="prop-name">windowBits</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">WindowBits represents the base two logarithm of the compressor&#39;s window size,
+from 9 to 15. Larger window results in better compression at the expense of
+memory usage. If not set, defaults to 12, which will produce a 4096 bytes window.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 9"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">9</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 15"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">15</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.minContentLength" data-path-key="|spec|telemetry|metrics|prometheus|compression|minContentLength|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="minContentLength" data-text="MinContentLength defines the minimum response size in bytes to apply compression.
 Responses smaller than this threshold will not be compressed.
 Must be at least 30 bytes as enforced by Envoy Proxy.
@@ -21244,12 +21836,61 @@ Default: 30 bytes
 <div class="schema-constraint" title="enum: Gzip, Brotli, Zstd"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Gzip, Brotli, Zstd</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<details class="prop" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|" data-parent-path="spec.telemetry.metrics.prometheus.compression" data-name="zstd" data-text="The configuration for Zstd compressor.">
+<summary>
   <span class="prop-name">zstd</span>
   <span class="type-badge">object</span>
-  <div class="leaf-desc">The configuration for Zstd compressor.
+</summary>
+<div class="prop-content"><div class="prop-desc">The configuration for Zstd compressor.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd.chunkSize" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|chunkSize|" data-parent-path="spec.telemetry.metrics.prometheus.compression.zstd" data-name="chunkSize" data-text="ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096. format: int32 minimum: 4096 maximum: 65536">
+  <span class="prop-name">chunkSize</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">ChunkSize is the size in bytes of the compressor&#39;s next output buffer, from
+4096 to 65536. If not set, defaults to 4096.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 4096"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">4096</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 65536"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65536</code></div></div>
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd.compressionLevel" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|compressionLevel|" data-parent-path="spec.telemetry.metrics.prometheus.compression.zstd" data-name="compressionLevel" data-text="CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3. format: int32 minimum: 1 maximum: 22">
+  <span class="prop-name">compressionLevel</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">CompressionLevel sets the compression parameters according to the pre-defined
+zstd compression level table, from 1 to 22. Note that the exact compression
+parameters are dynamically determined, depending on both compression level and
+source content size (when known). If not set, defaults to 3.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 22"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">22</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd.enableChecksum" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|enableChecksum|" data-parent-path="spec.telemetry.metrics.prometheus.compression.zstd" data-name="enableChecksum" data-text="EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.">
+  <span class="prop-name">enableChecksum</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableChecksum specifies whether a 32-bits checksum of the content is written
+at the end of the frame. If not set, defaults to false.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.prometheus.compression.zstd.strategy" data-path-key="|spec|telemetry|metrics|prometheus|compression|zstd|strategy|" data-parent-path="spec.telemetry.metrics.prometheus.compression.zstd" data-name="strategy" data-text="Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default. enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2">
+  <span class="prop-name">strategy</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Strategy selects the zstd compression strategy. The higher the value of the
+selected strategy, the more complex it is, resulting in stronger and slower
+compression. If not set, defaults to Default.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Default, Fast, DFast, Greedy, Lazy, Lazy2, BTLazy2, BTOpt, BTUltra, BTUltra2</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>
@@ -21282,7 +21923,7 @@ It&#39;s required if the sink type is OpenTelemetry.</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendRef" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendRef|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry" data-name="backendRef" data-text="BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">backendRef</span>
   <span class="type-badge">object</span>
@@ -21290,7 +21931,7 @@ Deprecated: Use BackendRefs instead.">
 <div class="prop-content"><div class="prop-desc">BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.</div>
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendRef.group" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendRef|group|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -21842,6 +22483,20 @@ Defaults to true.
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -21851,6 +22506,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -22016,6 +22690,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -22308,6 +23015,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http1" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http1|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http1.enableTrailers" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http1|enableTrailers|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http1.preserveHeaderCase" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http2" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http2|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -22394,6 +23149,37 @@ Default: TerminateConnection">
 It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
 https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
 Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http3" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http3|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http3.mode" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|http3|mode|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
   </div>
 </div>
   </div>
@@ -22588,14 +23374,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -22820,6 +23606,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -23223,25 +24027,33 @@ by single tabs or spaces. See: https://tools.ietf.org/html/rfc7230#section-3.2
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.host" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|host|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry" data-name="host" data-text="Host define the service hostname.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
   <span class="prop-name">host</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Host define the service hostname.
 
-Deprecated: Use BackendRefs instead.
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.port" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|port|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry" data-name="port" data-text="Port defines the port the service is exposed on.
 
-Deprecated: Use BackendRefs instead. format: int32 minimum: 0 maximum: 65535">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11. format: int32 minimum: 0 maximum: 65535">
   <span class="prop-name">port</span>
   <span class="type-badge">integer</span>
   <div class="leaf-desc">Port defines the port the service is exposed on.
 
-Deprecated: Use BackendRefs instead.<div class="leaf-constraints">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maximum: 65535"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">65535</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.prefix" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|prefix|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry" data-name="prefix" data-text="Prefix configures the OpenTelemetry sink to prepend the given prefix to emitted stat names,
+the full stat name will be `&lt;prefix&gt;.&lt;stat_name&gt;`.">
+  <span class="prop-name">prefix</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Prefix configures the OpenTelemetry sink to prepend the given prefix to emitted stat names,
+the full stat name will be `&lt;prefix&gt;.&lt;stat_name&gt;`.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.metrics.sinks[].openTelemetry.reportCountersAsDeltas" data-path-key="|spec|telemetry|metrics|sinks[]|openTelemetry|reportCountersAsDeltas|" data-parent-path="spec.telemetry.metrics.sinks[].openTelemetry" data-name="reportCountersAsDeltas" data-text="ReportCountersAsDeltas configures the OpenTelemetry sink to report
@@ -23408,7 +24220,7 @@ selected for tracing after all other sampling checks have been applied.</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendRef" data-path-key="|spec|telemetry|tracing|provider|backendRef|" data-parent-path="spec.telemetry.tracing.provider" data-name="backendRef" data-text="BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">backendRef</span>
   <span class="type-badge">object</span>
@@ -23416,7 +24228,7 @@ Deprecated: Use BackendRefs instead.">
 <div class="prop-content"><div class="prop-desc">BackendRef references a Kubernetes object that represents the
 backend server to which the authorization request will be sent.
 
-Deprecated: Use BackendRefs instead.</div>
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendRef.group" data-path-key="|spec|telemetry|tracing|provider|backendRef|group|" data-parent-path="spec.telemetry.tracing.provider.backendRef" data-name="group" data-text="Group is the group of the referent. For example, &#34;gateway.networking.k8s.io&#34;.
 When unspecified or empty string, core API group is inferred. pattern: ^$|^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ maxLength: 253">
@@ -23968,6 +24780,20 @@ Defaults to true.
 </summary>
 <div class="prop-content"><div class="prop-desc">Active health check configuration</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.disableConnectionReuse" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|disableConnectionReuse|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active" data-name="disableConnectionReuse" data-text="DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.">
+  <span class="prop-name">disableConnectionReuse</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">DisableConnectionReuse determines whether the active health check connection to a
+backend host is closed after each health check probe. When set to true, Envoy opens a
+new connection for each health check, which is useful for backends (such as
+haproxy-style agent checks) that do not expect a reused connection.
+Defaults to false, which reuses the connection across probes.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.grpc" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|grpc|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active" data-name="grpc" data-text="GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.">
 <summary>
@@ -23977,6 +24803,25 @@ It&#39;s optional, and can only be used if the specified type is GRPC.">
 <div class="prop-content"><div class="prop-desc">GRPC defines the configuration of the GRPC health checker.
 It&#39;s optional, and can only be used if the specified type is GRPC.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.grpc.hostname" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|grpc|hostname|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.grpc" data-name="hostname" data-text="Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers. pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$ minLength: 1 maxLength: 253">
+  <span class="prop-name">hostname</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Hostname defines the value of the :authority header sent with active gRPC
+health checks. Authority selection uses this order: this field, the
+associated Backend endpoint hostname if available, then the effective Route
+hostname. If none of them is set, Envoy falls back to the name of the
+cluster, which is not a valid authority and is rejected by some gRPC
+servers.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.grpc.service" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|grpc|service|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.grpc" data-name="service" data-text="Service to send in the health check request.
 If this is not specified, then the health check request applies to the entire
 server and not to a specific service.">
@@ -24142,6 +24987,39 @@ Defaults to GET<div class="leaf-constraints">
   <div class="leaf-desc">Path defines the HTTP path that will be requested during health checking.<div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="maxLength: 1024"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">1024</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.http.protocol" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|http|protocol|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.http" data-name="protocol" data-text="Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is. enum: Auto, HTTP1, HTTP2">
+  <span class="prop-name">protocol</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Protocol is the HTTP protocol that active health check requests are sent with.
+
+Defaults to Auto, which uses the same protocol as regular requests to the backend:
+
+  - HTTP2 for a backend configured for HTTP/2, through a `kubernetes.io/h2c`,
+    `gateway.envoyproxy.io/h2c` or `grpc` appProtocol, or as the backend of a
+    GRPCRoute.
+  - The protocol negotiated through ALPN for a TLS backend that negotiates it,
+    with HTTP1 as the fallback when nothing is negotiated.
+  - HTTP1 otherwise.
+
+Set HTTP1 or HTTP2 when the health check endpoint speaks a different protocol than
+the application, for example a backend that serves HTTP/1.1 traffic but only
+accepts HTTP/2 health checks. An explicit protocol is always used as is.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, HTTP1, HTTP2"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, HTTP1, HTTP2</code></div></div>
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.http.requestBody" data-path-key="|spec|telemetry|tracing|provider|backendSettings|healthCheck|active|http|requestBody|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.healthCheck.active.http" data-name="requestBody" data-text="RequestBody defines the HTTP request body payload sent during health checking.">
@@ -24434,6 +25312,54 @@ Defaults to 85.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http1" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http1|" data-parent-path="spec.telemetry.tracing.provider.backendSettings" data-name="http1" data-text="HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.">
+<summary>
+  <span class="prop-name">http1</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP1 provides HTTP/1 configuration for backend connections.
+When both this field and the deprecated HTTP1 field on ClientTrafficPolicy are set,
+this field takes precedence for backend (upstream) traffic.
+
+Behavior when targeting route kinds that do not use HTTP/1:
+  - GRPCRoute, TCPRoute, TLSRoute, UDPRoute: targeting these route kinds
+    directly adds a Warning condition on the policy; the field is ignored.
+  - Gateway / ListenerSet / sectionName targets: this field is silently
+    ignored for any GRPCRoute, TCPRoute, TLSRoute, or UDPRoute destinations
+    beneath that target; no warning is emitted.
+  - gRPC-only external services (ExtProc, gRPC ExtAuth, ALS, OpenTelemetry
+    access log/metrics, tracing providers): rejected at admission on their
+    own BackendSettings via separate validation rules.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http1.enableTrailers" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http1|enableTrailers|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.http1" data-name="enableTrailers" data-text="EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.">
+  <span class="prop-name">enableTrailers</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">EnableTrailers defines if HTTP/1 trailers should be proxied by Envoy.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http1.preserveHeaderCase" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http1|preserveHeaderCase|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.http1" data-name="preserveHeaderCase" data-text="PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.">
+  <span class="prop-name">preserveHeaderCase</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">PreserveHeaderCase defines if Envoy should preserve the letter case of headers.
+By default, Envoy will lowercase all the headers.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http2" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http2|" data-parent-path="spec.telemetry.tracing.provider.backendSettings" data-name="http2" data-text="HTTP2 provides HTTP/2 configuration for backend connections.">
 <summary>
   <span class="prop-name">http2</span>
@@ -24520,6 +25446,37 @@ Default: TerminateConnection">
 It&#39;s recommended for L2 Envoy deployments to set this value to TerminateStream.
 https://www.envoyproxy.io/docs/envoy/latest/configuration/best_practices/level_two
 Default: TerminateConnection
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http3" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http3|" data-parent-path="spec.telemetry.tracing.provider.backendSettings" data-name="http3" data-text="HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.">
+<summary>
+  <span class="prop-name">http3</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">HTTP3 enables HTTP/3 for backend connections.
+HTTP/3 always runs over TLS, so the backend must be configured
+with TLS through a BackendTLSPolicy or the Backend&#39;s spec.tls.
+HTTP/3 is only supported for the backends of a route, through
+BackendTrafficPolicy. It is rejected for the backends of other
+resources, such as the external services of a SecurityPolicy
+or EnvoyExtensionPolicy and the sinks of an EnvoyProxy.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.http3.mode" data-path-key="|spec|telemetry|tracing|provider|backendSettings|http3|mode|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.http3" data-name="mode" data-text="Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc. enum: Auto, Always">
+  <span class="prop-name">mode</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Mode determines when HTTP/3 is used to reach the backend.
+Defaults to Auto, which only uses HTTP/3 for backends advertising it via alt-svc.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Auto, Always"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Auto, Always</code></div></div>
   </div>
 </div>
   </div>
@@ -24714,14 +25671,14 @@ Max-Age attribute value.<div class="leaf-constraints">
 </details>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.consistentHash.header" data-path-key="|spec|telemetry|tracing|provider|backendSettings|loadBalancer|consistentHash|header|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.consistentHash" data-name="header" data-text="Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead">
+Deprecated: use Headers instead. This field will be removed in v1.11.">
 <summary>
   <span class="prop-name">header</span>
   <span class="type-badge">object</span>
 </summary>
 <div class="prop-content"><div class="prop-desc">Header configures the header hash policy when the consistent hash type is set to Header.
 
-Deprecated: use Headers instead</div>
+Deprecated: use Headers instead. This field will be removed in v1.11.</div>
   <div class="prop-children">
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.consistentHash.header.name" data-path-key="|spec|telemetry|tracing|provider|backendSettings|loadBalancer|consistentHash|header|name|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.consistentHash.header" data-name="name" data-text="Name of the header to hash.">
   <span class="prop-name">name</span>
@@ -24946,6 +25903,24 @@ Valid LoadBalancerType values are
 </summary>
 <div class="prop-content"><div class="prop-desc">PreferLocalZone configures zone-aware routing to prefer sending traffic to the local locality zone.</div>
   <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.zoneAware.preferLocal.failTrafficOnPanic" data-path-key="|spec|telemetry|tracing|provider|backendSettings|loadBalancer|zoneAware|preferLocal|failTrafficOnPanic|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="failTrafficOnPanic" data-text="FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.">
+  <span class="prop-name">failTrafficOnPanic</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">FailTrafficOnPanic rejects traffic instead of routing to all endpoints when the
+cluster is in panic mode. Panic mode is entered when the share of healthy endpoints
+drops below HealthCheck.PanicThreshold, and by default Envoy then load balances
+across every endpoint, healthy or not. Setting this to true makes Envoy fail the
+requests instead, applying backpressure to clients and giving the backend room to
+recover.
+Defaults to false.
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.zoneAware.preferLocal.force" data-path-key="|spec|telemetry|tracing|provider|backendSettings|loadBalancer|zoneAware|preferLocal|force|" data-parent-path="spec.telemetry.tracing.provider.backendSettings.loadBalancer.zoneAware.preferLocal" data-name="force" data-text="ForceLocalZone defines override configuration for forcing all traffic to stay within the local zone instead of the default behavior
 which maintains equal distribution among upstream endpoints while sending as much traffic as possible locally.">
 <summary>
@@ -25292,12 +26267,12 @@ Default: 10 seconds.<div class="leaf-constraints">
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.host" data-path-key="|spec|telemetry|tracing|provider|host|" data-parent-path="spec.telemetry.tracing.provider" data-name="host" data-text="Host define the provider service hostname.
 
-Deprecated: Use BackendRefs instead.">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.">
   <span class="prop-name">host</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Host define the provider service hostname.
 
-Deprecated: Use BackendRefs instead.
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.
   </div>
 </div>
 <details class="prop" data-prop-row data-path="spec.telemetry.tracing.provider.openTelemetry" data-path-key="|spec|telemetry|tracing|provider|openTelemetry|" data-parent-path="spec.telemetry.tracing.provider" data-name="openTelemetry" data-text="OpenTelemetry defines the OpenTelemetry tracing provider configuration">
@@ -25422,12 +26397,12 @@ Defaults to 100% when not set.</div>
 </details>
 <div class="prop-leaf" data-prop-row data-path="spec.telemetry.tracing.provider.port" data-path-key="|spec|telemetry|tracing|provider|port|" data-parent-path="spec.telemetry.tracing.provider" data-name="port" data-text="Port defines the port the provider service is exposed on.
 
-Deprecated: Use BackendRefs instead. format: int32 minimum: 0">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11. format: int32 minimum: 0">
   <span class="prop-name">port</span>
   <span class="type-badge">integer</span>
   <div class="leaf-desc">Port defines the port the provider service is exposed on.
 
-Deprecated: Use BackendRefs instead.<div class="leaf-constraints">
+Deprecated: Use BackendRefs instead. This field will be removed in v1.11.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
   </div>
@@ -25581,6 +26556,86 @@ The [format string documentation](https://www.envoyproxy.io/docs/envoy/latest/co
 If provider is kubernetes, pod name and namespace are added by default.
 
 Same keys take precedence over CustomTags.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+  </div>
+</div>
+</details>
+<details class="prop" data-prop-row data-path="spec.wasmModules" data-path-key="|spec|wasmModules|" data-parent-path="spec" data-name="wasmModules" data-text="WasmModules defines the set of Wasm modules that are allowed to be used by
+EnvoyExtensionPolicy resources. Each entry registers a module by a logical
+name and a source (currently Local path).
+
+When EnvoyExtensionPolicy.wasm[].code is omitted, wasm[].name is looked up
+in this list.
+
+The EnvoyProxy owner is responsible for ensuring Local modules are available
+on the proxy container&#39;s filesystem (e.g., via init containers, custom images,
+or shared volumes). EnvoyExtensionPolicy never carries a raw filesystem path. maxItems: 16">
+<summary>
+  <span class="prop-name">wasmModules</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">WasmModules defines the set of Wasm modules that are allowed to be used by
+EnvoyExtensionPolicy resources. Each entry registers a module by a logical
+name and a source (currently Local path).
+
+When EnvoyExtensionPolicy.wasm[].code is omitted, wasm[].name is looked up
+in this list.
+
+The EnvoyProxy owner is responsible for ensuring Local modules are available
+on the proxy container&#39;s filesystem (e.g., via init containers, custom images,
+or shared volumes). EnvoyExtensionPolicy never carries a raw filesystem path.</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 16"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">16</code></div></div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.wasmModules[].name" data-path-key="|spec|wasmModules[]|name|" data-parent-path="spec.wasmModules" data-name="name" data-text="Name is the logical name for this module. EnvoyExtensionPolicy resources
+reference modules by this name when wasm[].code is omitted. pattern: ^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$ minLength: 1 maxLength: 253">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name is the logical name for this module. EnvoyExtensionPolicy resources
+reference modules by this name when wasm[].code is omitted.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
+  </div>
+</div>
+<details class="prop" data-prop-row data-path="spec.wasmModules[].source" data-path-key="|spec|wasmModules[]|source|" data-parent-path="spec.wasmModules" data-name="source" data-text="Source defines where the Wasm module code is loaded from.">
+<summary>
+  <span class="prop-name">source</span>
+  <span class="type-badge">object</span> <span class="required-badge">required</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Source defines where the Wasm module code is loaded from.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.wasmModules[].source.local" data-path-key="|spec|wasmModules[]|source|local|" data-parent-path="spec.wasmModules[].source" data-name="local" data-text="Local specifies a module loaded from the proxy&#39;s local filesystem
+by absolute path.">
+<summary>
+  <span class="prop-name">local</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Local specifies a module loaded from the proxy&#39;s local filesystem
+by absolute path.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.wasmModules[].source.local.path" data-path-key="|spec|wasmModules[]|source|local|path|" data-parent-path="spec.wasmModules[].source.local" data-name="path" data-text="Path is the absolute filesystem path to the Wasm module on the Envoy proxy. pattern: ^/.* minLength: 1 maxLength: 4096">
+  <span class="prop-name">path</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Path is the absolute filesystem path to the Wasm module on the Envoy proxy.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^/.*"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^/.*</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.wasmModules[].source.type" data-path-key="|spec|wasmModules[]|source|type|" data-parent-path="spec.wasmModules[].source" data-name="type" data-text="Type is the type of the source of the Wasm module.
+Defaults to Local. enum: Local">
+  <span class="prop-name">type</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Type is the type of the source of the Wasm module.
+Defaults to Local.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: Local"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">Local</code></div></div>
   </div>
 </div>
   </div>
