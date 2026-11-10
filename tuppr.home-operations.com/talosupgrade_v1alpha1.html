@@ -558,10 +558,12 @@ window (for example a Ceph HEALTH_OK check while a pre-hook holds
 TalosUpgrade has hooks, so this has no effect on a KubernetesUpgrade.
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.healthChecks[].timeout" data-path-key="|spec|healthChecks[]|timeout|" data-parent-path="spec.healthChecks" data-name="timeout" data-text="Timeout for this health check pattern: ^([0-9]&#43;[smh])&#43;$ minLength: 2">
+<div class="prop-leaf" data-prop-row data-path="spec.healthChecks[].timeout" data-path-key="|spec|healthChecks[]|timeout|" data-parent-path="spec.healthChecks" data-name="timeout" data-text="Timeout has no effect and is kept for compatibility. Health checks are
+re-evaluated until they pass; a failing check never fails the upgrade. pattern: ^([0-9]&#43;[smh])&#43;$ minLength: 2">
   <span class="prop-name">timeout</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Timeout for this health check<div class="leaf-constraints">
+  <div class="leaf-desc">Timeout has no effect and is kept for compatibility. Health checks are
+re-evaluated until they pass; a failing check never fails the upgrade.<div class="leaf-constraints">
 <div class="schema-constraint" title="pattern: ^([0-9]&#43;[smh])&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]&#43;[smh])&#43;$</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minLength: 2"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">2</code></div></div>
   </div>
@@ -7846,11 +7848,13 @@ operator is &#34;In&#34;, and the values array contains only &#34;value&#34;. Th
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.parallelism" data-path-key="|spec|parallelism|" data-parent-path="spec" data-name="parallelism" data-text="Parallelism is the number of nodes to upgrade concurrently in each batch.
+<div class="prop-leaf" data-prop-row data-path="spec.parallelism" data-path-key="|spec|parallelism|" data-parent-path="spec" data-name="parallelism" data-text="Parallelism is the number of worker nodes to upgrade concurrently in each batch.
+Control-plane nodes are always upgraded one at a time, in a batch of their own.
 Defaults to 1 (sequential upgrades). Must be &gt;= 1 and &lt;= the number of matching nodes. format: int32 minimum: 1">
   <span class="prop-name">parallelism</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">Parallelism is the number of nodes to upgrade concurrently in each batch.
+  <div class="leaf-desc">Parallelism is the number of worker nodes to upgrade concurrently in each batch.
+Control-plane nodes are always upgraded one at a time, in a batch of their own.
 Defaults to 1 (sequential upgrades). Must be &gt;= 1 and &lt;= the number of matching nodes.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int32</code></div></div><div class="leaf-constraints">
 <div class="schema-constraint" title="minimum: 1"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">1</code></div></div>
@@ -7880,10 +7884,16 @@ default. Ignored when talosctl&#39;s drain is disabled.<div class="leaf-constrai
 <div class="schema-constraint" title="pattern: ^([0-9]&#43;[smh])&#43;$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^([0-9]&#43;[smh])&#43;$</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.policy.force" data-path-key="|spec|policy|force|" data-parent-path="spec.policy" data-name="force" data-text="Force the upgrade (skip checks on etcd health and members)">
+<div class="prop-leaf" data-prop-row data-path="spec.policy.force" data-path-key="|spec|policy|force|" data-parent-path="spec.policy" data-name="force" data-text="Force the upgrade: skip the etcd check of tuppr&#39;s cluster health gate and
+Talos&#39;s own checks on etcd health and members. Talos runs those only on its
+legacy upgrade API, which talosctl uses when the node or talosctl is older
+than Talos 1.13.">
   <span class="prop-name">force</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Force the upgrade (skip checks on etcd health and members)
+  <div class="leaf-desc">Force the upgrade: skip the etcd check of tuppr&#39;s cluster health gate and
+Talos&#39;s own checks on etcd health and members. Talos runs those only on its
+legacy upgrade API, which talosctl uses when the node or talosctl is older
+than Talos 1.13.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.policy.nodrain" data-path-key="|spec|policy|nodrain|" data-parent-path="spec.policy" data-name="nodrain" data-text="NoDrain disables drain for the upgrade.">
@@ -7916,10 +7926,14 @@ soft: preferred avoidance (job prefers to avoid but can run on target node)<div 
 <div class="schema-constraint" title="enum: default, powercycle"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">default, powercycle</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.policy.stage" data-path-key="|spec|policy|stage|" data-parent-path="spec.policy" data-name="stage" data-text="Stage the upgrade to perform it after a reboot">
+<div class="prop-leaf" data-prop-row data-path="spec.policy.stage" data-path-key="|spec|policy|stage|" data-parent-path="spec.policy" data-name="stage" data-text="Stage the upgrade to perform it after a reboot.
+Only takes effect on Talos&#39;s legacy upgrade API, which talosctl uses when the
+node or talosctl is older than Talos 1.13.">
   <span class="prop-name">stage</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Stage the upgrade to perform it after a reboot
+  <div class="leaf-desc">Stage the upgrade to perform it after a reboot.
+Only takes effect on Talos&#39;s legacy upgrade API, which talosctl uses when the
+node or talosctl is older than Talos 1.13.
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.policy.timeout" data-path-key="|spec|policy|timeout|" data-parent-path="spec.policy" data-name="timeout" data-text="Timeout for the per-node talosctl upgrade command pattern: ^([0-9]&#43;[smh])&#43;$">
@@ -8252,6 +8266,19 @@ This field may not be empty.<div class="leaf-constraints">
   </div>
 </div>
 </details>
+<div class="prop-leaf" data-prop-row data-path="status.healthChecksFailingSince" data-path-key="|status|healthChecksFailingSince|" data-parent-path="status" data-name="healthChecksFailingSince" data-text="HealthChecksFailingSince is when spec.healthChecks started failing in
+their current streak; cleared once they pass. It spaces out the
+re-evaluations while they keep failing and times how long they took
+to pass. format: date-time">
+  <span class="prop-name">healthChecksFailingSince</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">HealthChecksFailingSince is when spec.healthChecks started failing in
+their current streak; cleared once they pass. It spaces out the
+re-evaluations while they keep failing and times how long they took
+to pass.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: date-time"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">date-time</code></div></div>
+  </div>
+</div>
 <details class="prop" data-prop-row data-path="status.history" data-path-key="|status|history|" data-parent-path="status" data-name="history" data-text="History records past version transitions on this CR, newest first maxItems: 3">
 <summary>
   <span class="prop-name">history</span>

@@ -1996,12 +1996,14 @@ indefinitely.<div class="leaf-constraints">
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="status.staged.storageClassName" data-path-key="|status|staged|storageClassName|" data-parent-path="status.staged" data-name="storageClassName" data-text="StorageClass of the staged PVC — `spec.staging.storageClassName` when set,
-else the source PVC&#39;s class. Pinned for observability (e.g. confirming a
+else the source PVC&#39;s class, else (a statically-provisioned source) the class
+Kopiur picked for the source&#39;s CSI driver. Pinned for observability (e.g. confirming a
 CephFS shallow-clone class actually took effect).">
   <span class="prop-name">storageClassName</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">StorageClass of the staged PVC — `spec.staging.storageClassName` when set,
-else the source PVC&#39;s class. Pinned for observability (e.g. confirming a
+else the source PVC&#39;s class, else (a statically-provisioned source) the class
+Kopiur picked for the source&#39;s CSI driver. Pinned for observability (e.g. confirming a
 CephFS shallow-clone class actually took effect).
   </div>
 </div>
