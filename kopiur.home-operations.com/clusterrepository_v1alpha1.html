@@ -1819,23 +1819,101 @@ touch the other&#39;s snapshots). Also exposed to `hostnameExpr`/
 </summary>
 <div class="prop-content"><div class="prop-desc">Override the repository&#39;s [`CacheDefaults`] for this recipe&#39;s movers.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.capacity" data-path-key="|spec|maintenance|mover|cache|capacity|" data-parent-path="spec.maintenance.mover.cache" data-name="capacity" data-text="Size of the PVC backing the mover&#39;s kopia cache (e.g. `10Gi`).">
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.capacity" data-path-key="|spec|maintenance|mover|cache|capacity|" data-parent-path="spec.maintenance.mover.cache" data-name="capacity" data-text="Size of the volume backing the mover&#39;s kopia cache (e.g. `10Gi`). When set,
+unset cache budgets default to a percentage of it (content 60%, metadata
+15%) and the two budgets together may claim at most 90% of it. Raising it on
+a `Persistent` cache grows the existing PVC when its StorageClass allows
+volume expansion; a smaller value is never applied to an existing PVC. Must be
+at least `3Mi` (1MiB for each cache under the 90% ceiling).">
   <span class="prop-name">capacity</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Size of the PVC backing the mover&#39;s kopia cache (e.g. `10Gi`).
+  <div class="leaf-desc">Size of the volume backing the mover&#39;s kopia cache (e.g. `10Gi`). When set,
+unset cache budgets default to a percentage of it (content 60%, metadata
+15%) and the two budgets together may claim at most 90% of it. Raising it on
+a `Persistent` cache grows the existing PVC when its StorageClass allows
+volume expansion; a smaller value is never applied to an existing PVC. Must be
+at least `3Mi` (1MiB for each cache under the 90% ceiling).
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.contentCacheSizeMb" data-path-key="|spec|maintenance|mover|cache|contentCacheSizeMb|" data-parent-path="spec.maintenance.mover.cache" data-name="contentCacheSizeMb" data-text="kopia content cache budget in MiB (`--content-cache-size-mb`). format: int64">
+<details class="prop" data-prop-row data-path="spec.maintenance.mover.cache.contentCacheSize" data-path-key="|spec|maintenance|mover|cache|contentCacheSize|" data-parent-path="spec.maintenance.mover.cache" data-name="contentCacheSize" data-text="kopia content cache budget (`--content-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 60% of it. Mutually exclusive with `contentCacheSizeMb`.">
+<summary>
+  <span class="prop-name">contentCacheSize</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">kopia content cache budget (`--content-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 60% of it. Mutually exclusive with `contentCacheSizeMb`.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.contentCacheSize.percent" data-path-key="|spec|maintenance|mover|cache|contentCacheSize|percent|" data-parent-path="spec.maintenance.mover.cache.contentCacheSize" data-name="percent" data-text="Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB. format: uint32 minimum: 0">
+  <span class="prop-name">percent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.contentCacheSize.size" data-path-key="|spec|maintenance|mover|cache|contentCacheSize|size|" data-parent-path="spec.maintenance.mover.cache.contentCacheSize" data-name="size" data-text="An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.">
+  <span class="prop-name">size</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.contentCacheSizeMb" data-path-key="|spec|maintenance|mover|cache|contentCacheSizeMb|" data-parent-path="spec.maintenance.mover.cache" data-name="contentCacheSizeMb" data-text="kopia content cache budget in MiB (`--content-cache-size-mb`). The original
+spelling of `contentCacheSize`; set one or the other, not both. format: int64">
   <span class="prop-name">contentCacheSizeMb</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">kopia content cache budget in MiB (`--content-cache-size-mb`).<div class="leaf-constraints">
+  <div class="leaf-desc">kopia content cache budget in MiB (`--content-cache-size-mb`). The original
+spelling of `contentCacheSize`; set one or the other, not both.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.metadataCacheSizeMb" data-path-key="|spec|maintenance|mover|cache|metadataCacheSizeMb|" data-parent-path="spec.maintenance.mover.cache" data-name="metadataCacheSizeMb" data-text="kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). format: int64">
+<details class="prop" data-prop-row data-path="spec.maintenance.mover.cache.metadataCacheSize" data-path-key="|spec|maintenance|mover|cache|metadataCacheSize|" data-parent-path="spec.maintenance.mover.cache" data-name="metadataCacheSize" data-text="kopia metadata cache budget (`--metadata-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 15% of it. Mutually exclusive with `metadataCacheSizeMb`.">
+<summary>
+  <span class="prop-name">metadataCacheSize</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">kopia metadata cache budget (`--metadata-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 15% of it. Mutually exclusive with `metadataCacheSizeMb`.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.metadataCacheSize.percent" data-path-key="|spec|maintenance|mover|cache|metadataCacheSize|percent|" data-parent-path="spec.maintenance.mover.cache.metadataCacheSize" data-name="percent" data-text="Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB. format: uint32 minimum: 0">
+  <span class="prop-name">percent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.metadataCacheSize.size" data-path-key="|spec|maintenance|mover|cache|metadataCacheSize|size|" data-parent-path="spec.maintenance.mover.cache.metadataCacheSize" data-name="size" data-text="An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.">
+  <span class="prop-name">size</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.maintenance.mover.cache.metadataCacheSizeMb" data-path-key="|spec|maintenance|mover|cache|metadataCacheSizeMb|" data-parent-path="spec.maintenance.mover.cache" data-name="metadataCacheSizeMb" data-text="kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). The original
+spelling of `metadataCacheSize`; set one or the other, not both. format: int64">
   <span class="prop-name">metadataCacheSizeMb</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">kopia metadata cache budget in MiB (`--metadata-cache-size-mb`).<div class="leaf-constraints">
+  <div class="leaf-desc">kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). The original
+spelling of `metadataCacheSize`; set one or the other, not both.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
@@ -3330,23 +3408,101 @@ the enclosing schedule&#39;s timezone, else the controller default (UTC).
 </summary>
 <div class="prop-content"><div class="prop-desc">kopia cache defaults for every mover.</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.capacity" data-path-key="|spec|moverDefaults|cache|capacity|" data-parent-path="spec.moverDefaults.cache" data-name="capacity" data-text="Size of the PVC backing the mover&#39;s kopia cache (e.g. `10Gi`).">
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.capacity" data-path-key="|spec|moverDefaults|cache|capacity|" data-parent-path="spec.moverDefaults.cache" data-name="capacity" data-text="Size of the volume backing the mover&#39;s kopia cache (e.g. `10Gi`). When set,
+unset cache budgets default to a percentage of it (content 60%, metadata
+15%) and the two budgets together may claim at most 90% of it. Raising it on
+a `Persistent` cache grows the existing PVC when its StorageClass allows
+volume expansion; a smaller value is never applied to an existing PVC. Must be
+at least `3Mi` (1MiB for each cache under the 90% ceiling).">
   <span class="prop-name">capacity</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Size of the PVC backing the mover&#39;s kopia cache (e.g. `10Gi`).
+  <div class="leaf-desc">Size of the volume backing the mover&#39;s kopia cache (e.g. `10Gi`). When set,
+unset cache budgets default to a percentage of it (content 60%, metadata
+15%) and the two budgets together may claim at most 90% of it. Raising it on
+a `Persistent` cache grows the existing PVC when its StorageClass allows
+volume expansion; a smaller value is never applied to an existing PVC. Must be
+at least `3Mi` (1MiB for each cache under the 90% ceiling).
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.contentCacheSizeMb" data-path-key="|spec|moverDefaults|cache|contentCacheSizeMb|" data-parent-path="spec.moverDefaults.cache" data-name="contentCacheSizeMb" data-text="kopia content cache budget in MiB (`--content-cache-size-mb`). format: int64">
+<details class="prop" data-prop-row data-path="spec.moverDefaults.cache.contentCacheSize" data-path-key="|spec|moverDefaults|cache|contentCacheSize|" data-parent-path="spec.moverDefaults.cache" data-name="contentCacheSize" data-text="kopia content cache budget (`--content-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 60% of it. Mutually exclusive with `contentCacheSizeMb`.">
+<summary>
+  <span class="prop-name">contentCacheSize</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">kopia content cache budget (`--content-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 60% of it. Mutually exclusive with `contentCacheSizeMb`.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.contentCacheSize.percent" data-path-key="|spec|moverDefaults|cache|contentCacheSize|percent|" data-parent-path="spec.moverDefaults.cache.contentCacheSize" data-name="percent" data-text="Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB. format: uint32 minimum: 0">
+  <span class="prop-name">percent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.contentCacheSize.size" data-path-key="|spec|moverDefaults|cache|contentCacheSize|size|" data-parent-path="spec.moverDefaults.cache.contentCacheSize" data-name="size" data-text="An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.">
+  <span class="prop-name">size</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.contentCacheSizeMb" data-path-key="|spec|moverDefaults|cache|contentCacheSizeMb|" data-parent-path="spec.moverDefaults.cache" data-name="contentCacheSizeMb" data-text="kopia content cache budget in MiB (`--content-cache-size-mb`). The original
+spelling of `contentCacheSize`; set one or the other, not both. format: int64">
   <span class="prop-name">contentCacheSizeMb</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">kopia content cache budget in MiB (`--content-cache-size-mb`).<div class="leaf-constraints">
+  <div class="leaf-desc">kopia content cache budget in MiB (`--content-cache-size-mb`). The original
+spelling of `contentCacheSize`; set one or the other, not both.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.metadataCacheSizeMb" data-path-key="|spec|moverDefaults|cache|metadataCacheSizeMb|" data-parent-path="spec.moverDefaults.cache" data-name="metadataCacheSizeMb" data-text="kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). format: int64">
+<details class="prop" data-prop-row data-path="spec.moverDefaults.cache.metadataCacheSize" data-path-key="|spec|moverDefaults|cache|metadataCacheSize|" data-parent-path="spec.moverDefaults.cache" data-name="metadataCacheSize" data-text="kopia metadata cache budget (`--metadata-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 15% of it. Mutually exclusive with `metadataCacheSizeMb`.">
+<summary>
+  <span class="prop-name">metadataCacheSize</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">kopia metadata cache budget (`--metadata-cache-size-mb`): `{ percent: N }` of
+`capacity`, or `{ size: &lt;quantity&gt; }`. Absent with a known `capacity`, it
+defaults to 15% of it. Mutually exclusive with `metadataCacheSizeMb`.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.metadataCacheSize.percent" data-path-key="|spec|moverDefaults|cache|metadataCacheSize|percent|" data-parent-path="spec.moverDefaults.cache.metadataCacheSize" data-name="percent" data-text="Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB. format: uint32 minimum: 0">
+  <span class="prop-name">percent</span>
+  <span class="type-badge">integer</span>
+  <div class="leaf-desc">Percent of the cache volume&#39;s `capacity` (1–100). Needs a `capacity`, set on
+this layer or inherited from `moverDefaults.cache`. Rounded down to whole MiB.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: uint32"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">uint32</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div>
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.metadataCacheSize.size" data-path-key="|spec|moverDefaults|cache|metadataCacheSize|size|" data-parent-path="spec.moverDefaults.cache.metadataCacheSize" data-name="size" data-text="An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.">
+  <span class="prop-name">size</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">An absolute size as a Kubernetes quantity (e.g. `1Gi`, `500Mi`). Rounded down
+to whole MiB; must be at least `1Mi` and, when a `capacity` is known, fit in it.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.moverDefaults.cache.metadataCacheSizeMb" data-path-key="|spec|moverDefaults|cache|metadataCacheSizeMb|" data-parent-path="spec.moverDefaults.cache" data-name="metadataCacheSizeMb" data-text="kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). The original
+spelling of `metadataCacheSize`; set one or the other, not both. format: int64">
   <span class="prop-name">metadataCacheSizeMb</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">kopia metadata cache budget in MiB (`--metadata-cache-size-mb`).<div class="leaf-constraints">
+  <div class="leaf-desc">kopia metadata cache budget in MiB (`--metadata-cache-size-mb`). The original
+spelling of `metadataCacheSize`; set one or the other, not both.<div class="leaf-constraints">
 <div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
   </div>
 </div>
@@ -6061,10 +6217,10 @@ Ingress/LoadBalancer controller onto.
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.suspend" data-path-key="|spec|suspend|" data-parent-path="spec" data-name="suspend" data-text="Pause this cluster repository: skip connect/bootstrap and maintenance projection.">
+<div class="prop-leaf" data-prop-row data-path="spec.suspend" data-path-key="|spec|suspend|" data-parent-path="spec" data-name="suspend" data-text="Pause ALL new work against this cluster repository (backups, restores, maintenance, replication, seeding, verification); held work resumes once unsuspended.">
   <span class="prop-name">suspend</span>
   <span class="type-badge">boolean</span>
-  <div class="leaf-desc">Pause this cluster repository: skip connect/bootstrap and maintenance projection.
+  <div class="leaf-desc">Pause ALL new work against this cluster repository (backups, restores, maintenance, replication, seeding, verification); held work resumes once unsuspended.
   </div>
 </div>
   </div>
