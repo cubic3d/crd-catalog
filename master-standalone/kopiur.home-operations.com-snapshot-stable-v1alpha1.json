@@ -1273,6 +1273,14 @@
                 "string",
                 "null"
               ]
+            },
+            "namespace": {
+              "description": "Namespace of the mover `Job` and its staged PVC when they are not in the\n`Snapshot`'s own namespace: set under the repository's\n`execution.mode: Central`, absent otherwise. Pinned before anything is\ncreated there, so cleanup finds the objects even after the repository's\n`execution` is edited or the repository is deleted.",
+              "nullable": true,
+              "type": [
+                "string",
+                "null"
+              ]
             }
           },
           "type": [

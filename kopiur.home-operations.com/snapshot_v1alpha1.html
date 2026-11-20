@@ -1761,6 +1761,20 @@ occurred outside a kopia invocation.
   <div class="leaf-desc">Name of the mover `Job`.
   </div>
 </div>
+<div class="prop-leaf" data-prop-row data-path="status.job.namespace" data-path-key="|status|job|namespace|" data-parent-path="status.job" data-name="namespace" data-text="Namespace of the mover `Job` and its staged PVC when they are not in the
+`Snapshot`&#39;s own namespace: set under the repository&#39;s
+`execution.mode: Central`, absent otherwise. Pinned before anything is
+created there, so cleanup finds the objects even after the repository&#39;s
+`execution` is edited or the repository is deleted.">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">Namespace of the mover `Job` and its staged PVC when they are not in the
+`Snapshot`&#39;s own namespace: set under the repository&#39;s
+`execution.mode: Central`, absent otherwise. Pinned before anything is
+created there, so cleanup finds the objects even after the repository&#39;s
+`execution` is edited or the repository is deleted.
+  </div>
+</div>
   </div>
 </div>
 </details>

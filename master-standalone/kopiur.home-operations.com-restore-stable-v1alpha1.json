@@ -1802,6 +1802,24 @@
             "null"
           ]
         },
+        "execution": {
+          "additionalProperties": false,
+          "description": "Where this populator restore's prime PVCs and mover Jobs live when that\nis not the `Restore`'s own namespace: set under the repository's\n`execution.mode: Central`, absent otherwise. Pinned before anything is\ncreated there, so cleanup finds the objects even after the repository's\n`execution` is edited or the repository is deleted.",
+          "nullable": true,
+          "properties": {
+            "namespace": {
+              "description": "The namespace holding the prime PVCs and mover Jobs (the operator\nnamespace).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "namespace"
+          ],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
         "failure": {
           "additionalProperties": false,
           "description": "Structured terminal-failure detail (kopia error class, stderr tail, retry hint).",

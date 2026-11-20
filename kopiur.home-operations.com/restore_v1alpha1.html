@@ -1841,6 +1841,32 @@ unknown keys — so every field any writer (controller or mover) puts under
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="status.execution" data-path-key="|status|execution|" data-parent-path="status" data-name="execution" data-text="Where this populator restore&#39;s prime PVCs and mover Jobs live when that
+is not the `Restore`&#39;s own namespace: set under the repository&#39;s
+`execution.mode: Central`, absent otherwise. Pinned before anything is
+created there, so cleanup finds the objects even after the repository&#39;s
+`execution` is edited or the repository is deleted.">
+<summary>
+  <span class="prop-name">execution</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">Where this populator restore&#39;s prime PVCs and mover Jobs live when that
+is not the `Restore`&#39;s own namespace: set under the repository&#39;s
+`execution.mode: Central`, absent otherwise. Pinned before anything is
+created there, so cleanup finds the objects even after the repository&#39;s
+`execution` is edited or the repository is deleted.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.execution.namespace" data-path-key="|status|execution|namespace|" data-parent-path="status.execution" data-name="namespace" data-text="The namespace holding the prime PVCs and mover Jobs (the operator
+namespace).">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">The namespace holding the prime PVCs and mover Jobs (the operator
+namespace).
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="status.failure" data-path-key="|status|failure|" data-parent-path="status" data-name="failure" data-text="Structured terminal-failure detail (kopia error class, stderr tail, retry hint).">
 <summary>
   <span class="prop-name">failure</span>
