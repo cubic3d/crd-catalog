@@ -424,10 +424,15 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
 </summary>
 <div class="prop-content"><div class="prop-desc">Endpoint is a high-level way of a connection between a service and an IP</div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.dnsName" data-path-key="|spec|endpoint|dnsName|" data-parent-path="spec.endpoint" data-name="dnsName" data-text="The hostname of the DNS record">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.dnsName" data-path-key="|spec|endpoint|dnsName|" data-parent-path="spec.endpoint" data-name="dnsName" data-text="DNSName is the hostname of the DNS record. It is at most 253 characters, or 254
+written as an absolute name with a trailing dot. pattern: ^(\*\.)?([a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.)*[a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.?$ minLength: 1 maxLength: 254">
   <span class="prop-name">dnsName</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">The hostname of the DNS record
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">DNSName is the hostname of the DNS record. It is at most 253 characters, or 254
+written as an absolute name with a trailing dot.<div class="leaf-constraints">
+<div class="schema-constraint" title="pattern: ^(\*\.)?([a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.)*[a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.?$"><span class="schema-constraint-label">pattern:</span> <code class="schema-constraint-value">^(\*\.)?([a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.)*[a-zA-Z0-9_]([-a-zA-Z0-9_]{0,61}[a-zA-Z0-9_])?\.?$</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 254"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">254</code></div></div>
   </div>
 </div>
 <div class="prop-leaf" data-prop-row data-path="spec.endpoint.labels" data-path-key="|spec|endpoint|labels|" data-parent-path="spec.endpoint" data-name="labels" data-text="Labels stores labels defined for the Endpoint">
@@ -436,51 +441,68 @@ More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-
   <div class="leaf-desc">Labels stores labels defined for the Endpoint
   </div>
 </div>
-<details class="prop" data-prop-row data-path="spec.endpoint.providerSpecific" data-path-key="|spec|endpoint|providerSpecific|" data-parent-path="spec.endpoint" data-name="providerSpecific" data-text="ProviderSpecific stores provider specific config">
+<details class="prop" data-prop-row data-path="spec.endpoint.providerSpecific" data-path-key="|spec|endpoint|providerSpecific|" data-parent-path="spec.endpoint" data-name="providerSpecific" data-text="ProviderSpecific stores provider specific config maxItems: 100">
 <summary>
   <span class="prop-name">providerSpecific</span>
   <span class="type-badge">[]object</span>
 </summary>
-<div class="prop-content"><div class="prop-desc">ProviderSpecific stores provider specific config</div>
+<div class="prop-content"><div class="prop-desc">ProviderSpecific stores provider specific config</div><div class="prop-constraints">
+<div class="schema-constraint" title="maxItems: 100"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">100</code></div></div>
   <div class="prop-children">
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.providerSpecific[].name" data-path-key="|spec|endpoint|providerSpecific[]|name|" data-parent-path="spec.endpoint.providerSpecific" data-name="name" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.providerSpecific[].name" data-path-key="|spec|endpoint|providerSpecific[]|name|" data-parent-path="spec.endpoint.providerSpecific" data-name="name" data-text="Name of the provider-specific property. Accepted names are provider
+dependent; see the tutorial for the provider in use. minLength: 1 maxLength: 253">
   <span class="prop-name">name</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the provider-specific property. Accepted names are provider
+dependent; see the tutorial for the provider in use.<div class="leaf-constraints">
+<div class="schema-constraint" title="minLength: 1"><span class="schema-constraint-label">minLength:</span> <code class="schema-constraint-value">1</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 253"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">253</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.providerSpecific[].value" data-path-key="|spec|endpoint|providerSpecific[]|value|" data-parent-path="spec.endpoint.providerSpecific" data-name="value" data-text="">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.providerSpecific[].value" data-path-key="|spec|endpoint|providerSpecific[]|value|" data-parent-path="spec.endpoint.providerSpecific" data-name="value" data-text="Value of the provider-specific property. maxLength: 4096">
   <span class="prop-name">value</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">
+  <div class="leaf-desc">Value of the provider-specific property.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 4096"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">4096</code></div></div>
   </div>
 </div>
   </div>
 </div>
 </details>
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.recordTTL" data-path-key="|spec|endpoint|recordTTL|" data-parent-path="spec.endpoint" data-name="recordTTL" data-text="TTL for the record format: int64">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.recordTTL" data-path-key="|spec|endpoint|recordTTL|" data-parent-path="spec.endpoint" data-name="recordTTL" data-text="RecordTTL is the TTL of the record in seconds. 0 means &#34;not set&#34; and lets
+the provider apply its own default. The upper bound is the RFC 2181 §8 maximum. format: int64 minimum: 0 maximum: 2.147483647e&#43;09">
   <span class="prop-name">recordTTL</span>
   <span class="type-badge">integer</span>
-  <div class="leaf-desc">TTL for the record<div class="leaf-constraints">
-<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div>
+  <div class="leaf-desc">RecordTTL is the TTL of the record in seconds. 0 means &#34;not set&#34; and lets
+the provider apply its own default. The upper bound is the RFC 2181 §8 maximum.<div class="leaf-constraints">
+<div class="schema-constraint" title="format: int64"><span class="schema-constraint-label">format:</span> <code class="schema-constraint-value">int64</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="minimum: 0"><span class="schema-constraint-label">minimum:</span> <code class="schema-constraint-value">0</code></div></div><div class="leaf-constraints">
+<div class="schema-constraint" title="maximum: 2.147483647e&#43;09"><span class="schema-constraint-label">maximum:</span> <code class="schema-constraint-value">2.147483647e&#43;09</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.recordType" data-path-key="|spec|endpoint|recordType|" data-parent-path="spec.endpoint" data-name="recordType" data-text="RecordType type of record, e.g. CNAME, A, AAAA, SRV, TXT etc">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.recordType" data-path-key="|spec|endpoint|recordType|" data-parent-path="spec.endpoint" data-name="recordType" data-text="RecordType is the DNS record type. enum: A, AAAA, CNAME, DNAME, MX, NAPTR, NS, PTR, SRV, TLSA, TXT">
   <span class="prop-name">recordType</span>
-  <span class="type-badge">string</span>
-  <div class="leaf-desc">RecordType type of record, e.g. CNAME, A, AAAA, SRV, TXT etc
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">RecordType is the DNS record type.<div class="leaf-constraints">
+<div class="schema-constraint" title="enum: A, AAAA, CNAME, DNAME, MX, NAPTR, NS, PTR, SRV, TLSA, TXT"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">A, AAAA, CNAME, DNAME, MX, NAPTR, NS, PTR, SRV, TLSA, TXT</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.setIdentifier" data-path-key="|spec|endpoint|setIdentifier|" data-parent-path="spec.endpoint" data-name="setIdentifier" data-text="Identifier to distinguish multiple records with the same name and type (e.g. Route53 records with routing policies other than &#39;simple&#39;)">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.setIdentifier" data-path-key="|spec|endpoint|setIdentifier|" data-parent-path="spec.endpoint" data-name="setIdentifier" data-text="SetIdentifier distinguishes multiple records with the same name and type
+(e.g. Route53 records with routing policies other than &#39;simple&#39;). maxLength: 255">
   <span class="prop-name">setIdentifier</span>
   <span class="type-badge">string</span>
-  <div class="leaf-desc">Identifier to distinguish multiple records with the same name and type (e.g. Route53 records with routing policies other than &#39;simple&#39;)
+  <div class="leaf-desc">SetIdentifier distinguishes multiple records with the same name and type
+(e.g. Route53 records with routing policies other than &#39;simple&#39;).<div class="leaf-constraints">
+<div class="schema-constraint" title="maxLength: 255"><span class="schema-constraint-label">maxLength:</span> <code class="schema-constraint-value">255</code></div></div>
   </div>
 </div>
-<div class="prop-leaf" data-prop-row data-path="spec.endpoint.targets" data-path-key="|spec|endpoint|targets|" data-parent-path="spec.endpoint" data-name="targets" data-text="The targets the DNS record points to">
+<div class="prop-leaf" data-prop-row data-path="spec.endpoint.targets" data-path-key="|spec|endpoint|targets|" data-parent-path="spec.endpoint" data-name="targets" data-text="Targets are the values the DNS record points to. Leaving it empty is only
+meaningful when --default-targets is configured. maxItems: 1000">
   <span class="prop-name">targets</span>
   <span class="type-badge">[]string</span>
-  <div class="leaf-desc">The targets the DNS record points to
+  <div class="leaf-desc">Targets are the values the DNS record points to. Leaving it empty is only
+meaningful when --default-targets is configured.<div class="leaf-constraints">
+<div class="schema-constraint" title="maxItems: 1000"><span class="schema-constraint-label">maxItems:</span> <code class="schema-constraint-value">1000</code></div></div>
   </div>
 </div>
   </div>

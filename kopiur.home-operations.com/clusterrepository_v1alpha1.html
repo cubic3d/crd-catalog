@@ -1671,9 +1671,8 @@ filesystem backend&#39;s PVC) in the operator namespace; and, for a backup
 of a PVC, the `CrossNamespaceVolumeDataSource` feature gate on
 kube-apiserver and kube-controller-manager, the same gate on the CSI
 driver&#39;s external-provisioner, and the Gateway API `ReferenceGrant`
-CRD. A `mover.cache` of `mode: Persistent` is provisioned per run
-instead, because the persistent cache PVC lives in the workload
-namespace. enum: InNamespace, Central">
+CRD. A central mover&#39;s `mover.cache` of `mode: Persistent` keeps its
+cache PVC in the operator namespace, beside the mover. enum: InNamespace, Central">
   <span class="prop-name">mode</span>
   <span class="type-badge">string</span> <span class="required-badge">required</span>
   <div class="leaf-desc">`InNamespace` runs each mover beside the object it works for, in the
@@ -1710,9 +1709,8 @@ filesystem backend&#39;s PVC) in the operator namespace; and, for a backup
 of a PVC, the `CrossNamespaceVolumeDataSource` feature gate on
 kube-apiserver and kube-controller-manager, the same gate on the CSI
 driver&#39;s external-provisioner, and the Gateway API `ReferenceGrant`
-CRD. A `mover.cache` of `mode: Persistent` is provisioned per run
-instead, because the persistent cache PVC lives in the workload
-namespace.<div class="leaf-constraints">
+CRD. A central mover&#39;s `mover.cache` of `mode: Persistent` keeps its
+cache PVC in the operator namespace, beside the mover.<div class="leaf-constraints">
 <div class="schema-constraint" title="enum: InNamespace, Central"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">InNamespace, Central</code></div></div>
   </div>
 </div>

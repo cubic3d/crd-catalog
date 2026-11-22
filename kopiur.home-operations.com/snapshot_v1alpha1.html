@@ -1928,6 +1928,32 @@ volume it mounted (#613). Absent on a `Snapshot` that predates the pin.</div>
 `emptyDir` cache, which has no fixed size.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="status.resolved.cache.claim" data-path-key="|status|resolved|cache|claim|" data-parent-path="status.resolved.cache" data-name="claim" data-text="The persistent cache PVC the mover mounted (`mode: Persistent`). Absent
+for a per-run cache volume. Under `execution.mode: Central` the PVC is
+in the operator namespace, which is why the namespace is recorded.">
+<summary>
+  <span class="prop-name">claim</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">The persistent cache PVC the mover mounted (`mode: Persistent`). Absent
+for a per-run cache volume. Under `execution.mode: Central` the PVC is
+in the operator namespace, which is why the namespace is recorded.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.resolved.cache.claim.name" data-path-key="|status|resolved|cache|claim|name|" data-parent-path="status.resolved.cache.claim" data-name="name" data-text="Name of the `PersistentVolumeClaim`.">
+  <span class="prop-name">name</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Name of the `PersistentVolumeClaim`.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="status.resolved.cache.claim.namespace" data-path-key="|status|resolved|cache|claim|namespace|" data-parent-path="status.resolved.cache.claim" data-name="namespace" data-text="Namespace of the `PersistentVolumeClaim`: the namespace the mover ran in.">
+  <span class="prop-name">namespace</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">Namespace of the `PersistentVolumeClaim`: the namespace the mover ran in.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="status.resolved.cache.contentCacheSizeMb" data-path-key="|status|resolved|cache|contentCacheSizeMb|" data-parent-path="status.resolved.cache" data-name="contentCacheSizeMb" data-text="The `--content-cache-size-mb` kopia was given; absent means kopia&#39;s own default. format: int64">
   <span class="prop-name">contentCacheSizeMb</span>
   <span class="type-badge">integer</span>

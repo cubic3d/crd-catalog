@@ -1428,6 +1428,29 @@
                     "null"
                   ]
                 },
+                "claim": {
+                  "additionalProperties": false,
+                  "description": "The persistent cache PVC the mover mounted (`mode: Persistent`). Absent\nfor a per-run cache volume. Under `execution.mode: Central` the PVC is\nin the operator namespace, which is why the namespace is recorded.",
+                  "nullable": true,
+                  "properties": {
+                    "name": {
+                      "description": "Name of the `PersistentVolumeClaim`.",
+                      "type": "string"
+                    },
+                    "namespace": {
+                      "description": "Namespace of the `PersistentVolumeClaim`: the namespace the mover ran in.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "namespace"
+                  ],
+                  "type": [
+                    "object",
+                    "null"
+                  ]
+                },
                 "contentCacheSizeMb": {
                   "description": "The `--content-cache-size-mb` kopia was given; absent means kopia's own default.",
                   "format": "int64",

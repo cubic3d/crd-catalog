@@ -684,7 +684,8 @@ This field is mutually exclusive with matchLabels and matchExpressions.
 When empty, ExternalArtifacts are listed in the ResourceSetInputProvider namespace.
 When set to &#34;*&#34;, ExternalArtifacts are listed across all namespaces by
 omitting the namespace option from List().
-Otherwise, ExternalArtifacts are listed only in the specified namespace.">
+Otherwise, ExternalArtifacts are listed only in the specified namespace.
+This field is mutually exclusive with NamespaceSelector.">
   <span class="prop-name">namespace</span>
   <span class="type-badge">string</span>
   <div class="leaf-desc">Namespace scopes ExternalArtifact discovery.
@@ -692,8 +693,73 @@ When empty, ExternalArtifacts are listed in the ResourceSetInputProvider namespa
 When set to &#34;*&#34;, ExternalArtifacts are listed across all namespaces by
 omitting the namespace option from List().
 Otherwise, ExternalArtifacts are listed only in the specified namespace.
+This field is mutually exclusive with NamespaceSelector.
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.selectors[].namespaceSelector" data-path-key="|spec|selectors[]|namespaceSelector|" data-parent-path="spec.selectors" data-name="namespaceSelector" data-text="NamespaceSelector selects the namespaces where ExternalArtifacts are
+discovered based on their labels. An empty selector matches all
+namespaces. When both Namespace and NamespaceSelector are empty,
+ExternalArtifacts are listed in the ResourceSetInputProvider namespace.
+This field is mutually exclusive with Namespace.">
+<summary>
+  <span class="prop-name">namespaceSelector</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">NamespaceSelector selects the namespaces where ExternalArtifacts are
+discovered based on their labels. An empty selector matches all
+namespaces. When both Namespace and NamespaceSelector are empty,
+ExternalArtifacts are listed in the ResourceSetInputProvider namespace.
+This field is mutually exclusive with Namespace.</div>
+  <div class="prop-children">
+<details class="prop" data-prop-row data-path="spec.selectors[].namespaceSelector.matchExpressions" data-path-key="|spec|selectors[]|namespaceSelector|matchExpressions|" data-parent-path="spec.selectors[].namespaceSelector" data-name="matchExpressions" data-text="matchExpressions is a list of label selector requirements. The requirements are ANDed.">
+<summary>
+  <span class="prop-name">matchExpressions</span>
+  <span class="type-badge">[]object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">matchExpressions is a list of label selector requirements. The requirements are ANDed.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.selectors[].namespaceSelector.matchExpressions[].key" data-path-key="|spec|selectors[]|namespaceSelector|matchExpressions[]|key|" data-parent-path="spec.selectors[].namespaceSelector.matchExpressions" data-name="key" data-text="key is the label key that the selector applies to.">
+  <span class="prop-name">key</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">key is the label key that the selector applies to.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selectors[].namespaceSelector.matchExpressions[].operator" data-path-key="|spec|selectors[]|namespaceSelector|matchExpressions[]|operator|" data-parent-path="spec.selectors[].namespaceSelector.matchExpressions" data-name="operator" data-text="operator represents a key&#39;s relationship to a set of values.
+Valid operators are In, NotIn, Exists and DoesNotExist.">
+  <span class="prop-name">operator</span>
+  <span class="type-badge">string</span> <span class="required-badge">required</span>
+  <div class="leaf-desc">operator represents a key&#39;s relationship to a set of values.
+Valid operators are In, NotIn, Exists and DoesNotExist.
+  </div>
+</div>
+<div class="prop-leaf" data-prop-row data-path="spec.selectors[].namespaceSelector.matchExpressions[].values" data-path-key="|spec|selectors[]|namespaceSelector|matchExpressions[]|values|" data-parent-path="spec.selectors[].namespaceSelector.matchExpressions" data-name="values" data-text="values is an array of string values. If the operator is In or NotIn,
+the values array must be non-empty. If the operator is Exists or DoesNotExist,
+the values array must be empty. This array is replaced during a strategic
+merge patch.">
+  <span class="prop-name">values</span>
+  <span class="type-badge">[]string</span>
+  <div class="leaf-desc">values is an array of string values. If the operator is In or NotIn,
+the values array must be non-empty. If the operator is Exists or DoesNotExist,
+the values array must be empty. This array is replaced during a strategic
+merge patch.
+  </div>
+</div>
+  </div>
+</div>
+</details>
+<div class="prop-leaf" data-prop-row data-path="spec.selectors[].namespaceSelector.matchLabels" data-path-key="|spec|selectors[]|namespaceSelector|matchLabels|" data-parent-path="spec.selectors[].namespaceSelector" data-name="matchLabels" data-text="matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+map is equivalent to an element of matchExpressions, whose key field is &#34;key&#34;, the
+operator is &#34;In&#34;, and the values array contains only &#34;value&#34;. The requirements are ANDed.">
+  <span class="prop-name">matchLabels</span>
+  <span class="type-badge">object</span>
+  <div class="leaf-desc">matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+map is equivalent to an element of matchExpressions, whose key field is &#34;key&#34;, the
+operator is &#34;In&#34;, and the values array contains only &#34;value&#34;. The requirements are ANDed.
+  </div>
+</div>
+  </div>
+</div>
+</details>
   </div>
 </div>
 </details>

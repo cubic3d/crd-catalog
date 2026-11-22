@@ -2741,6 +2741,28 @@ withheld. See the `AdoptionSkippedByRetention` event for the levers.<div class="
   </div>
 </div>
 </details>
+<details class="prop" data-prop-row data-path="status.cache" data-path-key="|status|cache|" data-parent-path="status" data-name="cache" data-text="State of this recipe&#39;s persistent mover-cache PVCs.">
+<summary>
+  <span class="prop-name">cache</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">State of this recipe&#39;s persistent mover-cache PVCs.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="status.cache.resetRequestHonored" data-path-key="|status|cache|resetRequestHonored|" data-parent-path="status.cache" data-name="resetRequestHonored" data-text="The value of the `kopiur.home-operations.com/cache-reset-requested-at`
+annotation the controller last acted on: it deleted this recipe&#39;s
+persistent cache PVCs for that request. A request is honored once, so
+the annotation can stay on the object.">
+  <span class="prop-name">resetRequestHonored</span>
+  <span class="type-badge">string</span>
+  <div class="leaf-desc">The value of the `kopiur.home-operations.com/cache-reset-requested-at`
+annotation the controller last acted on: it deleted this recipe&#39;s
+persistent cache PVCs for that request. A request is honored once, so
+the annotation can stay on the object.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <details class="prop" data-prop-row data-path="status.conditions" data-path-key="|status|conditions|" data-parent-path="status" data-name="conditions" data-text="Standard Kubernetes conditions (e.g. `RepositoryReachable`, `GroupSnapshotSupported`).">
 <summary>
   <span class="prop-name">conditions</span>

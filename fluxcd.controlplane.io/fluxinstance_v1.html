@@ -517,6 +517,30 @@ Accepted values are: &#39;small&#39;, &#39;medium&#39; and &#39;large&#39;.<div 
 <div class="schema-constraint" title="enum: small, medium, large"><span class="schema-constraint-label">enum:</span> <code class="schema-constraint-value">small, medium, large</code></div></div>
   </div>
 </div>
+<details class="prop" data-prop-row data-path="spec.cluster.sourceWatcher" data-path-key="|spec|cluster|sourceWatcher|" data-parent-path="spec.cluster" data-name="sourceWatcher" data-text="SourceWatcher configures the source-watcher component.">
+<summary>
+  <span class="prop-name">sourceWatcher</span>
+  <span class="type-badge">object</span>
+</summary>
+<div class="prop-content"><div class="prop-desc">SourceWatcher configures the source-watcher component.</div>
+  <div class="prop-children">
+<div class="prop-leaf" data-prop-row data-path="spec.cluster.sourceWatcher.namespaceManager" data-path-key="|spec|cluster|sourceWatcher|namespaceManager|" data-parent-path="spec.cluster.sourceWatcher" data-name="namespaceManager" data-text="NamespaceManager enables the RBAC required by source-watcher to manage
+Namespaces on behalf of ArtifactGenerator resources. This grants the
+source-watcher service account cluster-wide permissions to create,
+update, patch and delete Namespaces. The source-watcher component must
+be enabled in .spec.components.">
+  <span class="prop-name">namespaceManager</span>
+  <span class="type-badge">boolean</span>
+  <div class="leaf-desc">NamespaceManager enables the RBAC required by source-watcher to manage
+Namespaces on behalf of ArtifactGenerator resources. This grants the
+source-watcher service account cluster-wide permissions to create,
+update, patch and delete Namespaces. The source-watcher component must
+be enabled in .spec.components.
+  </div>
+</div>
+  </div>
+</div>
+</details>
 <div class="prop-leaf" data-prop-row data-path="spec.cluster.tenantDefaultDecryptionServiceAccount" data-path-key="|spec|cluster|tenantDefaultDecryptionServiceAccount|" data-parent-path="spec.cluster" data-name="tenantDefaultDecryptionServiceAccount" data-text="TenantDefaultDecryptionServiceAccount is the name of the service account
 to use as default for kustomize-controller SOPS decryption when the
 multitenant lockdown for object identity is enabled. Defaults to the
